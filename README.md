@@ -1,7 +1,20 @@
 GreedyGame Cocos2d-x Integration Guide
 ===================
 
-Common for both iOS & Android
+## Setup Units
+
+All the units can be setup easily from panel.greedygame.com
+
+### Native Ad-units
+* Goto, sidemenu, AdUnit then drag and drop assets which has to be used for branding.
+* ![Adding Native Unit](screen-shots/naive-ads-upload.gif?raw=true "Adding Native Unit" )
+
+
+### Floating Ad-units
+* Goto, sidemenu, AdUnit then click on "Add float unit" to create one unit.
+* ![Adding Float Unit](screen-shots/float-ad-create.gif?raw=true "Adding Float Unit" )
+
+
 ---------------------------------------
 
 ## Initialisation
@@ -9,24 +22,10 @@ Common for both iOS & Android
 * Download [jars](Current_sdk/proj.android) from Current_sdk/proj.android.
 * You will find a folder named [Classes](Current_sdk/Classes).
 * In this folder you will find *GreedyGameSDK.h* . **iOS** and **Android** will share this header file. Add this to your cocos2d-x project.
-* In your project's *AppDelegate.cpp*, add following code to `applicationDidFinishLaunching()` function:-
-
-```cpp
-/*
- * All resource path with prefix greedygame/**, 
- * will be considered for native ads
- */ 
-CCSize screenSize = CCEGLView::sharedOpenGLView()->getFrameSize();
-std::vector<std::string> searchPaths;
-searchPaths.push_back("greedygame");
-/* Also, sub-dirs can be added
-searchPaths.push_back("greedygame/level1");
-searchPaths.push_back("greedygame/level2");*/
-CCFileUtils::sharedFileUtils()-> setSearchPaths(searchPaths);
-```
+* Put all branded assets under folder Resources/greedygame
 
 > **Note:**
-> All resource path with prefix greedygame/*,   will be considered for native ads
+> Resources/greedygame directory should only contain images and no sub-directories
  
  
 ## Fetching Campaigns
@@ -42,8 +41,8 @@ greedygame::GreedyGameSDK::initialize("<your game id>", &onInit, &onProgress);
 
 #### onInit
 ```cpp
-void on_init(int r) {
-	CCLog( "> on_init %d", r);
+void on_init(int event) {
+	CCLog( "> on_init %d", event);
 	/*
 	 * GG_CAMPAIGN_NOT_FOUND, -1 = using no campaign
 	 * GG_CAMPAIGN_CACHED, 0 = campaign already cached
@@ -54,24 +53,22 @@ void on_init(int r) {
 	 */
     
 	int isBranded = -1;
-	if(r == GG_CAMPAIGN_CACHED || r == GG_CAMPAIGN_DOWNLOADED){
+	if(event == GG_CAMPAIGN_CACHED || event == GG_CAMPAIGN_DOWNLOADED){
 		isBranded = 1;
-		CCLog( "> greedygameSDK::GreedyGameSDK::setPath()");
-		greedygame::GreedyGameSDK::setPath();
-	}else if(r == GG_CAMPAIGN_NOT_FOUND){
+	}else if(event == GG_CAMPAIGN_NOT_FOUND){
 		isBranded = 0;
 	}
 
 	if(isBranded > -1){
-		greedygame::GreedyGameSDK::fetchAdHead("unit-385");
+		greedygame::GreedyGameSDK::fetchAdHead("<floating unit-id>");
 		CCDirector *pDirector = CCDirector::sharedDirector();
 		CCScene *pScene = HelloWorld::scene();
 		pDirector->replaceScene(pScene);
 	}
 
-	if(r == GG_ADUNIT_OPENED){
+	if(event == GG_ADUNIT_OPENED){
 		//Make pause
-	}else if(r == GG_ADUNIT_CLOSED){
+	}else if(event == GG_ADUNIT_CLOSED){
 		//Make unpause
 	}
 }
@@ -88,6 +85,9 @@ void onProgress(float f) {
 }
 ```
 
+#### Fetching floating ad units
+`greedygame::GreedyGameSDK::fetchAdHead("<floating unit-id>");`
+
 Android
 ----------
 * Copy android folder (found in greedygame folder) to your project.
@@ -99,8 +99,6 @@ Android
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-<uses-permission android:name="android.permission.GET_ACCOUNTS" />
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
@@ -161,14 +159,6 @@ protected void onResume(){
     AdsGreedyGame.onResume();
 }
 ```
-
-iOS
------
-
-**TBD**
-
-
-
 
 --------
 Congratulations! You just completed the integration. Now you can test your game with GreedyGame integrated, by making an theme at panel.greedygame.com
