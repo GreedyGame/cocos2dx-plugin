@@ -147,4 +147,17 @@ namespace greedygame
         searchPaths.insert (searchPaths.begin(), path);
         CCFileUtils::sharedFileUtils()->setSearchPaths(searchPaths);
     }
+
+    void GreedyGameSDK::reportCustomEvent(const char *event_name){
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+        cocos2d::JniMethodInfo t;
+        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
+                                                    ,"reportCustomEvent"
+                                                    ,"(Ljava/lang/String;)V"))
+        {
+            jstring StringArg1 = t.env->NewStringUTF(event_name);
+            t.env->CallStaticVoidMethod(t.classID,t.methodID, StringArg1);
+        }
+#endif        
+    }
 }

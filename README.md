@@ -85,8 +85,16 @@ void onProgress(float f) {
 }
 ```
 
-#### Fetching floating ad units
+#### ReportCustomEvent
+`greedygame::GreedyGameSDK::reportCustomEvent("<event name>");`
+
+
+## Floating Ads
+#### Fetch floating units
 `greedygame::GreedyGameSDK::fetchAdHead("<floating unit-id>");`
+
+#### Remove floating units
+`greedygame::GreedyGameSDK::removeAdHead("<floating unit-id>");`
 
 Android
 ----------
