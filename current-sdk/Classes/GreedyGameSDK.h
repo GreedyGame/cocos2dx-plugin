@@ -42,8 +42,6 @@ namespace greedygame {
 
         static void fetchAdHead(const char *unit_id);
 
-        static void fetchAdHead(const char *unit_id, int x, int y);
-
         static void removeAdHead(const char *unit_id);
 
     };

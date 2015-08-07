@@ -61,7 +61,7 @@ namespace greedygame
             onDownloadCallback = progress_callback;
 
             /**Setting pref**/
-            std::vector<std::string> searchPaths;
+            std::vector<std::string> searchPaths = CCFileUtils::sharedFileUtils()->getSearchPaths();;
             searchPaths.push_back("greedygame");
             CCFileUtils::sharedFileUtils()->setSearchPaths(searchPaths);
         }
@@ -113,7 +113,6 @@ namespace greedygame
 #endif
     }
 
-
     void GreedyGameSDK::fetchAdHead(const char *unit_id){
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
         cocos2d::JniMethodInfo t;
@@ -123,19 +122,6 @@ namespace greedygame
         {
             jstring StringArg1 = t.env->NewStringUTF(unit_id);
             t.env->CallStaticVoidMethod(t.classID,t.methodID, StringArg1);
-        }
-#endif
-    }
-
-    void GreedyGameSDK::fetchAdHead(const char *unit_id, int x, int y){
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-        cocos2d::JniMethodInfo t;
-        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"fetchAdHeadGreedyGameJNI"
-                                                    ,"(Ljava/lang/String;II)V"))
-        {
-            jstring StringArg1 = t.env->NewStringUTF(unit_id);
-            t.env->CallStaticVoidMethod(t.classID,t.methodID, StringArg1, x, y);
         }
 #endif
     }
@@ -156,16 +142,9 @@ namespace greedygame
     void GreedyGameSDK::setPath() {
     	std::string path = GreedyGameSDK::_getActivePath();
     	CCLOG("activepath %s", path.c_str());
-    	std::vector<std::string> newSearchPaths;
-    	newSearchPaths.push_back(path);
-
+    	
         std::vector<std::string> searchPaths = CCFileUtils::sharedFileUtils()->getSearchPaths();
-        for(std::vector<std::string>::iterator it = searchPaths.begin(); it != searchPaths.end(); ++it) {
-        	std::string s = *it;
-        	CCLOG("push_back %s", s.c_str());
-        	newSearchPaths.push_back(*it);
-        }
-
-        CCFileUtils::sharedFileUtils()->setSearchPaths(newSearchPaths);
+        searchPaths.insert (searchPaths.begin(), path);
+        CCFileUtils::sharedFileUtils()->setSearchPaths(searchPaths);
     }
 }
