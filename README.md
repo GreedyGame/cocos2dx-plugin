@@ -86,7 +86,7 @@ void onProgress(float f) {
 ```
 
 #### ReportCustomEvent
-`greedygame::GreedyGameSDK::reportCustomEvent("<event name>");`
+`greedygame::GreedyGameSDK::onCustomEvent("<event name>");`
 
 
 ## Floating Ads

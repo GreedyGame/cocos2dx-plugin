@@ -148,11 +148,11 @@ namespace greedygame
         CCFileUtils::sharedFileUtils()->setSearchPaths(searchPaths);
     }
 
-    void GreedyGameSDK::reportCustomEvent(const char *event_name){
+    void GreedyGameSDK::onCustomEvent(const char *event_name){
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
         cocos2d::JniMethodInfo t;
         if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"reportCustomEvent"
+                                                    ,"onCustomEvent"
                                                     ,"(Ljava/lang/String;)V"))
         {
             jstring StringArg1 = t.env->NewStringUTF(event_name);
