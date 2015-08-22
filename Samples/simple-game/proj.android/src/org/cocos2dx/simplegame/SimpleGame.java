@@ -38,9 +38,8 @@ public class SimpleGame extends Cocos2dxActivity{
 		super.onCreate(savedInstanceState);
 
 		//AdsGreedyGame.setDebugGreedyGameJNI(true);
-		AdsGreedyGame.setup(this, Cocos2dxGLSurfaceView.getInstance()); // 
-
-		AdsGreedyGame.onCustomEvent("init");
+		AdsGreedyGame.setup(this, Cocos2dxGLSurfaceView.getInstance());
+		AdsGreedyGame.onCustomEvent("custom_event");
 	}
 	
     static {
