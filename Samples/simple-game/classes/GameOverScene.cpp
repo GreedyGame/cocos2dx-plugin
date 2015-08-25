@@ -25,6 +25,7 @@
 
 #include "GameOverScene.h"
 #include "HelloWorldScene.h"
+#include "SplashScene.h"
 
 using namespace cocos2d;
 
@@ -56,10 +57,12 @@ GameOverScene::~GameOverScene()
 
 bool GameOverLayer::init()
 {
+	CCLog( "downloadProgress > .....ONE..");
 	if ( CCLayerColor::initWithColor( ccc4(255,255,255,255) ) )
 	{
+		CCLog( "downloadProgress > .......");
 		CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-		this->_label = CCLabelTTF::create("","Artial", 32);
+		this->_label = CCLabelTTF::create("HERE...","Artial", 32);
 		_label->retain();
 		_label->setColor( ccc3(0, 0, 0) );
 		_label->setPosition( ccp(winSize.width/2, winSize.height/2) );
@@ -77,11 +80,13 @@ bool GameOverLayer::init()
 	{
 		return false;
 	}
+
+
 }
 
 void GameOverLayer::gameOverDone()
 {
-	//CCDirector::sharedDirector()->replaceScene( HelloWorld::scene() );
+	//CCDirector::sharedDirector()->replaceScene( SplashScene::scene() );
 }
 
 GameOverLayer::~GameOverLayer()

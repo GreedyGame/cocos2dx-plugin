@@ -37,8 +37,8 @@ public class SimpleGame extends Cocos2dxActivity{
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 
-		//AdsGreedyGame.setDebugGreedyGameJNI(true);
 		AdsGreedyGame.setup(this, Cocos2dxGLSurfaceView.getInstance());
+		AdsGreedyGame.setDebugGreedyGameJNI(true);
 		AdsGreedyGame.onCustomEvent("custom_event");
 	}
 	
@@ -50,10 +50,12 @@ public class SimpleGame extends Cocos2dxActivity{
     @Override
 	protected void onResume(){
     	super.onResume();
+    	AdsGreedyGame.onResume();
     }
     
     @Override
-	protected void onDestroy(){
+	protected void onPause(){
     	super.onDestroy();
+    	AdsGreedyGame.onPause();
     }
 }

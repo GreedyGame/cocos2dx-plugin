@@ -2,6 +2,8 @@
 #include "GameOverScene.h"
 #include "SimpleAudioEngine.h"
 
+#include "GreedyGameSDK.h"
+
 using namespace cocos2d;
 
 HelloWorld::~HelloWorld()
@@ -174,10 +176,12 @@ void HelloWorld::spriteMoveFinished(CCNode* sender)
 	if (sprite->getTag() == 1)  // target
 	{
 		_targets->removeObject(sprite);
+
+		CCLog( "Lose..");
         
-		GameOverScene *gameOverScene = GameOverScene::create();
-		gameOverScene->getLayer()->getLabel()->setString("You Lose :[");
-		CCDirector::sharedDirector()->replaceScene(gameOverScene);
+
+
+
 
 	}
 	else if (sprite->getTag() == 2) // projectile
@@ -186,9 +190,21 @@ void HelloWorld::spriteMoveFinished(CCNode* sender)
 	}
 }
 
+
+int i = 1;
 void HelloWorld::gameLogic(float dt)
 {
-	this->addTarget();
+	//this->addTarget();
+
+	CCLog( "in %d", i);
+	i++;
+	if(i > 50){
+		GameOverScene *gameOverScene = GameOverScene::create();
+		gameOverScene->getLayer()->getLabel()->setString("In between :[");
+		CCDirector::sharedDirector()->replaceScene(gameOverScene);
+
+		greedygame::GreedyGameSDK::removeAdHead("unit-385");
+	}
 }
 
 // cpp with cocos2d-x
@@ -286,8 +302,9 @@ void HelloWorld::updateGame(float dt)
 			this->removeChild(target, true);
 
 			_projectilesDestroyed++;
-			if (_projectilesDestroyed >= 5)
+			if (_projectilesDestroyed >= 25)
 			{
+				CCLog( "Win..");
 				GameOverScene *gameOverScene = GameOverScene::create();
 				gameOverScene->getLayer()->getLabel()->setString("You Win!");
 				CCDirector::sharedDirector()->replaceScene(gameOverScene);
