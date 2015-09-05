@@ -55,7 +55,14 @@ public class SimpleGame extends Cocos2dxActivity{
     
     @Override
 	protected void onPause(){
-    	super.onDestroy();
+    	super.onPause();
+    	//AdsGreedyGame.removeAdHeadGreedyGameJNI("");
     	AdsGreedyGame.onPause();
+    }
+    
+    @Override
+	protected void onStop(){
+    	super.onStop();
+    	AdsGreedyGame.onStop();
     }
 }
