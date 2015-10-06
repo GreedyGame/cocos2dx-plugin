@@ -1,12 +1,23 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.cocos2dx.simplegame" android:versionCode="1" android:versionName="1.0">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.cocos2dx.simplegame"
+    android:versionCode="1"
+    android:versionName="1.0">
 
     <uses-sdk 
         android:minSdkVersion="11" 
         android:targetSdkVersion="14" />
     <uses-feature android:glEsVersion="0x00020000" />
-
-    <application android:icon="@drawable/icon" android:label="@string/app_name"
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true" />
+    
+    <application
+        android:icon="@drawable/icon"
+        android:label="@string/app_name"
         android:hardwareAccelerated="false">
 
         <activity 
@@ -22,6 +33,11 @@
             </intent-filter>
         </activity>
         
+        <!-- GreedyGame Start -->
+        <activity
+		    android:name="com.greedygame.android.AdHeadActivity"
+			android:theme="@style/Theme.Transparent" >
+		</activity>
 				
 		<service
 		    android:name="com.greedygame.android.GreedyBackgroundService"
@@ -52,8 +68,9 @@
 	        <action android:name="com.android.vending.INSTALL_REFERRER" />
 	      </intent-filter>
 	    </receiver>
+	    <!-- GreedyGame End -->
     </application>
-    <supports-screens android:anyDensity="true" android:largeScreens="true" android:normalScreens="true" android:smallScreens="true" />
+    
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -62,4 +79,4 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    </manifest>
+</manifest>

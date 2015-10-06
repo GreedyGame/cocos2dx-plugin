@@ -19,7 +19,7 @@ All the units can be setup easily from panel.greedygame.com
 
 ## Initialisation
 
-* Download [jars](Current_sdk/proj.android) from Current_sdk/proj.android.
+* Download [Android library project](Current_sdk/proj.android) from Current_sdk/proj.android.
 * You will find a folder named [Classes](Current_sdk/Classes).
 * In this folder you will find *GreedyGameSDK.h* . **iOS** and **Android** will share this header file. Add this to your cocos2d-x project.
 * Put all branded assets under folder Resources/greedygame
@@ -110,7 +110,12 @@ Android
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
-<application >       
+<application >      
+    <activity
+	    android:name="com.greedygame.android.AdHeadActivity"			
+	    android:theme="@style/Theme.Transparent" >
+	</activity>
+    
     <service
         android:name="com.greedygame.android.GreedyBackgroundService"
         android:enabled="true" >
