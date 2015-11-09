@@ -58,7 +58,7 @@ namespace greedygame
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
         cocos2d::JniMethodInfo t;
         if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"initializeGreedyGameJNI"
+                                                    ,"initialize"
                                                     ,"(Ljava/lang/String;)V"))
         {
             jstring StringArg1 = t.env->NewStringUTF(appId);
@@ -75,13 +75,12 @@ namespace greedygame
     }
 
 
-
     std::string GreedyGameSDK::_getActivePath(){
         std::string path("");
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
         cocos2d::JniMethodInfo t;
         if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"getActivePathGreedyGameJNI"
+                                                    ,"getActivePath"
                                                     ,"()Ljava/lang/String;"))
         {
             jstring str = (jstring) t.env->CallStaticObjectMethod(t.classID,t.methodID);
@@ -91,23 +90,11 @@ namespace greedygame
         return path;
     }
 
-    void GreedyGameSDK::cancelDownload() {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-        cocos2d::JniMethodInfo t;
-        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"cancelDownloadGreedyGameJNI"
-                                                    ,"()V"))
-        {
-            t.env->CallStaticVoidMethod(t.classID,t.methodID);
-        }
-#endif
-    }
-
     void GreedyGameSDK::setDebug(bool d) {
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
         cocos2d::JniMethodInfo t;
         if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"setDebugGreedyGameJNI"
+                                                    ,"setDebug"
                                                     ,"(Z)V"))
         {
             jboolean jb = JNI_FALSE;
@@ -123,7 +110,7 @@ namespace greedygame
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
         cocos2d::JniMethodInfo t;
         if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"fetchAdHeadGreedyGameJNI"
+                                                    ,"fetchAdHead"
                                                     ,"(Ljava/lang/String;)V"))
         {
             jstring StringArg1 = t.env->NewStringUTF(unit_id);
@@ -136,7 +123,7 @@ namespace greedygame
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
         cocos2d::JniMethodInfo t;
         if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"removeAdHeadGreedyGameJNI"
+                                                    ,"removeAdHead"
                                                     ,"(Ljava/lang/String;)V"))
         {
             jstring StringArg1 = t.env->NewStringUTF(unit_id);

@@ -18,8 +18,6 @@ using namespace std;
 #define GG_CAMPAIGN_CACHED 0
 #define GG_CAMPAIGN_FOUND 1
 #define GG_CAMPAIGN_DOWNLOADED 2
-#define GG_ADUNIT_OPENED 3
-#define GG_ADUNIT_CLOSED 4
 
 namespace greedygame {
 

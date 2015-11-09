@@ -51,7 +51,7 @@ public class AdsGreedyGame  {
     }
     
     private static List<String> units = null;
-    public static void initializeGreedyGameJNI(String gameId) {
+    public static void initialize(String gameId) {
     	try{
 	    	if(!isEnable) {
 	    		LogD("GreedyGame has been disabled manually!!");
@@ -68,7 +68,7 @@ public class AdsGreedyGame  {
     	}
     }
     
-    public static String getActivePathGreedyGameJNI() {
+    public static String getActivePath() {
     	try{
         	if(!isEnable) {
         		LogD("GreedyGame has been disabled manually!!");
@@ -80,21 +80,9 @@ public class AdsGreedyGame  {
 			return null;
 		}
     }
+  
     
-    
-    public static void cancelDownloadGreedyGameJNI() {
-    	try{
-	    	if(!isEnable) {
-	    		LogD("GreedyGame has been disabled manually!!");
-	    		return;
-	    	}
-	    	ggAgent.cancelDownload();
-    	}catch(Exception e){
-			LogE("Aporting this session", e);
-		}
-    }
-    
-    public static void fetchAdHeadGreedyGameJNI(String unit_id) {
+    public static void fetchAdHead(String unit_id) {
     	try{
 	    	if(!isEnable) {
 	    		LogD("GreedyGame has been disabled manually!!");
@@ -107,7 +95,7 @@ public class AdsGreedyGame  {
 		}    	
     }
     
-    public static void fetchAdHeadGreedyGameJNI(String unit_id, int x, int y) {
+    public static void fetchAdHead(String unit_id, int x, int y) {
     	try{
 	    	if(!isEnable) {
 	    		LogD("GreedyGame has been disabled manually!!");
@@ -120,7 +108,7 @@ public class AdsGreedyGame  {
 		}    	
     }
     
-    public static void removeAdHeadGreedyGameJNI(String unit_id) {
+    public static void removeAdHead(String unit_id) {
     	try{
 	    	if(!isEnable) {
 	    		LogD("GreedyGame has been disabled manually!!");
@@ -134,7 +122,7 @@ public class AdsGreedyGame  {
     }
     
     private static boolean isDebug = false;
-    public static void setDebugGreedyGameJNI(boolean b){
+    public static void setDebug(boolean b){
     	try{
 	    	if(!isEnable) {
 	    		LogD("GreedyGame has been disabled manually!!");
