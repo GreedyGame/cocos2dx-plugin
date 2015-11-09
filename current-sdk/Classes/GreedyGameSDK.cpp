@@ -24,27 +24,33 @@ USING_NS_CC;
 
 namespace greedygame
 {
-	void (*onInitCallback)(int);
-	void (*onDownloadCallback)(float);
+    void (*onInitCallback)(int);
+    void (*onDownloadCallback)(float);
 
-	extern "C" {
+    extern "C" {
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-		JNIEXPORT void JNICALL Java_com_greedygame_android_cocos2dx_AdsGreedyGame_onEvent(JNIEnv* env, jobject thiz, jint ret)
-		{
-			if(ret == GG_CAMPAIGN_CACHED || ret == GG_CAMPAIGN_DOWNLOADED){
-				GreedyGameSDK::setPath();
-			}
+        JNIEXPORT void JNICALL Java_com_greedygame_android_cocos2dx_AdsGreedyGame_onEvent(JNIEnv* env, jobject thiz, jint ret)
+        {
+            if(ret == GG_CAMPAIGN_CACHED || ret == GG_CAMPAIGN_DOWNLOADED){
 
-			onInitCallback(ret);
-		}
+                std::string path = GreedyGameSDK::getActivePath();
+                CCLOG("activepath %s", path.c_str());
+                
+                std::vector<std::string> searchPaths = CCFileUtils::sharedFileUtils()->getSearchPaths();
+                searchPaths.insert (searchPaths.begin(), path);
+                CCFileUtils::sharedFileUtils()->setSearchPaths(searchPaths);
+            }
+
+            onInitCallback(ret);
+        }
         
-		JNIEXPORT void JNICALL Java_com_greedygame_android_cocos2dx_AdsGreedyGame_onDownload(JNIEnv* env, jobject thiz, jfloat ret)
-		{
-			onDownloadCallback(ret);
-		}
+        JNIEXPORT void JNICALL Java_com_greedygame_android_cocos2dx_AdsGreedyGame_onDownload(JNIEnv* env, jobject thiz, jfloat ret)
+        {
+            onDownloadCallback(ret);
+        }
 #endif
         
-	}
+    }
 
 
     void GreedyGameSDK::initialize(const char *appId, void (*init_callback)(int), void (*progress_callback)(float))
@@ -71,15 +77,15 @@ namespace greedygame
 
 
     std::string GreedyGameSDK::_getActivePath(){
-    	std::string path("");
+        std::string path("");
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
         cocos2d::JniMethodInfo t;
         if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
                                                     ,"getActivePathGreedyGameJNI"
                                                     ,"()Ljava/lang/String;"))
         {
-        	jstring str = (jstring) t.env->CallStaticObjectMethod(t.classID,t.methodID);
-        	path = JniHelper::jstring2string(str);
+            jstring str = (jstring) t.env->CallStaticObjectMethod(t.classID,t.methodID);
+            path = JniHelper::jstring2string(str);
         }
 #endif
         return path;
@@ -92,7 +98,7 @@ namespace greedygame
                                                     ,"cancelDownloadGreedyGameJNI"
                                                     ,"()V"))
         {
-        	t.env->CallStaticVoidMethod(t.classID,t.methodID);
+            t.env->CallStaticVoidMethod(t.classID,t.methodID);
         }
 #endif
     }
@@ -104,11 +110,11 @@ namespace greedygame
                                                     ,"setDebugGreedyGameJNI"
                                                     ,"(Z)V"))
         {
-        	jboolean jb = JNI_FALSE;
-        	if(d){
-        		jb = JNI_TRUE;
-        	}
-        	t.env->CallStaticVoidMethod(t.classID,t.methodID, jb);
+            jboolean jb = JNI_FALSE;
+            if(d){
+                jb = JNI_TRUE;
+            }
+            t.env->CallStaticVoidMethod(t.classID,t.methodID, jb);
         }
 #endif
     }
@@ -140,9 +146,9 @@ namespace greedygame
     }
 
     void GreedyGameSDK::setPath() {
-    	std::string path = GreedyGameSDK::_getActivePath();
-    	CCLOG("activepath %s", path.c_str());
-    	
+        std::string path = GreedyGameSDK::_getActivePath();
+        CCLOG("activepath %s", path.c_str());
+        
         std::vector<std::string> searchPaths = CCFileUtils::sharedFileUtils()->getSearchPaths();
         searchPaths.insert (searchPaths.begin(), path);
         CCFileUtils::sharedFileUtils()->setSearchPaths(searchPaths);
