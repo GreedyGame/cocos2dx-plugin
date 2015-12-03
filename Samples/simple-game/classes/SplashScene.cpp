@@ -72,7 +72,7 @@ void on_init(int r) {
 // on "init" you need to initialize your instance
 bool SplashScene::init()
 {
-	greedygame::GreedyGameSDK::setDebug(true);
+	//greedygame::GreedyGameSDK::setDebug(true);
 	greedygame::GreedyGameSDK::initialize("43208054", &on_init, &downloadProgress);
 
     //////////////////////////////

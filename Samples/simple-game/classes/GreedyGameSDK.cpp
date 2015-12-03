@@ -97,21 +97,7 @@ namespace greedygame
 #endif
     }
 
-    void GreedyGameSDK::setDebug(bool d) {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-        cocos2d::JniMethodInfo t;
-        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"setDebugGreedyGameJNI"
-                                                    ,"(Z)V"))
-        {
-        	jboolean jb = JNI_FALSE;
-        	if(d){
-        		jb = JNI_TRUE;
-        	}
-        	t.env->CallStaticVoidMethod(t.classID,t.methodID, jb);
-        }
-#endif
-    }
+ 
 
     void GreedyGameSDK::fetchAdHead(const char *unit_id){
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
