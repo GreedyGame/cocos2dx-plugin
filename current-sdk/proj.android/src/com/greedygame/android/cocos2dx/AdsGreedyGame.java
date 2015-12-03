@@ -36,9 +36,11 @@ public class AdsGreedyGame  {
 	    	if(!isEnable) {
 	    		LogD("GreedyGame has been disabled manually!!");
 	    		return;
+	    		
 	    	}
 	    	LogD("GreedyGame is started!!");
 	    	mContext = context;
+	    	ggAgent.GameEngine="cocos2dx";
 	        ggAgent = new GreedyGameAgent((Activity) mContext, new AdsGreedyGame.GreedyListner());        
 	        sGLSurfaceView = value;
 	        floatAdLayout = new FloatAdLayout(context);
