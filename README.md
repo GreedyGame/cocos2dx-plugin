@@ -33,7 +33,7 @@ All the units can be setup easily from panel.greedygame.com
 In your Splash scene (very first scene of game), add following code in method `SplashScene::init()`. Where `onInit` is callback function. 
 
 ```cpp
-greedygame::GreedyGameSDK::initialize("<your game id>", &onInit, &onProgress);
+greedygame::GreedyGameSDK::initialize(&onInit, &onProgress);
 
 ```
 
@@ -94,7 +94,7 @@ void onProgress(float f) {
 `greedygame::GreedyGameSDK::fetchAdHead("<floating unit-id>");`
 
 #### Remove floating units
-`greedygame::GreedyGameSDK::removeAdHead("<floating unit-id>");`
+`greedygame::GreedyGameSDK::removeAdHead();`
 
 Android
 ----------
@@ -122,22 +122,6 @@ Android
     </service>
     
     <receiver 
-            android:name="com.greedygame.android.GreedyAppReceiver" 
-            android:enabled="true" 
-            android:priority="100">
-      <intent-filter>
-        <action android:name="android.intent.action.PACKAGE_INSTALL" />
-        <action android:name="android.intent.action.PACKAGE_ADDED" />
-        <action android:name="android.intent.action.PACKAGE_REMOVED" />
-        <action android:name="android.intent.action.PACKAGE_CHANGED" />
-        <action android:name="android.intent.action.PACKAGE_FIRST_LAUNCH" />
-        <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />
-        <action android:name="android.intent.action.PACKAGE_REPLACED" />
-        <data android:scheme="package" />
-      </intent-filter>
-    </receiver>
-    
-    <receiver 
             android:name="com.greedygame.android.GreedyRefReceiver" 
             android:enabled="true" 
             android:priority="100">
@@ -157,12 +141,11 @@ AdsGreedyGame.setup(this, Cocos2dxGLSurfaceView.getInstance());
 **Analytics Methods**
 As name suggest, put following method inside Andorid main acitivity method.
 
-##### `public void AdsGreedyGame.onStart()`
 ##### `public void AdsGreedyGame.onResume()`
-##### `public void AdsGreedyGame.onRestart()`
+##### `public void AdsGreedyGame.onResume(String name)`
 ##### `public void AdsGreedyGame.onPause()`
-##### `public void AdsGreedyGame.onStop()`
-##### `public void AdsGreedyGame.onDestroy()`
+##### `public void AdsGreedyGame.onPause(String name)`
+
 
 For example
 ```java
