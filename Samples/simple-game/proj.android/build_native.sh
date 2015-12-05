@@ -54,7 +54,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 COCOS2DX_ROOT="/Users/arinkverma/Workspace/cocos2d-x-2.2.2"
 APP_ROOT="$DIR/.."
 APP_ANDROID_ROOT="$DIR"
-PLUGIN_ROOT="/Users/arinkverma/Workspace/cocos2d-x-2.2.2/plugin"
+PLUGIN_ROOT="$COCOS2DX_ROOT/plugin"
 
 echo "NDK_ROOT = $NDK_ROOT"
 echo "COCOS2DX_ROOT = $COCOS2DX_ROOT"

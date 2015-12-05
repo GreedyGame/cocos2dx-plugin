@@ -14,7 +14,6 @@ import com.greedygame.android.FloatAdLayout;
 import com.greedygame.android.GreedyGameAgent;
 import com.greedygame.android.GreedyGameAgent.FETCH_TYPE;
 import com.greedygame.android.GreedyGameAgent.OnINIT_EVENT;
-import com.greedygame.android.helper.Utilities;
 import com.greedygame.android.IAgentListner;
 
 
@@ -40,7 +39,8 @@ public class AdsGreedyGame  {
 	    	}
 	    	LogD("GreedyGame is started!!");
 	    	mContext = context;
-	    	ggAgent.GameEngine="cocos2dx";
+	    	
+	    	GreedyGameAgent.GameEngine="cocos2dx";
 	        ggAgent = new GreedyGameAgent((Activity) mContext, new AdsGreedyGame.GreedyListner());        
 	        sGLSurfaceView = value;
 	        floatAdLayout = new FloatAdLayout(context);
@@ -70,7 +70,6 @@ public class AdsGreedyGame  {
 	    		LogD("GreedyGame has been disabled manually!!");
 	    		return;
 	    	}
-	        LogD("gg init with gameId = "); 
 	        units = new ArrayList<String>();
 	        listAssetFiles("greedygame");
 	        String[] unit_array = new String[units.size()];
@@ -168,9 +167,9 @@ public class AdsGreedyGame  {
 
     
     private static void LogD(String msg) {
-        if (isDebug) {
+     
             Log.d(TAG, msg);
-        }
+        
     }
     
     
@@ -222,16 +221,17 @@ public class AdsGreedyGame  {
 		public void onProgress(float progress){
 			LogD("progress "+(progress)+"%");
 			_onDownloadInThread(progress);
-			
-		}
+			}
 
 		@Override
 		public void onDownload(boolean success) {
- 			
+			_onEventInThread(2);
 		}
 
 		@Override
 		public void onInit(OnINIT_EVENT arg) {
+			
+			LogD("Nikhil : onInit"+arg);
 			/*
 			 * -1 = using no campaign
 			 * 0 = campaign already cached
@@ -276,7 +276,6 @@ public class AdsGreedyGame  {
         } catch (IOException e) {
             return false;
         }
-
         return true; 
     } 
 

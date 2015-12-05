@@ -19,7 +19,8 @@
         android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:hardwareAccelerated="false">
-
+	<meta-data  android:name="com.google.android.gms.version"
+	    android:value="@integer/google_play_services_version"/>
         <activity 
             android:configChanges="orientation" 
             android:label="@string/app_name" 
@@ -44,21 +45,7 @@
 		    android:enabled="true" >
 		</service>
 		
-	    <receiver 
-	        	android:name="com.greedygame.android.GreedyAppReceiver" 
-	        	android:enabled="true" 
-	        	android:priority="100">
-	      <intent-filter>
-	        <action android:name="android.intent.action.PACKAGE_INSTALL" />
-	        <action android:name="android.intent.action.PACKAGE_ADDED" />
-	        <action android:name="android.intent.action.PACKAGE_REMOVED" />
-	        <action android:name="android.intent.action.PACKAGE_CHANGED" />
-	        <action android:name="android.intent.action.PACKAGE_FIRST_LAUNCH" />
-	        <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />
-	        <action android:name="android.intent.action.PACKAGE_REPLACED" />
-	        <data android:scheme="package" />
-	      </intent-filter>
-	    </receiver>
+	    
 	    
 	   	<receiver 
 	        	android:name="com.greedygame.android.GreedyRefReceiver" 
