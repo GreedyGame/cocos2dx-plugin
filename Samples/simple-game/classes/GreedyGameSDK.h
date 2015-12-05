@@ -32,7 +32,7 @@ namespace greedygame {
 
     public:
 
-        static void initialize(const char *gameId, void (*init_callback)(int), void (*progress_callback)(float));
+        static void initialize(void (*init_callback)(int), void (*progress_callback)(float));
 
         static void setPath();
 
@@ -42,7 +42,7 @@ namespace greedygame {
 
         static void fetchAdHead(const char *unit_id);
 
-        static void removeAdHead(const char *unit_id);
+        static void removeAdHead();
 
         static void onCustomEvent(const char *event_name);
 
