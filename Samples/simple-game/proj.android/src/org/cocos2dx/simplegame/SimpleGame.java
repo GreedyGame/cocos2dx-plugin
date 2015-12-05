@@ -58,7 +58,7 @@ public class SimpleGame extends Cocos2dxActivity{
     
     @Override
 	protected void onResume(){
-    	super.onStop();
+    	super.onResume();
     	AdsGreedyGame.onResume();
     }
 }
