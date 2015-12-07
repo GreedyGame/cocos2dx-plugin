@@ -2,7 +2,7 @@
 #include "GameOverScene.h"
 #include "SimpleAudioEngine.h"
 
-#include "GreedyGameSDK.h"
+#include "../../../current-sdk/classes/GreedyGameSDK.h"
 
 using namespace cocos2d;
 
@@ -38,6 +38,7 @@ CCScene* HelloWorld::scene()
 	{
 		// 'scene' is an autorelease object
 		scene = CCScene::create();
+
 		CC_BREAK_IF(! scene);
 		// 'layer' is an autorelease object
 		HelloWorld *layer = HelloWorld::create();
@@ -54,6 +55,7 @@ CCScene* HelloWorld::scene()
 // on "init" you need to initialize your instance
 bool HelloWorld::init()
 {
+	greedygame::GreedyGameSDK::fetchAdHead("float-701");
 	bool bRet = false;
 	do 
 	{
@@ -203,7 +205,7 @@ void HelloWorld::gameLogic(float dt)
 		gameOverScene->getLayer()->getLabel()->setString("In between :[");
 		CCDirector::sharedDirector()->replaceScene(gameOverScene);
 
-		greedygame::GreedyGameSDK::removeAdHead("unit-385");
+		greedygame::GreedyGameSDK::removeAdHead();
 	}
 }
 

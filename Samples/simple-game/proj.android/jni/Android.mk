@@ -7,11 +7,11 @@ LOCAL_MODULE := game_shared
 LOCAL_MODULE_FILENAME := libgame
 
 LOCAL_SRC_FILES := hellocpp/main.cpp \
-                   ../../Classes/AppDelegate.cpp \
-                   ../../Classes/GreedyGameSDK.cpp \
-                   ../../Classes/SplashScene.cpp \
-                   ../../Classes/HelloWorldScene.cpp \
-                   ../../Classes/GameOverScene.cpp
+                   ../../classes/AppDelegate.cpp \
+                   ../../../../current-sdk/classes/GreedyGameSDK.cpp \
+                   ../../classes/SplashScene.cpp \
+                   ../../classes/HelloWorldScene.cpp \
+                   ../../classes/GameOverScene.cpp
                    
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes                   
 

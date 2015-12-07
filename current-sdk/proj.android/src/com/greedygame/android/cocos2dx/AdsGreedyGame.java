@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
+import android.widget.FrameLayout;
 
 import com.greedygame.android.FloatAdLayout;
 import com.greedygame.android.GreedyGameAgent;
@@ -34,12 +35,24 @@ public class AdsGreedyGame  {
 	    	if(!isEnable) {
 	    		LogD("GreedyGame has been disabled manually!!");
 	    		return;
+	    		
 	    	}
 	    	LogD("GreedyGame is started!!");
 	    	mContext = context;
+	    	
+	    	GreedyGameAgent.GameEngine="cocos2dx";
 	        ggAgent = new GreedyGameAgent((Activity) mContext, new AdsGreedyGame.GreedyListner());        
 	        sGLSurfaceView = value;
 	        floatAdLayout = new FloatAdLayout(context);
+	        ((Activity) mContext).runOnUiThread(
+				new Runnable() {
+					public void run() {
+						FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+								FrameLayout.LayoutParams.WRAP_CONTENT,
+								FrameLayout.LayoutParams.WRAP_CONTENT);
+						((Activity) mContext).addContentView(floatAdLayout, params);
+					}
+				});
     	}catch(Exception e){
     		LogE("Aporting this session", e);
     	}
@@ -51,18 +64,17 @@ public class AdsGreedyGame  {
     }
     
     private static List<String> units = null;
-    public static void initialize(String gameId) {
+    public static void initialize() {
     	try{
 	    	if(!isEnable) {
 	    		LogD("GreedyGame has been disabled manually!!");
 	    		return;
 	    	}
-	        LogD("gg init with gameId = "+gameId); 
 	        units = new ArrayList<String>();
 	        listAssetFiles("greedygame");
 	        String[] unit_array = new String[units.size()];
 	        units.toArray(unit_array);
-	        ggAgent.init(gameId, unit_array, FETCH_TYPE.DOWNLOAD_BY_PATH);
+	        ggAgent.init(unit_array, FETCH_TYPE.DOWNLOAD_BY_PATH);
     	}catch(Exception e){
     		LogE("Aporting this session", e);
     	}
@@ -102,19 +114,26 @@ public class AdsGreedyGame  {
 	    		return;
 	    	}
 	    	floatAdLayout.fetchHeadAd(unit_id, x, y);
+	    	
     	}catch(Exception e){
 			LogE("Aporting this session", e);
 			return;
 		}    	
     }
     
-    public static void removeAdHead(String unit_id) {
+    public static void removeAdHead() {
     	try{
 	    	if(!isEnable) {
 	    		LogD("GreedyGame has been disabled manually!!");
 	    		return;
 	    	}
-	    	floatAdLayout.removeAllHeadAd();
+	    	
+	    	((Activity) mContext).runOnUiThread(
+					new Runnable() {
+						public void run() {
+							floatAdLayout.removeAllHeadAd();
+						}
+					});
     	}catch(Exception e){
 			LogE("Aporting this session", e);
 			return;
@@ -123,6 +142,7 @@ public class AdsGreedyGame  {
     
     private static boolean isDebug = false;
     public static void setDebug(boolean b){
+    	
     	try{
 	    	if(!isEnable) {
 	    		LogD("GreedyGame has been disabled manually!!");
@@ -147,9 +167,9 @@ public class AdsGreedyGame  {
 
     
     private static void LogD(String msg) {
-        if (isDebug) {
+     
             Log.d(TAG, msg);
-        }
+        
     }
     
     
@@ -174,29 +194,20 @@ public class AdsGreedyGame  {
     	}
 	}
 	
-	public static void onDestroy(){
+	public static void onResume(String name){
 		if(ggAgent != null) {
-	    	ggAgent.onDestroy();
+	    	ggAgent.onResume(name);
+    	}		
+	}
+	
+	public static void onPause(String name){
+		if(ggAgent != null) {
+	    	ggAgent.onPause(name);
     	}
 	}
 	
-	public static void onRestart(){
-		if(ggAgent != null) {
-	    	ggAgent.onRestart();
-    	}
-	}
 	
-	public static void onStart(){
-		if(ggAgent != null) {
-	    	ggAgent.onStart();
-    	}
-	}
 	
-	public static void onStop(){
-		if(ggAgent != null) {
-	    	ggAgent.onStop();
-    	}
-	}
 	
     public static void onCustomEvent(String eventName){
     	if(ggAgent != null){
@@ -210,16 +221,17 @@ public class AdsGreedyGame  {
 		public void onProgress(float progress){
 			LogD("progress "+(progress)+"%");
 			_onDownloadInThread(progress);
-			
-		}
+			}
 
 		@Override
 		public void onDownload(boolean success) {
- 			
+			_onEventInThread(2);
 		}
 
 		@Override
 		public void onInit(OnINIT_EVENT arg) {
+			
+			LogD("Nikhil : onInit"+arg);
 			/*
 			 * -1 = using no campaign
 			 * 0 = campaign already cached
@@ -264,7 +276,6 @@ public class AdsGreedyGame  {
         } catch (IOException e) {
             return false;
         }
-
         return true; 
     } 
 

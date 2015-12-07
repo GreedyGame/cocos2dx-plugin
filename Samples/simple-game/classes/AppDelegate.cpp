@@ -1,7 +1,8 @@
 #include "AppDelegate.h"
 #include "SplashScene.h"
 #include "HelloWorldScene.h"
-#include "GreedyGameSDK.h"
+
+#include "../../../current-sdk/classes/GreedyGameSDK.h"
 
 USING_NS_CC;
 

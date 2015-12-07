@@ -2,7 +2,7 @@
 #include "HelloWorldScene.h"
 #include "AppMacros.h"
 
-#include "GreedyGameSDK.h"
+#include "../../../current-sdk/classes/GreedyGameSDK.h"
 
 
 
@@ -33,6 +33,9 @@ void downloadProgress(float f) {
 	myString << "Loading progress " << f <<"%";
 	std::string s = myString.str();
 	pLabel->setString(s.c_str());
+
+
+	
 }
 
 void on_init(int r) {
@@ -42,8 +45,6 @@ void on_init(int r) {
 	 * GG_CAMPAIGN_CACHED, 0 = campaign already cached
 	 * GG_CAMPAIGN_FOUND, 1 = new campaign found to Download
 	 * GG_CAMPAIGN_DOWNLOADED, 2 = new campaign is Downloaded
-	 * GG_ADUNIT_OPENED, 3 = AdUnit Opened
-	 * GG_ADUNIT_CLOSED, 4 = AdUnit Closed
 	 */
     
 	int isBranded = -1;
@@ -54,17 +55,13 @@ void on_init(int r) {
 	}
 
 	if(isBranded > -1){
-		greedygame::GreedyGameSDK::fetchAdHead("unit-385");
+		//greedygame::GreedyGameSDK::fetchAdHead("float-701");
 		CCDirector *pDirector = CCDirector::sharedDirector();
 		CCScene *pScene = HelloWorld::scene();
 		pDirector->replaceScene(pScene);
 	}
 
-	if(r == GG_ADUNIT_OPENED){
-		//Make pause
-	}else if(r == GG_ADUNIT_CLOSED){
-		//Make unpause
-	}
+
 }
 
 
@@ -72,8 +69,7 @@ void on_init(int r) {
 // on "init" you need to initialize your instance
 bool SplashScene::init()
 {
-	greedygame::GreedyGameSDK::setDebug(true);
-	greedygame::GreedyGameSDK::initialize("43208054", &on_init, &downloadProgress);
+		greedygame::GreedyGameSDK::initialize(&on_init, &downloadProgress);
 
     //////////////////////////////
     // 1. super init first
