@@ -27,6 +27,10 @@ All the units can be setup easily from panel.greedygame.com
 > **Note:**
 > Resources/greedygame directory should only contain images and no sub-directories
  
+ Declare the following string in strings.xml file  under the res/values folder.
+```xml
+<string name="greedy_game_profile">"your-game-id-without-quotes"</string>
+```
  
 ## Fetching Campaigns
 
