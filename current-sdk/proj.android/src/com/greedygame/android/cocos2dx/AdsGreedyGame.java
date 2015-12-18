@@ -140,7 +140,7 @@ public class AdsGreedyGame  {
 		}    	
     }
     
-    private static boolean isDebug = false;
+    private static boolean isDebug = true;
     public static void setDebug(boolean b){
     	
     	try{
