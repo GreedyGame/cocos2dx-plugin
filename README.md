@@ -165,3 +165,5 @@ protected void onResume(){
 Congratulations! You just completed the integration. Now you can test your game with GreedyGame integrated, by making an theme at panel.greedygame.com
 
 ------
+
+### For more help please see [FAQ] (https://github.com/GreedyGame/unity-plugin/wiki/FAQs)
