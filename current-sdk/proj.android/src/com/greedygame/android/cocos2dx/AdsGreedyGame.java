@@ -9,6 +9,7 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.greedygame.android.FloatAdLayout;
 import com.greedygame.android.GreedyGameAgent;
@@ -248,6 +249,17 @@ public class AdsGreedyGame  {
 			}
 			
    			_onEventInThread(r);
+		}
+
+		@Override
+		public void unAvailablePermissions(ArrayList<String> arg0) {
+			// TODO Auto-generated method stub
+		if(!arg0.isEmpty()){
+			for(String s : arg0){
+				Toast.makeText(GreedyGameAgent.gameActivity,s + " not available",Toast.LENGTH_SHORT).show();
+			}
+		}
+			
 		}
 
     }
