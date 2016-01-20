@@ -76,6 +76,7 @@ public class AdsGreedyGame  {
 	        String[] unit_array = new String[units.size()];
 	        units.toArray(unit_array);
 	        ggAgent.init(unit_array, FETCH_TYPE.DOWNLOAD_BY_PATH);
+	        onCustomEvent("ggstart");
     	}catch(Exception e){
     		LogE("Aporting this session", e);
     	}
