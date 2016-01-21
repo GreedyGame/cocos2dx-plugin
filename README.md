@@ -45,7 +45,7 @@ greedygame::GreedyGameSDK::initialize(&onInit, &onProgress);
 
 #### onInit
 
-### unAvailablePermissions(ArrayList<String> permissions)
+##### unAvailablePermissions(ArrayList<String> permissions)
 * This method needs to be used only if your game is targetting SDK version 23 or
   higher. This callback gives a list of permissions that are not available at runtime and is invoked after GreedyGameAgent initialization.
 
