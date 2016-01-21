@@ -45,22 +45,6 @@ greedygame::GreedyGameSDK::initialize(&onInit, &onProgress);
 
 #### onInit
 
-##### unAvailablePermissions(ArrayList<String> permissions)
-* This method needs to be used only if your game is targetting SDK version 23 or
-  higher. This callback gives a list of permissions that are not available at runtime and is invoked after GreedyGameAgent initialization.
-
-  NB : Only performs check for 4 dangerous permissions that are required by GreedyGameSDK. 
-
-  Permissions that are checked : 
-
-   * Manifest.permission.ACCESS_COARSE_LOCATION
-   * Manifest.permission.WRITE_EXTERNAL_STORAGE
-   * Manifest.permission.GET_ACCOUNTS
-   * Manifest.permission.READ_PHONE_STATE
-
-   NB : The above strings itself are returned in the argument if they are not available.
-
-
 ```cpp
 void on_init(int event) {
 	CCLog( "> on_init %d", event);
@@ -178,6 +162,20 @@ protected void onResume(){
     AdsGreedyGame.onResume();
 }
 ```
+##### CALLBACK METHOD IN WRAPPER : unAvailablePermissions(ArrayList<String> permissions)
+* This method needs to be used only if your game is targetting SDK version 23 or
+  higher. This callback gives a list of permissions that are not available at runtime and is invoked after GreedyGameAgent initialization.
+
+  NB : Only performs check for 4 dangerous permissions that are required by GreedyGameSDK. 
+
+  Permissions that are checked : 
+
+   * Manifest.permission.ACCESS_COARSE_LOCATION
+   * Manifest.permission.WRITE_EXTERNAL_STORAGE
+   * Manifest.permission.GET_ACCOUNTS
+   * Manifest.permission.READ_PHONE_STATE
+
+   NB : The above strings itself are returned in the argument if they are not available.
 
 --------
 Congratulations! You just completed the integration. Now you can test your game with GreedyGame integrated, by making an theme at panel.greedygame.com
