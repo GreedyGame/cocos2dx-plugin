@@ -254,12 +254,8 @@ public class AdsGreedyGame  {
 
 		@Override
 		public void unAvailablePermissions(ArrayList<String> arg0) {
-			// TODO Auto-generated method stub
-		if(!arg0.isEmpty()){
-			for(String s : arg0){
-				Toast.makeText(GreedyGameAgent.gameActivity,s + " not available",Toast.LENGTH_SHORT).show();
-			}
-		}
+			
+		
 			
 		}
 
