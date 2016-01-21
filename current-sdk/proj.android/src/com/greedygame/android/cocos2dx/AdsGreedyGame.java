@@ -9,6 +9,7 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.greedygame.android.FloatAdLayout;
 import com.greedygame.android.GreedyGameAgent;
@@ -75,6 +76,7 @@ public class AdsGreedyGame  {
 	        String[] unit_array = new String[units.size()];
 	        units.toArray(unit_array);
 	        ggAgent.init(unit_array, FETCH_TYPE.DOWNLOAD_BY_PATH);
+	        onCustomEvent("ggstart");
     	}catch(Exception e){
     		LogE("Aporting this session", e);
     	}
@@ -248,6 +250,13 @@ public class AdsGreedyGame  {
 			}
 			
    			_onEventInThread(r);
+		}
+
+		@Override
+		public void unAvailablePermissions(ArrayList<String> arg0) {
+			
+		
+			
 		}
 
     }
