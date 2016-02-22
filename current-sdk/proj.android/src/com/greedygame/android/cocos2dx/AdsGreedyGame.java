@@ -76,7 +76,7 @@ public class AdsGreedyGame  {
 	        String[] unit_array = new String[units.size()];
 	        units.toArray(unit_array);
 	        ggAgent.init(unit_array, FETCH_TYPE.DOWNLOAD_BY_PATH);
-	        onCustomEvent("ggstart");
+	        
     	}catch(Exception e){
     		LogE("Aporting this session", e);
     	}
@@ -233,7 +233,7 @@ public class AdsGreedyGame  {
 		@Override
 		public void onInit(OnINIT_EVENT arg) {
 			
-			LogD("Nikhil : onInit"+arg);
+			
 			/*
 			 * -1 = using no campaign
 			 * 0 = campaign already cached
