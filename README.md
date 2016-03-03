@@ -182,4 +182,7 @@ Congratulations! You just completed the integration. Now you can test your game 
 
 ------
 
+### External Jars
+GreedyGame SDK uses Volley from Google and PriorityJobQueue from path as external jars. In case of conflicts you can remove it from libs folder of the wrapper. 
+
 ### For more help please see [FAQ] (https://github.com/GreedyGame/unity-plugin/wiki/FAQs)
