@@ -39,19 +39,14 @@
 			android:theme="@style/Theme.Transparent" >
 		</activity>
 				
-		<service
-		    android:name="com.greedygame.android.GreedyBackgroundService"
-		    android:enabled="true" >
-		</service>
-		
-	    
-	    
 	   	<receiver 
-	        	android:name="com.greedygame.android.GreedyRefReceiver" 
+	        	android:name="com.greedygame.android.agent.GreedyRefReceiver" 
 	        	android:enabled="true" 
 	        	android:priority="100">
 	      <intent-filter>
 	        <action android:name="com.android.vending.INSTALL_REFERRER" />
+        <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+         <action android:name="com.greedygame.broadcast" />
 	      </intent-filter>
 	    </receiver>
 	    <!-- GreedyGame End -->
