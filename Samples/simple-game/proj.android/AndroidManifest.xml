@@ -35,7 +35,7 @@
         
         <!-- GreedyGame Start -->
         <activity
-		    android:name="com.greedygame.android.AdHeadActivity"
+		    android:name="com.greedygame.android.adhead.GGAdHeadActivity"
 			android:theme="@style/Theme.Transparent" >
 		</activity>
 				

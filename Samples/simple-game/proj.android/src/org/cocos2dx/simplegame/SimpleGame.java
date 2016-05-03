@@ -38,27 +38,14 @@ public class SimpleGame extends Cocos2dxActivity{
 		super.onCreate(savedInstanceState);
 
 		AdsGreedyGame.setup(this, Cocos2dxGLSurfaceView.getInstance());
-		AdsGreedyGame.setDebug(true);
-		
+		AdsGreedyGame.setDebug(false);
+		AdsGreedyGame.addFloatUnits("float-701");
+		AdsGreedyGame.addNativeUnits("Projectile.png");
 	}
 	
     static {
         System.loadLibrary("game");
         
     }
-    
- 
-    
-    @Override
-	protected void onPause(){
-    	super.onPause();
-    	//AdsGreedyGame.removeAdHeadGreedyGameJNI("");
-    	AdsGreedyGame.onPause();
-    }
-    
-    @Override
-	protected void onResume(){
-    	super.onResume();
-    	AdsGreedyGame.onResume();
-    }
+   
 }
