@@ -49,7 +49,7 @@ greedygame::GreedyGameSDK::initialize(&onInit, &onProgress);
 void onInit(int event) {
     CCLog( "> onInit %d", event);
     /*
-     * CAMPAIGN_NOT_AVAILABLE, -1 = campaign is not available              
+     * CAMPAIGN_NOT_AVAILABLE, -1 = campaign is not available
      * CAMPAIGN_AVAILABLE, 1 = campaign is available 
      * CAMPAIGN_DOWNLOADED, 2 = new campaign is Downloaded
      *

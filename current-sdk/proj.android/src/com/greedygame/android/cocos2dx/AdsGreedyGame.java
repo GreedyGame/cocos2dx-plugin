@@ -51,7 +51,7 @@ public class AdsGreedyGame  {
     }
     
     
-    public static void setup(Context context, GLSurfaceView value) {
+    public static void setup(Activity activity, GLSurfaceView value) {
     	
     	
     	try{
@@ -61,11 +61,12 @@ public class AdsGreedyGame  {
 	    		
 	    	}
 	    	LogD("GreedyGame is started!!");
-	    	mContext = context;
+	    	mContext = activity;
 	    	
 	    	
 	        ggAgent = GreedyGameAgent.install((Activity) mContext, new AdsGreedyGame.GreedyListener());     
 	        ggAgent.gameEngine="cocos2dx";
+	        ggAgent.onActivityResumed(activity);
 	        sGLSurfaceView = value;
 	        floatAdLayout = new FloatAdLayout((Activity) mContext);
 	        ((Activity) mContext).runOnUiThread(
@@ -101,6 +102,7 @@ public class AdsGreedyGame  {
 	    	units.addAll(nativeUnits);
 	    	String [] unit_array = new String[units.size()];
 	    	units.toArray(unit_array);
+	    	
 	        ggAgent.init(unit_array, FetchType.DOWNLOAD_BY_PATH);
 	        LogD("initialized with size "+units.size());
 	        

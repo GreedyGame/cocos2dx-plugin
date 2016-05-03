@@ -36,13 +36,16 @@
         <!-- GreedyGame Start -->
         <activity
 		    android:name="com.greedygame.android.adhead.GGAdHeadActivity"
-			android:theme="@style/Theme.Transparent" >
+			android:theme="@style/Theme.Transparent" 
+			android:configChanges = "keyboardHidden|orientation|screenSize|screenLayout|layoutDirection" 
+			android:launchMode="singleTask"
+			android:hardwareAccelerated="true">
 		</activity>
 				
 	   	<receiver 
 	        	android:name="com.greedygame.android.agent.GreedyRefReceiver" 
 	        	android:enabled="true" 
-	        	android:priority="100">
+	        	android:exported="true">
 	      <intent-filter>
 	        <action android:name="com.android.vending.INSTALL_REFERRER" />
         <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />

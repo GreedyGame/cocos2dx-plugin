@@ -17,7 +17,10 @@
 
 	<activity
 	    android:name="com.greedygame.android.adhead.GGAdHeadActivity"
-		android:theme="@style/Theme.Transparent" >
+		android:theme="@style/Theme.Transparent"
+		android:configChanges = "keyboardHidden|orientation|screenSize|screenLayout|layoutDirection" 
+			android:launchMode="singleTask"
+			android:hardwareAccelerated="true" >
 	</activity>
             
    	<receiver 
