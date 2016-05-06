@@ -110,6 +110,20 @@ namespace greedygame
 #endif
     }
 
+
+    void GreedyGameSDK::exit(){
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+        cocos2d::JniMethodInfo t;
+        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
+                                                    ,"exit"
+                                                    ,"()V"))
+        {
+            t.env->CallStaticVoidMethod(t.classID,t.methodID);
+        }
+#endif
+    }
+
+
     void GreedyGameSDK::removeAdHead(){
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
         cocos2d::JniMethodInfo t;
@@ -144,6 +158,38 @@ namespace greedygame
         }
 #endif        
     }
+
+
+
+     void GreedyGameSDK::showEngagementWindow(const char *unit_id){
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+        cocos2d::JniMethodInfo t;
+        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
+                                                    ,"showEngagementWindow"
+                                                    ,"(Ljava/lang/String;)V"))
+        {
+            jstring StringArg1 = t.env->NewStringUTF(unit_id);
+            t.env->CallStaticVoidMethod(t.classID,t.methodID, StringArg1);
+        }
+#endif        
+    }
+
+
+    void GreedyGameSDK::exit(){
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+        cocos2d::JniMethodInfo t;
+        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
+                                                    ,"exit"
+                                                    ,"()V"))
+        {
+            t.env->CallStaticVoidMethod(t.classID,t.methodID);
+        }
+#endif
+    }
+
+
+
+
 
 
 }

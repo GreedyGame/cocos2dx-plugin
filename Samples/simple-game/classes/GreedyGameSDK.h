@@ -45,6 +45,8 @@ namespace greedygame {
         static void removeAdHead();
 
         static void onCustomEvent(const char *event_name);
+        static void showEngagementWindow(const char *unit_id);
+        static void exit();
 
     };
 }
