@@ -104,6 +104,7 @@ public class AdsGreedyGame  {
 	    	units.toArray(unit_array);
 	    	
 	        ggAgent.init(unit_array, FetchType.DOWNLOAD_BY_PATH);
+	        ggAgent.setDebugLog(true);
 	        LogD("initialized with size "+units.size());
 	        
     	}catch(Exception e){
@@ -145,6 +146,16 @@ public class AdsGreedyGame  {
     }
     
     
+    public static void exit(){
+    	ggAgent.onActivityPaused((Activity) mContext);
+    }
+    
+    
+    public static void showEngagementWindow(String unitId) {
+    	floatAdLayout.showEngagementWindow(unitId);
+    }
+    
+    
     public static void removeAdHead() {
     	try{
 	    	if(!isEnable) {
@@ -173,7 +184,7 @@ public class AdsGreedyGame  {
 	    		return;
 	    	}
 	    	isDebug = b;
-	    	ggAgent.setDebug(b);
+	    	ggAgent.setDebugCampaign(b);
     	}catch(Exception e){
 			LogE("Aporting this session", e);
 		}
@@ -189,6 +200,8 @@ public class AdsGreedyGame  {
         _onEventInThread(-1);
     }
 
+    
+    
     
     private static void LogD(String msg) {
      
