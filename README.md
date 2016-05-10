@@ -59,9 +59,9 @@ greedygame::GreedyGameSDK::initialize(&onInit, &onProgress);
 ```
 ​
 ### Define callback functions as
-​
+
 #### onInit
-​
+
 ```cpp
 void onInit(int event) {
     CCLog( "> onInit %d", event);
@@ -100,8 +100,11 @@ void onProgress(float f) {
     pLabel->setString(s.c_str());
 }
 ```
-​
-## Floating Ads
+
+
+
+### **FLOAT AD UNIT**
+
 #### Fetch floating units
 `greedygame::GreedyGameSDK::fetchAdHead("<floating unit-id>");`
 ​
@@ -143,17 +146,9 @@ Android
     </receiver>
 </application>
 ```
-​
-* In your main activity's life cycle functions, add the following code:-
-```java
-AdsGreedyGame.setup(this, Cocos2dxGLSurfaceView.getInstance()); 
-```
-​
-----
-```
-##### CALLBACK METHOD IN WRAPPER : onPermissionsUnavailable(ArrayList<String> permissions)
-* This method needs to be used only if your game is targetting SDK version 23 or
-  higher. This callback gives a list of permissions that are not available at runtime and is invoked after GreedyGameAgent initialization.
+​​
+#### **CALLBACK METHOD IN WRAPPER :** onPermissionsUnavailable(ArrayList<String> permissions)
+* This method needs to be used only if your game is targetting SDK version 23 or higher. This callback gives a list of permissions that are not available at runtime and is invoked after GreedyGameAgent initialization.
 ​
   NB : Only performs check for 4 runtime permissions that are required by GreedyGameSDK. 
 ​
