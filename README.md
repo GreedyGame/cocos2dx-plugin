@@ -161,11 +161,9 @@ Android
 ​
    NB : The above strings itself are returned in the argument if they are not available.
 ​
---------
+##### 
 Congratulations! You just completed the integration. Now you can test your game with GreedyGame integrated, by making an theme at panel.greedygame.com
-​
-------
-​
+​​
 ### External Jars
 GreedyGame SDK uses Volley from Google as external jar. In case of conflicts you can remove it from libs folder of the wrapper. 
 ​
