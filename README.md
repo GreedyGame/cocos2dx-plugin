@@ -5,15 +5,17 @@ GreedyGame Cocos2d-x Integration Guide
 ​
 All the units can be setup easily from panel.greedygame.com
 ​
+
 ### Native Ad-units
 * Goto, sidemenu, AdUnit then drag and drop assets which has to be used for branding.
 ​
+
 ### Floating Ad-units
 * Goto, sidemenu, AdUnit then click on "Add float unit" to create one unit.
 * Note down the floating unit-ID that was generated ! (Use the same ID's while initializing GreedyGameAgent)
+
 ​
 ---------------------------------------
-​
 ## Initialisation
 ​
 * Download [Android library project](Current_sdk/proj.android) from Current_sdk/proj.android.
