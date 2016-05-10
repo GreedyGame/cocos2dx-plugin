@@ -7,13 +7,12 @@ All the units can be setup easily from panel.greedygame.com
 ​
 ### Native Ad-units
 * Goto, sidemenu, AdUnit then drag and drop assets which has to be used for branding.
-* ![Adding Native Unit](screen-shots/naive-ads-upload.gif?raw=true "Adding Native Unit" )
+* 
 ​
 ​
 ### Floating Ad-units
 * Goto, sidemenu, AdUnit then click on "Add float unit" to create one unit.
-* ![Adding Float Unit](screen-shots/float-ad-create.gif?raw=true "Adding Float Unit" )
-​
+* Note down the floating unit-ID that was generated ! (Use the same ID's while initializing GreedyGameAgent)
 ​
 ---------------------------------------
 ​
@@ -32,6 +31,24 @@ All the units can be setup easily from panel.greedygame.com
 <string name="greedy_game_profile">"your-game-id-without-quotes"</string>
 ```
  
+## Cocos Android Activity : 
+
+* In your Game's Cocos Android Activity's onCreate() function add the following code
+```java
+protected void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+
+		AdsGreedyGame.setup(this, Cocos2dxGLSurfaceView.getInstance());
+		AdsGreedyGame.setDebug(false);
+		AdsGreedyGame.addFloatUnits("float-701");
+		AdsGreedyGame.addNativeUnits("Projectile.png");
+	}
+```
+> **Note:**
+> use addFloatUnits(String floatID) and addNativeUnits(String filenamewithextension) for adding any number of native and float units you want in your game ! 
+
+
+
 ## Fetching Campaigns
 ​
 In your Splash scene (very first scene of game), add following code in method `SplashScene::init()`. Where `onInit` is callback function. 
@@ -84,10 +101,6 @@ void onProgress(float f) {
 }
 ```
 ​
-#### ReportCustomEvent
-`greedygame::GreedyGameSDK::onCustomEvent("<event name>");`
-​
-​
 ## Floating Ads
 #### Fetch floating units
 `greedygame::GreedyGameSDK::fetchAdHead("<floating unit-id>");`
@@ -112,7 +125,7 @@ Android
 ​
 <application >      
     <activity
-        android:name="com.greedygame.android.agent.GGAdHeadActivity"          
+        android:name="com.greedygame.android.adhead.GGAdHeadActivity"          
         android:theme="@style/Theme.Transparent" 
         android:configChanges = "keyboardHidden|orientation|screenSize|screenLayout|layoutDirection" 
         android:launchMode="singleTask">
