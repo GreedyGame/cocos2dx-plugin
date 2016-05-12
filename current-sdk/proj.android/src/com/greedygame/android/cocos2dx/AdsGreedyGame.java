@@ -66,7 +66,6 @@ public class AdsGreedyGame  {
 	    	
 	        ggAgent = GreedyGameAgent.install((Activity) mContext, new AdsGreedyGame.GreedyListener());     
 	        ggAgent.gameEngine="cocos2dx";
-	        ggAgent.onActivityResumed(activity);
 	        sGLSurfaceView = value;
 	        floatAdLayout = new FloatAdLayout((Activity) mContext);
 	        ((Activity) mContext).runOnUiThread(
@@ -145,10 +144,6 @@ public class AdsGreedyGame  {
 		}    	
     }
     
-    
-    public static void exit(){
-    	ggAgent.onActivityPaused((Activity) mContext);
-    }
     
     
     public static void showEngagementWindow(String unitId) {

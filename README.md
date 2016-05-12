@@ -33,7 +33,7 @@ All the units can be setup easily from panel.greedygame.com
  
 ## Cocos Android Activity : 
 
-* In your Game's Cocos Android Activity's onCreate() function add the following code
+* In your Game's Cocos Android Activity's onCreate() function add the following code.  Make sure that this initialization is done only inside onCreate() and not in onResume() or any other activity lifecycle methods.
 ```java
 protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -44,6 +44,7 @@ protected void onCreate(Bundle savedInstanceState){
 		AdsGreedyGame.addNativeUnits("Projectile.png");
 	}
 ```
+
 > **Note:**
 > use addFloatUnits(String floatID) and addNativeUnits(String filenamewithextension) for adding any number of native and float units you want in your game ! 
 

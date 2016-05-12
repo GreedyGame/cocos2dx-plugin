@@ -15,7 +15,6 @@
 using namespace std;
 
 #define GG_CAMPAIGN_NOT_FOUND -1
-#define GG_CAMPAIGN_CACHED 0
 #define GG_CAMPAIGN_FOUND 1
 #define GG_CAMPAIGN_DOWNLOADED 2
 #define GG_ADUNIT_OPENED 3
@@ -45,8 +44,8 @@ namespace greedygame {
         static void removeAdHead();
 
         static void onCustomEvent(const char *event_name);
+        
         static void showEngagementWindow(const char *unit_id);
-        static void exit();
 
     };
 }
