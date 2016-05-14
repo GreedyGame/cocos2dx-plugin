@@ -164,6 +164,16 @@ Android
 
 > Congratulations! You just completed the integration. Now you can test your game with GreedyGame integrated, by making a theme at panel.greedygame.com
 ​​
+#### **Special Requirements**
+##### **Exiting the Game**
+If you are using the following function to exit from the game `exit(0)` or `CCDirector::sharedDirector()->end();` then you should make sure that you are calling the below function just before exiting ! 
+`greedygame::GreedyGameSDK::unInstall(); `
+
+
+
+
+
+
 ### External Jars
 GreedyGame SDK uses Volley from Google as external jar. In case of conflicts you can remove it from libs folder of the wrapper. 
 ​

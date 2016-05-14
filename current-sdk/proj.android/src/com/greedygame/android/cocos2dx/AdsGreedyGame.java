@@ -147,6 +147,7 @@ public class AdsGreedyGame  {
     
     
     public static void showEngagementWindow(String unitId) {
+    	LogD("ShowEngagementWindow Called from Wrapper !!");
     	floatAdLayout.showEngagementWindow(unitId);
     }
     
@@ -168,6 +169,16 @@ public class AdsGreedyGame  {
 			LogE("Aporting this session", e);
 			return;
 		}    	
+    }
+    
+public static void setDebugLog(boolean b){
+    	
+    	try{
+    		LogD("GreedyGame Debug logs turned on from cocos wrapper!!");
+	    	ggAgent.setDebugLog(b);
+    	}catch(Exception e){
+			LogE("Aporting this session", e);
+		}
     }
     
     
@@ -196,6 +207,16 @@ public class AdsGreedyGame  {
     }
 
     
+    
+public static void unInstall(){
+    	
+    	try{
+    		ggAgent.onActivityPaused((Activity) mContext);
+	    	LogD(TAG + " Uninstall inside Wrapper called !");
+    	}catch(Exception e){
+			LogE("Aporting this session error in unInstall", e);
+		}
+    }
     
     
     private static void LogD(String msg) {

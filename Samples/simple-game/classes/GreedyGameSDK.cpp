@@ -163,6 +163,19 @@ namespace greedygame
     }
 
 
+     void GreedyGameSDK::unInstall(){
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+        cocos2d::JniMethodInfo t;
+        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
+                                                    ,"unInstall"
+                                                    ,"()V"))
+        {
+            t.env->CallStaticVoidMethod(t.classID,t.methodID);
+        }
+#endif        
+    }
+
+
 
 
 

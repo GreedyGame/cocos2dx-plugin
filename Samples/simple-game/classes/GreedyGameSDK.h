@@ -47,6 +47,8 @@ namespace greedygame {
         
         static void showEngagementWindow(const char *unit_id);
 
+        static void unInstall();
+
     };
 }
 
