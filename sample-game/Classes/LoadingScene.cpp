@@ -24,14 +24,8 @@ class AgentListener : public IAgentListener {
 
     void onAvailable() {
     /**
-     * TODO: getActivePath can be added to searchpath to renderer all NativeUnits in single hook
+     * TODO: New campaign is available and ready to use for the next scene.
      **/
-        std::string path = GreedyGameAgent::getCampaignPath();
-
-        std::vector<std::string> searchPaths = FileUtils::getInstance ()->getSearchPaths ();
-        searchPaths.insert(searchPaths.begin(),path);
-        FileUtils::getInstance ()->setSearchPaths(searchPaths);
-
         moveToNextScene();
     }
 
