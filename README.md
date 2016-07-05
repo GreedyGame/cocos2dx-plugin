@@ -1,180 +1,144 @@
-GreedyGame Cocos2d-x Integration Guide
-===================
-​
-## Setup Units
-​
-All the units can be setup easily from panel.greedygame.com
-​
+GreedyGame Cocos2d-x's SDK Reference
+---------------------
+ * [Introduction](#introduction)
+ * [Requirements](#requirements)
+ * [Integration](#integration)
+ * [Documentation](#documentation)
+    * [GreedyGameAgent](#greedygameagent)
+    * [interface IAgentListener](#interface-iagentlistener)
+ * [FAQ](#faq)
 
-### Native Ad-units
-* Goto, sidemenu, AdUnit then drag and drop assets which has to be used for branding.
-​
-
-### Floating Ad-units
-* Goto, sidemenu, AdUnit then click on "Add float unit" to create one unit.
-* Note down the floating unit-ID that was generated ! (Use the same ID's while initializing GreedyGameAgent)
-
-​
----------------------------------------
-## Initialisation
-​
-* Download [Android library project](Current_sdk/proj.android) from Current_sdk/proj.android.
-* You will find a folder named [Classes](Current_sdk/Classes).
-* In this folder you will find *GreedyGameSDK.h* . **iOS** and **Android** will share this header file. Add this to your cocos2d-x project.
-* Put all branded assets under folder Resources/greedygame
-​
-> **Note:**
-> Resources/greedygame directory should only contain images and no sub-directories
  
- Declare the following string in strings.xml file  under the res/values folder.
-```xml
-<string name="greedy_game_profile">"your-game-id-without-quotes"</string>
+# Introduction
+Before we get started with the detailed reference, let’s brush through the definitions of some important terms that we’ll see referenced regularly. [Here at greedygame.github.io] (http://greedygame.github.io/)
+
+# Requirements
+* Android API Version: 14
+* Gradle 1.6 or lastest
+
+# Integration
+If you have gone through the definitions of important key words. To make the rest of the integration an absolute breeze for you, we’ve set up an integration wizard on your [publisher panel](http://publisher.greedygame.com).
+
+Once you’ve logged in, on the top of your page and select **SDK Integration Wizard** and we’ll walk you through the integration from the comfort of your own publisher panel.
+
+![PublisherPanel's top menu](http://greedygame.github.io/images/wizard.png "SDK Integration Wizard")
+
+
+# Documentation
+### GreedyGameAgent
+#### Class Overview
+Contains high-level classes encapsulating the overall GreedyGame ad flow and model.
+#### Public Constructor
+##### `GreedyGameAgent(Activity gameActivity, IAgentListner greedyListner)`
+Constructs a new instance of GreedyGame handler.
+Install the GreedygameAgent in the activity
+
+#### Public Methods
+
+##### `static void init(IAgentListener *agentListener)`
+Lookup for an active campaign from the server.
+
+##### `static string getNativeUnitPathById(const char *unit_id);`
+Return path of the [nativeunit](http://greedygame.github.io/#nativeunits), with unit_id, being used in current campaign or null.
+
+##### `static string getNativeUnitPathByName(const char *unit_id)`
+Return path of the [nativeunit](http://greedygame.github.io/#nativeunits), with name, being used in current campaign or null.
+
+##### `static void fetchFloatUnit(const char *unit_id)`
+Fetch FloatUnit and add view to current context.
+
+##### `static void removeAllFloatUnits()`
+Remove all showing FloatUnits
+##### `public void showEngagementWindow(string unit_id)`
+Open [engagement window](http://greedygame.github.io/#engagementwindow) attached with provided floatunit
+
+##### `static string getCampaignPath`
+Return path of folder, where assets of current campaign is stored.
+
+##### `public String getVersion()`
+Return version of SDK
+
+##### `static void setDebugLog(bool b)`
+Control display of debug of SDK 
+
+##### `static void forcedExit()`
+Call this method if game is being exit as
+* `System.exit(0);` or
+* `android.os.Process.killProcess(android.os.Process.myPid());`
+
+**Note**: if you are using `finish();` function inside the Activity then you **should not call** the above code snippet
+
+----
+### interface IAgentListener
+#### Class Overview
+It is used as a callback listener argument for GreedyGameAgent class
+
+#### Public Methods
+##### `void onAvailable()`
+When a new campaign is available and ready to use for the next scene.
+
+##### `void onUnavailable()`
+When no campaign is available
+
+##### `void onProgress(int progress)`
+Gives progress of campaign being downloaded as an integer.
+
+##### `void onPermissionsUnavailable(ArrayList permissions)`
+Gives a list of permission unavailable or revoked by the user.
+
+**Permissions that are checked**
+```
+Manifest.permission.ACCESS_COARSE_LOCATION
+Manifest.permission.WRITE_EXTERNAL_STORAGE
+Manifest.permission.READ_PHONE_STATE
+```
+**Interface Example**
+```cpp
+class GreedyAgentListener: public IAgentListener {
+    public:
+
+    void onAvailable() {
+        /**
+         * TODO: New campaign is available and ready to use for the next scene.
+         **/
+    }
+
+    void onUnavailable() {
+        /**
+         * TODO: No campaign is available, proceed with normal follow of the game.
+         **/
+    }
+
+    void onProgress(int progress) {
+        /**
+         * TODO: Progress bar can be shown using progress value from 0 to 100.
+         **/
+    }
+
+    void onPermissionsUnavailable(std::vector <std::string> permissions) {
+        /**
+         * TODO: Prompt user to give required permission
+         **/
+        for (int i = 0; i < permissions.size(); i++) {
+            std::string p = permissions[i];
+            CCLOG("permission unavailable = %s", p.c_str());
+        }
+    }
+};
+```
+
+-----
+
+### Proguard Settings
+
+If you are using Proguard add the following to your Proguard settings ! 
+```
+-keep class com.greedygame.android.** { *;}
+-keepattributes JavascriptInterface
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+ }
 ```
  
-## Cocos Android Activity : 
-
-* In your Game's Cocos Android Activity's onCreate() function add the following code.  Make sure that this initialization is done only inside onCreate() and not in onResume() or any other activity lifecycle methods.
-```java
-protected void onCreate(Bundle savedInstanceState){
-		super.onCreate(savedInstanceState);
-
-		AdsGreedyGame.setup(this, Cocos2dxGLSurfaceView.getInstance());
-		AdsGreedyGame.setDebug(false);
-		AdsGreedyGame.addFloatUnits("float-701");
-		AdsGreedyGame.addNativeUnits("Projectile.png");
-	}
-```
-
-> **Note:**
-> use addFloatUnits(String floatID) and addNativeUnits(String filenamewithextension) for adding any number of native and float units you want in your game ! 
-
-
-
-## Fetching Campaigns
-​
-In your Splash scene (very first scene of game), add following code in method `SplashScene::init()`. Where `onInit` is callback function. 
-​
-```cpp
-greedygame::GreedyGameSDK::initialize(&onInit, &onProgress);
-​
-```
-​
-### Define callback functions as
-
-#### onInit
-
-```cpp
-void onInit(int event) {
-    CCLog( "> onInit %d", event);
-    /*
-     * CAMPAIGN_NOT_AVAILABLE, -1 = campaign is not available              
-     * CAMPAIGN_AVAILABLE, 1 = campaign is available 
-     * CAMPAIGN_DOWNLOADED, 2 = new campaign is Downloaded
-     *
-     */
-    
-    int isBranded = -1;
-    if(event == CAMPAIGN_AVAILABLE){
-        isBranded = 1;
-    } else if(event == CAMPAIGN_NOT_AVAILABLE){
-        isBranded = 0;
-    } else if(event == CAMPAIGN_DOWNLOADED) {
-        isBranded = 1;
-    }
-​
-    if(isBranded == 1){
-        greedygame::GreedyGameSDK::fetchAdHead("<floating unit-id>");
-        CCDirector *pDirector = CCDirector::sharedDirector();
-        CCScene *pScene = HelloWorld::scene();
-        pDirector->replaceScene(pScene);
-    }
-}
-```
-​
-#### onProgress
-```cpp
-void onProgress(float f) {
-    CCLog( "downloadProgress > : %f", f);
-    ostringstream myString;
-    myString << "Loading progress " << f <<"%";
-    std::string s = myString.str();
-    pLabel->setString(s.c_str());
-}
-```
-
-
-
-### **FLOAT AD UNIT**
-
-#### Fetch floating units
-`greedygame::GreedyGameSDK::fetchAdHead("<floating unit-id>");`
-​
-#### Remove floating units
-`greedygame::GreedyGameSDK::removeAdHead();`
-​
-Android
-----------
-* Copy android folder (found in greedygame folder) to your project.
-* In your project's jni/Android.mk file, add an entry for `GreedyGameSDK.cpp` file.
-* Add required permissions in **AndroidManifest.xml** file as shown below:-
-​
-```xml
-<uses-permission android:name="android.permission.READ_PHONE_STATE" />
-<uses-permission android:name="android.permission.GET_ACCOUNTS" />
-<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-​
-<application >      
-    <activity
-        android:name="com.greedygame.android.adhead.GGAdHeadActivity"          
-        android:theme="@style/Theme.Transparent" 
-        android:configChanges = "keyboardHidden|orientation|screenSize|screenLayout|layoutDirection" 
-        android:launchMode="singleTask">
-    </activity>
-    
-    <receiver 
-            android:name="com.greedygame.android.agent.GreedyRefReceiver" 
-            android:enabled="true" 
-            android:exported="true">
-      <intent-filter>
-        <action android:name="com.android.vending.INSTALL_REFERRER" />
-        <action android:name="com.greedygame.broadcast" />
-        <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-      </intent-filter>
-    </receiver>
-</application>
-```
-​​
-#### **CALLBACK METHOD IN WRAPPER :** onPermissionsUnavailable(ArrayList<String> permissions)
-* This method needs to be used only if your game is targetting SDK version 23 or higher. This callback gives a list of permissions that are not available at runtime and is invoked after GreedyGameAgent initialization.
-​
-  NB : Only performs check for 4 runtime permissions that are required by GreedyGameSDK. 
-​
-  Permissions that are checked : 
-​
-   * Manifest.permission.ACCESS_COARSE_LOCATION
-   * Manifest.permission.WRITE_EXTERNAL_STORAGE
-   * Manifest.permission.GET_ACCOUNTS
-   * Manifest.permission.READ_PHONE_STATE
-​
-   NB : The above strings itself are returned in the argument if they are not available. 
-
-> Congratulations! You just completed the integration. Now you can test your game with GreedyGame integrated, by making a theme at panel.greedygame.com
-​​
-#### **Special Requirements**
-##### **Exiting the Game**
-If you are using the following function to exit from the game `exit(0)` or `CCDirector::sharedDirector()->end();` then you should make sure that you are calling the below function just before exiting ! 
-`greedygame::GreedyGameSDK::unInstall(); `
-
-
-
-
-
-
-### External Jars
-GreedyGame SDK uses Volley from Google as external jar. In case of conflicts you can remove it from libs folder of the wrapper. 
-​
-### For more help please see [FAQ] (https://github.com/GreedyGame/unity-plugin/wiki/FAQs)
+# FAQ
+For more help please see [FAQ](https://github.com/GreedyGame/unity-plugin/wiki/FAQs)
