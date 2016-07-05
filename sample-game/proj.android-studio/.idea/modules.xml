@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/app/SampleGame.iml" filepath="$PROJECT_DIR$/app/SampleGame.iml" />
       <module fileurl="file://$PROJECT_DIR$/simple-game/SampleGame.iml" filepath="$PROJECT_DIR$/simple-game/SampleGame.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../current-sdk/proj.android-studio/libGreedyAndroidAgent/libGreedyAndroidAgent.iml" filepath="$PROJECT_DIR$/../../current-sdk/proj.android-studio/libGreedyAndroidAgent/libGreedyAndroidAgent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libGreedyAndroidAgent/libGreedyAndroidAgent.iml" filepath="$PROJECT_DIR$/libGreedyAndroidAgent/libGreedyAndroidAgent.iml" />
       <module fileurl="file://$PROJECT_DIR$/../libs/cocos2d-x/cocos/platform/android/libcocos2dx/libcocos2dx.iml" filepath="$PROJECT_DIR$/../libs/cocos2d-x/cocos/platform/android/libcocos2dx/libcocos2dx.iml" />
       <module fileurl="file://$PROJECT_DIR$/proj.android-studio.iml" filepath="$PROJECT_DIR$/proj.android-studio.iml" />
     </modules>

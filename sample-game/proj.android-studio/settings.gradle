@@ -3,4 +3,4 @@ project(':libcocos2dx').projectDir = new File(settingsDir, '../libs/cocos2d-x/co
 include ':libGreedyAndroidAgent'
 project(':libGreedyAndroidAgent').projectDir = new File(settingsDir, '../../current-sdk/proj.android-studio/libGreedyAndroidAgent')
 include ':SampleGame'
-project(':SampleGame').projectDir = new File(settingsDir, 'simple-game')
+project(':SampleGame').projectDir = new File(settingsDir, 'app')
