@@ -1,2 +1,0 @@
-configurations.create("default")
-artifacts.add("default", file('r-plugin-greedy-android-142.aar'))
