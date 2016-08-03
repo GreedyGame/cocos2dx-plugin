@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -22,13 +23,22 @@ namespace greedygame {
             virtual void onUnavailable(){};
             virtual void onProgress(int progress){};
             virtual void onPermissionsUnavailable(vector<string> permissionsVect){};
+            virtual void onActionPerformed(const string float_unit, const string action){};
     };
+
+
+    class IActionListener {
+        public:
+            virtual bool onActionPerformed(const string action){};
+    };
+
+
 
     class GreedyGameAgent {
 
         public:
 
-            static void init(IAgentListener *agentListener);
+            static void init(IAgentListener* agentListener);
 
             static void setDebugLog(bool b);
 
@@ -39,6 +49,8 @@ namespace greedygame {
             static string getNativeUnitPathByName(const char *unit_id);
 
             static void fetchFloatUnit(const char *unit_id);
+
+            static void setActionListener(const string unit_id, IActionListener* actionListener);
 
             static void removeAllFloatUnits();
             
