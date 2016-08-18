@@ -25,7 +25,7 @@ package org.cocos2dx.cpp;
 
 import android.os.Bundle;
 
-import com.greedygame.android.cocos2dx.GreedyGame;
+import com.greedygame.android.platforms.cocos2dx.GreedyGame;
 
 import org.cocos2dx.lib.Cocos2dxActivity;
 import org.cocos2dx.lib.Cocos2dxGLSurfaceView;

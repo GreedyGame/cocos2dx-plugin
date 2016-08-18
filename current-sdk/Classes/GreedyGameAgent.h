@@ -36,6 +36,8 @@ namespace greedygame {
 
             static string getNativeUnitPathById(const char *unit_id);
 
+            static string getFloatUnitPathById(const char *unit_id);
+
             static string getNativeUnitPathByName(const char *unit_id);
 
             static void fetchFloatUnit(const char *unit_id);

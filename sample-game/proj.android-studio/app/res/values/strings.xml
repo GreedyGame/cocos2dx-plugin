@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SimpleGame</string>
+    <integer name="google_play_services_version">4242000</integer>
 </resources>

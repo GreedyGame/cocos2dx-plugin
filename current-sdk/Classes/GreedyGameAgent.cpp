@@ -20,7 +20,7 @@
 
 USING_NS_CC;
 
-#define  GreedyGame_CLASS_NAME "com/greedygame/android/cocos2dx/GreedyGame"
+#define  GreedyGame_CLASS_NAME "com/greedygame/android/platforms/cocos2dx/GreedyGame"
 
 namespace greedygame
 {
@@ -173,6 +173,26 @@ std::string GreedyGameAgent::getNativeUnitPathById(const char *unit_id){
 #endif      
 return path;  
     }
+
+
+
+    std::string GreedyGameAgent::getFloatUnitPathById(const char *unit_id){
+    std::string path("");
+            
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+        cocos2d::JniMethodInfo t;
+        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
+                                                    ,"getFloatUnitPathById"
+                                                    ,"(Ljava/lang/String;)Ljava/lang/String;"))
+        {
+            jstring StringArg1 = t.env->NewStringUTF(unit_id);
+            jstring str = (jstring) t.env->CallStaticObjectMethod(t.classID,t.methodID,StringArg1);
+            path = JniHelper::jstring2string(str);
+        }
+#endif      
+return path;  
+    }
+
 
 
 std::string GreedyGameAgent::getNativeUnitPathByName(const char *unit_id){
