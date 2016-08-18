@@ -10,6 +10,10 @@
 #include "cocos2d.h"
 #include <iostream>
 #include <vector>
+#include <map>
+#include <iostream>
+#include <string>
+
 
 
 
@@ -25,7 +29,11 @@ USING_NS_CC;
 namespace greedygame
 {
 
-    IAgentListener *listener;
+    IAgentListener* listener;
+    IActionListener* floatListener;
+    std::map<string, IActionListener* >  floatListenerMap;
+
+
 
     extern "C" {
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
@@ -47,7 +55,7 @@ namespace greedygame
 
         JNIEXPORT void JNICALL Java_com_greedygame_android_cocos2dx_GreedyGame_onPermissionsUnavailable(JNIEnv* env, jobject thiz, jstring permissions)
         {   
-            std:string p = JniHelper::jstring2string(permissions);
+            std::string p = JniHelper::jstring2string(permissions);
             std::vector<std::string> permissionsVect;
             std::stringstream ss(p);
             while( ss.good() )
@@ -61,6 +69,27 @@ namespace greedygame
             }
 
             listener->onPermissionsUnavailable(permissionsVect);
+        }
+
+        JNIEXPORT void JNICALL Java_com_greedygame_android_cocos2dx_GreedyGame_onActionPerformed(JNIEnv* env, jobject thiz, jstring _float_unit, jstring _action)
+        {
+            CCLOG("COCOS onActionPerformed callback received in JNI Bridge" );
+            std::string action = JniHelper::jstring2string(_action);
+            std::string float_unit = JniHelper::jstring2string(_float_unit);
+            CCLOG("COCOSGG  %s",action.c_str());
+            CCLOG("COCOSGG  %s",float_unit.c_str());
+            
+            floatListener = floatListenerMap[float_unit];
+            if(!floatListener){
+                CCLOG("COCOSGG floatlistener is null ");
+                return;
+            }
+            bool isActionConsumed = floatListener->onActionPerformed(action); 
+            if(!isActionConsumed) {
+                listener->onActionPerformed(float_unit, action);
+                CCLOG("COCOSGG isActionConsumed boolean from float listener received and triggered IAgentListener Callback");
+            }
+
         }
 
 #endif
@@ -114,6 +143,14 @@ namespace greedygame
         }
 #endif
     }
+
+
+    void GreedyGameAgent::setActionListener(const std::string unit_id, IActionListener* action_listener){
+        CCLOG("COCOS setActionListener" );
+        floatListenerMap[unit_id] = action_listener;
+    }
+
+
 
     void GreedyGameAgent::removeAllFloatUnits(){
         CCLOG("removeAllFloatUnits");
@@ -211,6 +248,7 @@ std::string GreedyGameAgent::getNativeUnitPathByName(const char *unit_id){
 #endif      
 return path;  
     }
+
 
 
 }

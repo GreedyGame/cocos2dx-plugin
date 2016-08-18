@@ -2,6 +2,7 @@
 #include "GameOverScene.h"
 #include "SimpleAudioEngine.h"
 #include "../../current-sdk/Classes/GreedyGameAgent.h"
+#include <string>
 
 using namespace cocos2d;
 using namespace greedygame;
@@ -22,11 +23,26 @@ Scene* HelloWorld::createScene()
     return scene;
 }
 
+class ActionListener : public IActionListener {
+    public:
+
+bool onActionPerformed(string action){
+   CCLOG("COCOS Reward Received in IActionListener with action " );
+   return false;
+};
+
+};
+
 
 // on "init" you need to initialize your instance
 bool HelloWorld::init()
 {
+    // this->label = Label::createWithTTF("", "fonts/Marker Felt.ttf", 24);
+    // this->label->setPosition(Vec2(origin.x + visibleSize.width/2,
+    //                         origin.y + visibleSize.height/2 - label->getContentSize().height));
 
+    // // add the label as a child to this layer
+    // this->addChild(this->label, 1);
     //////////////////////////////
     // 1. super init first
     if ( !LayerColor::initWithColor(Color4B(172, 115, 57,255)) )
@@ -72,7 +88,9 @@ bool HelloWorld::init()
         player = Sprite::create("Player.png");
     }
     player->setAnchorPoint(Vec2(0.5,0.5));
+    
     GreedyGameAgent::fetchFloatUnit("float-1877");
+    GreedyGameAgent::setActionListener("float-1877",new ActionListener());
     
     
     player->setPosition( Vec2(origin.x + player->getContentSize().width/2 + 5,
@@ -97,6 +115,7 @@ bool HelloWorld::init()
 
 void HelloWorld::menuCloseCallback(Ref* pSender)
 {
+    GreedyGameAgent::forcedExit();
     Director::getInstance()->end();
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
@@ -298,3 +317,6 @@ void HelloWorld::updateGame(float dt)
     }
     projectilesToDelete.clear();
 }
+
+
+

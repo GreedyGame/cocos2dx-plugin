@@ -2,12 +2,18 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
 #include "../../current-sdk/Classes/GreedyGameAgent.h"
+#include <string>
 
 USING_NS_CC;
 using namespace greedygame;
 
+bool isLoaded = false;
+
+
 void moveToNextScene() {
 
+if(!isLoaded) {
+    isLoaded = true;
     LoadingScene::getInstance()->label->setString("Tap to start game!");
     auto _touchListener = EventListenerTouchOneByOne::create();
     _touchListener->onTouchBegan = [](cocos2d::Touch* touch, cocos2d::Event* event) {
@@ -17,6 +23,8 @@ void moveToNextScene() {
         return true;
     };
     LoadingScene::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(_touchListener, LoadingScene::getInstance());
+
+    }
 }
 
 class AgentListener : public IAgentListener {
@@ -27,12 +35,14 @@ class AgentListener : public IAgentListener {
      * TODO: New campaign is available and ready to use for the next scene.
      **/
         moveToNextScene();
+        CCLOG("COCOS onAvailable called in C++ tier" );
     }
 
     void onUnavailable(){
     /**
      * TODO: New campaign has been loaded, move to next scene
      **/
+     CCLOG("COCOS onUnavailable called in C++ tier" );
         moveToNextScene();
     }
 
@@ -42,6 +52,14 @@ class AgentListener : public IAgentListener {
      * which can be used to render loading bar.
      **/
     }
+
+void onActionPerformed(string unit_id,string action){
+    /**
+     * IAgentListener will receive the callback after the float unit receives it.
+     **/
+     CCLOG("COCOS Reward Received in IAgentListener" );
+    }
+
 
     void onPermissionsUnavailable(std::vector<std::string> permissions){
     /**
