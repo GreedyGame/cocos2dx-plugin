@@ -127,6 +127,34 @@ class GreedyAgentListener: public IAgentListener {
 };
 ```
 
+### interface IActionListener
+#### Class Overview
+It is used as a callback listener argument for GreedyGameAgent class
+
+#### Public Methods
+##### bool onActionPerformed(string action)
+When a user successfully completes the engagement with the particular float unit 
+you will receive this callback. with the appropriate action.
+
+
+**Interface Example**
+```cpp
+class ActionListener : public IActionListener {
+    public:
+
+bool onActionPerformed(string action){
+   CCLOG("COCOS Reward Received in IActionListener with action " );
+   return false;
+};
+```
+
+####To set action Listeners to float units
+```
+GreedyGameAgent::fetchFloatUnit("float-1877");
+GreedyGameAgent::setActionListener("float-1877",new ActionListener());
+    ```
+
+
 -----
 
 ### Proguard Settings
