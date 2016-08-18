@@ -38,22 +38,22 @@ namespace greedygame
     extern "C" {
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 
-        JNIEXPORT void JNICALL Java_com_greedygame_android_cocos2dx_GreedyGame_onAvailable(JNIEnv* env, jobject thiz)
+        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onAvailable(JNIEnv* env, jobject thiz)
         {
             listener->onAvailable();
         }
         
-        JNIEXPORT void JNICALL Java_com_greedygame_android_cocos2dx_GreedyGame_onUnavailable(JNIEnv* env, jobject thiz)
+        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onUnavailable(JNIEnv* env, jobject thiz)
         {
             listener->onUnavailable();
         }
 
-        JNIEXPORT void JNICALL Java_com_greedygame_android_cocos2dx_GreedyGame_onProgress(JNIEnv* env, jobject thiz, jint ret)
+        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onProgress(JNIEnv* env, jobject thiz, jint ret)
         {
             listener->onProgress(ret);
         }
 
-        JNIEXPORT void JNICALL Java_com_greedygame_android_cocos2dx_GreedyGame_onPermissionsUnavailable(JNIEnv* env, jobject thiz, jstring permissions)
+        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onPermissionsUnavailable(JNIEnv* env, jobject thiz, jstring permissions)
         {   
             std::string p = JniHelper::jstring2string(permissions);
             std::vector<std::string> permissionsVect;
@@ -71,7 +71,7 @@ namespace greedygame
             listener->onPermissionsUnavailable(permissionsVect);
         }
 
-        JNIEXPORT void JNICALL Java_com_greedygame_android_cocos2dx_GreedyGame_onActionPerformed(JNIEnv* env, jobject thiz, jstring _float_unit, jstring _action)
+        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onActionPerformed(JNIEnv* env, jobject thiz, jstring _float_unit, jstring _action)
         {
             CCLOG("COCOS onActionPerformed callback received in JNI Bridge" );
             std::string action = JniHelper::jstring2string(_action);
