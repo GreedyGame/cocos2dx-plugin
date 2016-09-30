@@ -30,8 +30,7 @@ namespace greedygame
 {
 
     IAgentListener* listener;
-    IActionListener* floatListener;
-    std::map<string, IActionListener* >  floatListenerMap;
+    
 
 
 
@@ -69,27 +68,6 @@ namespace greedygame
             }
 
             listener->onPermissionsUnavailable(permissionsVect);
-        }
-
-        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onActionPerformed(JNIEnv* env, jobject thiz, jstring _float_unit, jstring _action)
-        {
-            CCLOG("COCOS onActionPerformed callback received in JNI Bridge" );
-            std::string action = JniHelper::jstring2string(_action);
-            std::string float_unit = JniHelper::jstring2string(_float_unit);
-            CCLOG("COCOSGG  %s",action.c_str());
-            CCLOG("COCOSGG  %s",float_unit.c_str());
-            
-            floatListener = floatListenerMap[float_unit];
-            if(!floatListener){
-                CCLOG("COCOSGG floatlistener is null ");
-                return;
-            }
-            bool isActionConsumed = floatListener->onActionPerformed(action); 
-            if(!isActionConsumed) {
-                listener->onActionPerformed(float_unit, action);
-                CCLOG("COCOSGG isActionConsumed boolean from float listener received and triggered IAgentListener Callback");
-            }
-
         }
 
 #endif
@@ -142,12 +120,6 @@ namespace greedygame
             t.env->CallStaticVoidMethod(t.classID,t.methodID, StringArg1);
         }
 #endif
-    }
-
-
-    void GreedyGameAgent::setActionListener(const std::string unit_id, IActionListener* action_listener){
-        CCLOG("COCOS setActionListener" );
-        floatListenerMap[unit_id] = action_listener;
     }
 
 
@@ -233,6 +205,7 @@ return path;
 
 
 std::string GreedyGameAgent::getNativeUnitPathByName(const char *unit_id){
+
     std::string path("");
             
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
