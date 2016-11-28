@@ -27,7 +27,8 @@ if(!isLoaded) {
     }
 }
 
-class AgentListener : public IAgentListener {
+
+class StateListener : public CampaignStateListener {
     public:
 
     void onAvailable() {
@@ -35,42 +36,40 @@ class AgentListener : public IAgentListener {
      * TODO: New campaign is available and ready to use for the next scene.
      **/
         moveToNextScene();
-        CCLOG("COCOS onAvailable called in C++ tier" );
+        CCLOG("onAvailable callback inside cocos cpp wrapper");
+       // GreedyGameAgent::fetchFloatUnit("float-1935");
     }
 
     void onUnavailable(){
     /**
      * TODO: New campaign has been loaded, move to next scene
      **/
-     CCLOG("COCOS onUnavailable called in C++ tier" );
-        moveToNextScene();
+     CCLOG("onUnavailable callback inside cocos cpp wrapper");
+       moveToNextScene();
     }
 
-    void onProgress(int progress){
+    void onFound(){
     /**
      * TODO: progress will show value from o to 100,
      * which can be used to render loading bar.
      **/
+     CCLOG("onFound callback inside cocos cpp wrapper");
     }
 
-void onActionPerformed(string unit_id,string action){
-    /**
-     * IAgentListener will receive the callback after the float unit receives it.
-     **/
-     CCLOG("COCOS Reward Received in IAgentListener" );
-    }
-
-
-    void onPermissionsUnavailable(std::vector<std::string> permissions){
-    /**
-     * TODO: Prompt user to give required permission
-     **/
-        for (int i=0; i < permissions.size(); i++) {
-            std::string p = permissions[i];
-            CCLOG("permission unavailable = %s", p.c_str());
-        }
-    }
 };
+
+class ProgressListener : public CampaignProgressListener {
+    public:
+
+    void onProgress(int progress){
+        /**
+         * TODO: progress will show value from o to 100,
+         * which can be used to render loading bar.
+         **/
+         CCLOG("onProgress callback inside cocos cpp wrapper");
+        }
+
+    };
 
 
 
@@ -111,7 +110,9 @@ bool LoadingScene::init()
         return false;
     }
     
-    GreedyGameAgent::init(new AgentListener());
+    GreedyGameAgent::setCampaignProgressListener(new ProgressListener());
+    GreedyGameAgent::setCampaignStateListener(new StateListener());
+    GreedyGameAgent::init();
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();

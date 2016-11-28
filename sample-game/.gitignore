@@ -19,6 +19,7 @@ __MACOSX
 .gradle
 Thumbs.db
 npm-debug.log
+/cocos2d-x-3.11.1
 /bin
 /proj.android/assets/
 /proj.android/bin/

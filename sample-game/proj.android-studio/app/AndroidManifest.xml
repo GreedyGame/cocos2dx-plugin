@@ -13,7 +13,7 @@
         <meta-data android:name="android.app.lib_name"
                    android:value="MyGame" />
 
-                   <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+                   <!--<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />-->
 
         <activity
             android:name="org.cocos2dx.cpp.AppActivity"

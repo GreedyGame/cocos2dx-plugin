@@ -17,6 +17,8 @@
 
 
 
+
+
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 #include <jni.h>
 #include "platform/android/jni/JniHelper.h"
@@ -29,113 +31,89 @@ USING_NS_CC;
 namespace greedygame
 {
 
-    IAgentListener* listener;
-    IActionListener* floatListener;
-    std::map<string, IActionListener* >  floatListenerMap;
-
-
-
+    CampaignStateListener* stateListener;
+    CampaignProgressListener* progressListener;
+    
     extern "C" {
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 
         JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onAvailable(JNIEnv* env, jobject thiz)
         {
-            listener->onAvailable();
+            if(stateListener) stateListener->onAvailable();
         }
         
         JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onUnavailable(JNIEnv* env, jobject thiz)
         {
-            listener->onUnavailable();
+            if(stateListener) stateListener->onUnavailable();
+        }
+
+        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onFound(JNIEnv* env, jobject thiz)
+        {
+            if(stateListener) stateListener->onFound();
         }
 
         JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onProgress(JNIEnv* env, jobject thiz, jint ret)
         {
-            listener->onProgress(ret);
+            if(progressListener) progressListener->onProgress(ret);
         }
-
-        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onPermissionsUnavailable(JNIEnv* env, jobject thiz, jstring permissions)
-        {   
-            std::string p = JniHelper::jstring2string(permissions);
-            std::vector<std::string> permissionsVect;
-            std::stringstream ss(p);
-            while( ss.good() )
-            {
-                std::string substr;
-                getline( ss, substr, ',' );
-                if(!substr.empty()) 
-                {
-                    permissionsVect.push_back( substr );
-                }
-            }
-
-            listener->onPermissionsUnavailable(permissionsVect);
-        }
-
-        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onActionPerformed(JNIEnv* env, jobject thiz, jstring _float_unit, jstring _action)
-        {
-            CCLOG("COCOS onActionPerformed callback received in JNI Bridge" );
-            std::string action = JniHelper::jstring2string(_action);
-            std::string float_unit = JniHelper::jstring2string(_float_unit);
-            CCLOG("COCOSGG  %s",action.c_str());
-            CCLOG("COCOSGG  %s",float_unit.c_str());
-            
-            floatListener = floatListenerMap[float_unit];
-            if(!floatListener){
-                CCLOG("COCOSGG floatlistener is null ");
-                return;
-            }
-            bool isActionConsumed = floatListener->onActionPerformed(action); 
-            if(!isActionConsumed) {
-                listener->onActionPerformed(float_unit, action);
-                CCLOG("COCOSGG isActionConsumed boolean from float listener received and triggered IAgentListener Callback");
-            }
-
-        }
-
 #endif
         
     }
 
+    void android_main(struct android_app* state) {
+        
+    }
 
-    void GreedyGameAgent::init(IAgentListener* _listener)
+
+    void GreedyGameAgent::init()
     {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+    
+        #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
         cocos2d::JniMethodInfo t;
         if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
                                                     ,"init"
-                                                    ,"()V"))
-        {
-            
+                                                    ,"()V")) {
+
+        // CCLOG("NIKHIL INSIDE INIT Cocos game init 2A classID - %d and methodID - %d ", t2.classID, t2.methodID);
+        //  cocos2d::JniHelper::getMethodInfo(t, "org/cocos2dx/cpp/AppActivity"
+        //                                             ,"getApplicationContext"
+        //                                             ,"()V");   
+        // CCLOG("NIKHIL INSIDE INIT Cocos game init 2B classID - %d and methodID - %d ", t.classID, t.methodID);
+        // jclass cl = t.env->FindClass("org/cocos2dx/cpp/AppActivity");
+        // CCLOG("NIKHIL INSIDE INIT Cocos game init 3");
+        // jmethodID methodContext = t.env->GetMethodID(cl,"getApplicationContext","()Landroid/content/Context;");
+        // CCLOG("NIKHIL INSIDE INIT Cocos game init 4 %d ", methodContext);
+        // jobject context = t.env->CallObjectMethod(cl,methodContext);
+        // CCLOG("NIKHIL INSIDE INIT Cocos game init 5");
+        // t.env->CallStaticVoidMethod(t.classID,t.methodID,context);
+        // CCLOG("NIKHIL INSIDE INIT  2 Cocos game init 6");
             t.env->CallStaticVoidMethod(t.classID,t.methodID);
-            listener = _listener;
-            
         }
 #endif
     }
 
 
-
-    std::string GreedyGameAgent::getCampaignPath(){
-        std::string path("");
+    void GreedyGameAgent::setCampaignStateListener(CampaignStateListener* _listener)
+    {
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-        cocos2d::JniMethodInfo t;
-        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"getCampaignPath"
-                                                    ,"()Ljava/lang/String;"))
-        {
-            jstring str = (jstring) t.env->CallStaticObjectMethod(t.classID,t.methodID);
-            path = JniHelper::jstring2string(str);
-        }
+            stateListener = _listener;
 #endif
-        return path;
+    }
+
+    void GreedyGameAgent::setCampaignProgressListener(CampaignProgressListener* _listener)
+    {
+        
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+            progressListener = _listener;
+#endif
     }
 
     
-    void GreedyGameAgent::fetchFloatUnit(const char *unit_id){
+    void GreedyGameAgent::showFloat(const char *unit_id){
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
         cocos2d::JniMethodInfo t;
         if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"fetchFloatUnit"
+                                                    ,"showFloat"
                                                     ,"(Ljava/lang/String;)V"))
         {
             jstring StringArg1 = t.env->NewStringUTF(unit_id);
@@ -145,22 +123,17 @@ namespace greedygame
     }
 
 
-    void GreedyGameAgent::setActionListener(const std::string unit_id, IActionListener* action_listener){
-        CCLOG("COCOS setActionListener" );
-        floatListenerMap[unit_id] = action_listener;
-    }
 
-
-
-    void GreedyGameAgent::removeAllFloatUnits(){
-        CCLOG("removeAllFloatUnits");
+    void GreedyGameAgent::removeFloat(const char *unit_id){
+        CCLOG("removeFloatUnit");
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
         cocos2d::JniMethodInfo t;
         if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"removeAllFloatUnits"
-                                                    ,"()V"))
+                                                    ,"removeFloat"
+                                                    ,"(Ljava/lang/String;)V"))
         {
-            t.env->CallStaticVoidMethod(t.classID,t.methodID);
+            jstring StringArg1 = t.env->NewStringUTF(unit_id);
+            t.env->CallStaticVoidMethod(t.classID,t.methodID,StringArg1);
         }
 #endif
     }
@@ -180,11 +153,11 @@ namespace greedygame
     }
 
 
-     void GreedyGameAgent::showEngagementWindow(const char *unit_id){
+     void GreedyGameAgent::showUII(const char *unit_id){
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
         cocos2d::JniMethodInfo t;
         if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"showEngagementWindow"
+                                                    ,"showUII"
                                                     ,"(Ljava/lang/String;)V"))
         {
             jstring StringArg1 = t.env->NewStringUTF(unit_id);
@@ -194,13 +167,13 @@ namespace greedygame
     }
 
 
-std::string GreedyGameAgent::getNativeUnitPathById(const char *unit_id){
+std::string GreedyGameAgent::getNativeUnitPath(const char *unit_id){
     std::string path("");
             
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
         cocos2d::JniMethodInfo t;
         if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"getNativeUnitPathById"
+                                                    ,"getNativeUnitPath"
                                                     ,"(Ljava/lang/String;)Ljava/lang/String;"))
         {
             jstring StringArg1 = t.env->NewStringUTF(unit_id);
@@ -213,13 +186,13 @@ return path;
 
 
 
-    std::string GreedyGameAgent::getFloatUnitPathById(const char *unit_id){
+    std::string GreedyGameAgent::getFloatUnitPath(const char *unit_id){
     std::string path("");
             
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
         cocos2d::JniMethodInfo t;
         if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"getFloatUnitPathById"
+                                                    ,"getFloatUnitPath"
                                                     ,"(Ljava/lang/String;)Ljava/lang/String;"))
         {
             jstring StringArg1 = t.env->NewStringUTF(unit_id);
@@ -229,26 +202,5 @@ return path;
 #endif      
 return path;  
     }
-
-
-
-std::string GreedyGameAgent::getNativeUnitPathByName(const char *unit_id){
-    std::string path("");
-            
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-        cocos2d::JniMethodInfo t;
-        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"getNativeUnitPathByName"
-                                                    ,"(Ljava/lang/String;)Ljava/lang/String;"))
-        {
-            jstring StringArg1 = t.env->NewStringUTF(unit_id);
-            jstring str = (jstring) t.env->CallStaticObjectMethod(t.classID,t.methodID,StringArg1);
-            path = JniHelper::jstring2string(str);
-        }
-#endif      
-return path;  
-    }
-
-
 
 }

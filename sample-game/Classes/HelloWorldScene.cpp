@@ -23,15 +23,6 @@ Scene* HelloWorld::createScene()
     return scene;
 }
 
-class ActionListener : public IActionListener {
-    public:
-
-bool onActionPerformed(string action){
-   CCLOG("COCOS Reward Received in IActionListener with action " );
-   return false;
-};
-
-};
 
 
 // on "init" you need to initialize your instance
@@ -80,7 +71,7 @@ bool HelloWorld::init()
     /////////////////////////////
     // 2. add your codes below...
     auto player = Sprite::create();
-    std::string unitPath = GreedyGameAgent::getNativeUnitPathByName("Player.png");
+    std::string unitPath = GreedyGameAgent::getNativeUnitPath("Player.png");
     CCLOG("unitPath = %s", unitPath.c_str());
     if(!unitPath.empty()){
         player = Sprite::create(unitPath);
@@ -89,8 +80,7 @@ bool HelloWorld::init()
     }
     player->setAnchorPoint(Vec2(0.5,0.5));
     
-    GreedyGameAgent::fetchFloatUnit("float-1877");
-    GreedyGameAgent::setActionListener("float-1877",new ActionListener());
+    GreedyGameAgent::showFloat("float-1877");
     
     
     player->setPosition( Vec2(origin.x + player->getContentSize().width/2 + 5,
@@ -179,7 +169,7 @@ void HelloWorld::spriteMoveFinished(cocos2d::Node* sender)
 
 void HelloWorld::gameOver(std::string msg){
 
-    greedygame::GreedyGameAgent::removeAllFloatUnits();
+    GreedyGameAgent::removeFloat("float-1877");
 
     GameOverScene* layer = GameOverScene::create();
     layer->getLabel()->setString(msg);

@@ -34,9 +34,7 @@ public class AppActivity extends Cocos2dxActivity {
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
         GreedyGame.setup(this, Cocos2dxGLSurfaceView.getInstance());
-        GreedyGame.setDebugLog(true);
 
     }
 }

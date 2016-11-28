@@ -17,46 +17,37 @@ using namespace std;
 
 namespace greedygame {
 
-    class IAgentListener {
+    class CampaignStateListener {
         public:
             virtual void onAvailable(){};
             virtual void onUnavailable(){};
-            virtual void onProgress(int progress){};
-            virtual void onPermissionsUnavailable(vector<string> permissionsVect){};
-            virtual void onActionPerformed(const string float_unit, const string action){};
+            virtual void onFound(){};
     };
 
-
-    class IActionListener {
+    class CampaignProgressListener {
         public:
-            virtual bool onActionPerformed(const string action){};
+            virtual void onProgress(int progress){};
     };
-
-
 
     class GreedyGameAgent {
 
         public:
 
-            static void init(IAgentListener* agentListener);
+            static void init();
 
-            static void setDebugLog(bool b);
+            static void setCampaignStateListener(CampaignStateListener* state_listener);
 
-            static string getCampaignPath();
+            static void setCampaignProgressListener(CampaignProgressListener* progress_listener);
 
-            static string getNativeUnitPathById(const char *unit_id);
+            static string getNativeUnitPath(const char *unit_id);
 
-            static string getFloatUnitPathById(const char *unit_id);
+            static string getFloatUnitPath(const char *unit_id);
 
-            static string getNativeUnitPathByName(const char *unit_id);
+            static void showFloat(const char *unit_id);
 
-            static void fetchFloatUnit(const char *unit_id);
-
-            static void setActionListener(const string unit_id, IActionListener* actionListener);
-
-            static void removeAllFloatUnits();
+            static void removeFloat(const char *unit_id);
             
-            static void showEngagementWindow(const char *unit_id);
+            static void showUII(const char *unit_id);
 
             static void forcedExit();
  
