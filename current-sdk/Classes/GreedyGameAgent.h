@@ -17,39 +17,40 @@ using namespace std;
 
 namespace greedygame {
 
-    class CampaignStateListener {
+    class IAgentListener {
         public:
             virtual void onAvailable(){};
             virtual void onUnavailable(){};
+            virtual void onProgress(int progress){};
             virtual void onFound(){};
     };
 
-    class CampaignProgressListener {
-        public:
-            virtual void onProgress(int progress){};
-    };
+
+
 
     class GreedyGameAgent {
 
         public:
 
-            static void init();
+            static void init(IAgentListener* agentListener);
 
-            static void setCampaignStateListener(CampaignStateListener* state_listener);
+            static void setDebugLog(bool b);
 
-            static void setCampaignProgressListener(CampaignProgressListener* progress_listener);
+            static string getCampaignPath();
 
-            static string getNativeUnitPath(const char *unit_id);
+            static string getNativeUnitPathById(const char *unit_id);
 
-            static string getFloatUnitPath(const char *unit_id);
+            static string getFloatUnitPathById(const char *unit_id);
 
-            static void showFloat(const char *unit_id);
+            static void fetchFloatUnit(const char *unit_id);
 
-            static void removeFloat(const char *unit_id);
+            static void removeAllFloatUnits();
             
-            static void showUII(const char *unit_id);
+            static void showEngagementWindow(const char *unit_id);
 
             static void forcedExit();
+
+            static void removeFloatUnit(const char *unit_id);
  
     };
 }
