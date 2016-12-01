@@ -71,7 +71,7 @@ bool HelloWorld::init()
     /////////////////////////////
     // 2. add your codes below...
     auto player = Sprite::create();
-    std::string unitPath = GreedyGameAgent::getNativeUnitPath("Player.png");
+    std::string unitPath = GreedyGameAgent::getNativeUnitPathById("unit-2335");
     CCLOG("unitPath = %s", unitPath.c_str());
     if(!unitPath.empty()){
         player = Sprite::create(unitPath);
@@ -80,7 +80,7 @@ bool HelloWorld::init()
     }
     player->setAnchorPoint(Vec2(0.5,0.5));
     
-    GreedyGameAgent::showFloat("float-1877");
+    GreedyGameAgent::fetchFloatUnit("float-1877");
     
     
     player->setPosition( Vec2(origin.x + player->getContentSize().width/2 + 5,
@@ -169,7 +169,7 @@ void HelloWorld::spriteMoveFinished(cocos2d::Node* sender)
 
 void HelloWorld::gameOver(std::string msg){
 
-    GreedyGameAgent::removeFloat("float-1877");
+    GreedyGameAgent::removeFloatUnit("float-1877");
 
     GameOverScene* layer = GameOverScene::create();
     layer->getLabel()->setString(msg);

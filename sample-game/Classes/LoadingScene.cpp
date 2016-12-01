@@ -28,7 +28,7 @@ if(!isLoaded) {
 }
 
 
-class StateListener : public CampaignStateListener {
+class GreedyAgentListener : public IAgentListener {
     public:
 
     void onAvailable() {
@@ -55,11 +55,6 @@ class StateListener : public CampaignStateListener {
      **/
      CCLOG("onFound callback inside cocos cpp wrapper");
     }
-
-};
-
-class ProgressListener : public CampaignProgressListener {
-    public:
 
     void onProgress(int progress){
         /**
@@ -110,9 +105,8 @@ bool LoadingScene::init()
         return false;
     }
     
-    GreedyGameAgent::setCampaignProgressListener(new ProgressListener());
-    GreedyGameAgent::setCampaignStateListener(new StateListener());
-    GreedyGameAgent::init();
+
+    GreedyGameAgent::init(new GreedyAgentListener());
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
