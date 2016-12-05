@@ -25,9 +25,6 @@ namespace greedygame {
             virtual void onFound(){};
     };
 
-
-
-
     class GreedyGameAgent {
 
         public:

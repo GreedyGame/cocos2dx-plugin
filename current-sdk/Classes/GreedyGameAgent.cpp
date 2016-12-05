@@ -14,9 +14,6 @@
 #include <iostream>
 #include <string>
 
-
-
-
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 #include <jni.h>
 #include "platform/android/jni/JniHelper.h"
@@ -24,182 +21,161 @@
 
 USING_NS_CC;
 
-#define  GreedyGame_CLASS_NAME "com/greedygame/android/platforms/cocos2dx/GreedyGame"
+	#define  GreedyGame_CLASS_NAME "com/greedygame/android/platforms/cocos2dx/GreedyGame"
+	#define GG_INIT "init"
+    #define GG_GET_CAMPAIGN_PATH "getCampaignPath"
+    #define GG_SHOW_FLOAT "showFloat"
+    #define GG_REMOVE_ALL_FLOAT_UNIT "removeAllFloat"
+    #define GG_REMOVE_FLOAT_UNIT "removeFloat"
+    #define GG_FORCED_EXIT "forcedExit"
+    #define GG_SHOW_UII "showUII"
+    #define GG_GET_NATIVE_PATH "getNativeUnitPath"
+    #define GG_GET_FLOAT_PATH "getFloatUnitPath"
 
-namespace greedygame
-{
+namespace greedygame {
 
     IAgentListener* listener;
 
     extern "C" {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 
-        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onAvailable(JNIEnv* env, jobject thiz)
-        {
-            listener->onAvailable();
-        }
-        
-        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onUnavailable(JNIEnv* env, jobject thiz)
-        {
-            listener->onUnavailable();
-        }
+	        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onAvailable(JNIEnv* env, jobject thiz) {
+	            listener->onAvailable();
+	        }
+	        
+	        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onUnavailable(JNIEnv* env, jobject thiz)
+	        {
+	            listener->onUnavailable();
+	        }
 
-        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onFound(JNIEnv* env, jobject thiz)
-        {
-            listener->onFound();
-        }
+	        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onFound(JNIEnv* env, jobject thiz)
+	        {
+	            listener->onFound();
+	        }
 
-        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onProgress(JNIEnv* env, jobject thiz, jint ret)
-        {
-            listener->onProgress(ret);
-        }
+	        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onProgress(JNIEnv* env, jobject thiz, jint ret)
+	        {
+	            listener->onProgress(ret);
+	        }
 
-        
 
-#endif
-        
+		#endif
+    }
+
+    void GreedyGameAgent::init(IAgentListener* _listener) {
+		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+		        cocos2d::JniMethodInfo t;
+		        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
+		                                                    ,GG_INIT
+		                                                    ,"()V"))
+		        {
+		            
+		            t.env->CallStaticVoidMethod(t.classID,t.methodID);
+		            listener = _listener;
+		            
+		        }
+		#endif
     }
 
 
-    void GreedyGameAgent::init(IAgentListener* _listener)
-    {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-        cocos2d::JniMethodInfo t;
-        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"init"
-                                                    ,"()V"))
-        {
-            
-            t.env->CallStaticVoidMethod(t.classID,t.methodID);
-            listener = _listener;
-            
-        }
-#endif
-    }
-
-
-
-    std::string GreedyGameAgent::getCampaignPath(){
-        std::string path("");
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-        cocos2d::JniMethodInfo t;
-        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"getCampaignPath"
-                                                    ,"()Ljava/lang/String;"))
-        {
-            jstring str = (jstring) t.env->CallStaticObjectMethod(t.classID,t.methodID);
-            path = JniHelper::jstring2string(str);
-        }
-#endif
-        return path;
-    }
-
-    
     void GreedyGameAgent::fetchFloatUnit(const char *unit_id){
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-        cocos2d::JniMethodInfo t;
-        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"showFloat"
-                                                    ,"(Ljava/lang/String;)V"))
-        {
-            jstring StringArg1 = t.env->NewStringUTF(unit_id);
-            t.env->CallStaticVoidMethod(t.classID,t.methodID, StringArg1);
-        }
-#endif
+		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+	        cocos2d::JniMethodInfo t;
+	        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
+	                                                    ,GG_SHOW_FLOAT
+	                                                    ,"(Ljava/lang/String;)V"))
+	        {
+	            jstring StringArg1 = t.env->NewStringUTF(unit_id);
+	            t.env->CallStaticVoidMethod(t.classID,t.methodID, StringArg1);
+	        }
+		#endif
     }
-
-
 
     void GreedyGameAgent::removeAllFloatUnits(){
         CCLOG("removeAllFloatUnits");
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-        cocos2d::JniMethodInfo t;
-        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"removeAllFloat"
-                                                    ,"()V"))
-        {
-            t.env->CallStaticVoidMethod(t.classID,t.methodID);
-        }
-#endif
+		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+		    cocos2d::JniMethodInfo t;
+		    if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
+		                                                ,GG_REMOVE_ALL_FLOAT_UNIT
+		                                                ,"()V"))
+		    {
+		        t.env->CallStaticVoidMethod(t.classID,t.methodID);
+		    }
+		#endif
     }
 
     void GreedyGameAgent::removeFloatUnit(const char *unit_id){
-        CCLOG("removeAllFloatUnits");
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-        cocos2d::JniMethodInfo t;
-        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"removeFloat"
-                                                    ,"(Ljava/lang/String;)V"))
-        {
-            jstring StringArg1 = t.env->NewStringUTF(unit_id);
-            t.env->CallStaticVoidMethod(t.classID,t.methodID,StringArg1);
-        }
-#endif
+        CCLOG("removeFloatUnit");
+		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+		    cocos2d::JniMethodInfo t;
+		    if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
+		                                                ,GG_REMOVE_FLOAT_UNIT
+		                                                ,"(Ljava/lang/String;)V"))
+		    {
+		        jstring StringArg1 = t.env->NewStringUTF(unit_id);
+		        t.env->CallStaticVoidMethod(t.classID,t.methodID,StringArg1);
+		    }
+		#endif
     }
-
 
     void GreedyGameAgent::forcedExit(){
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-        cocos2d::JniMethodInfo t;
-        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"forcedExit"
-                                                    ,"()V"))
-        {
-            
-            t.env->CallStaticVoidMethod(t.classID,t.methodID);
-        }
-#endif
+		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+		    cocos2d::JniMethodInfo t;
+		    if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
+		                                                ,GG_FORCED_EXIT
+		                                                ,"()V"))
+		    {
+		        
+		        t.env->CallStaticVoidMethod(t.classID,t.methodID);
+		    }
+		#endif
     }
-
 
      void GreedyGameAgent::showEngagementWindow(const char *unit_id){
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-        cocos2d::JniMethodInfo t;
-        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"showUII"
-                                                    ,"(Ljava/lang/String;)V"))
-        {
-            jstring StringArg1 = t.env->NewStringUTF(unit_id);
-            t.env->CallStaticVoidMethod(t.classID,t.methodID, StringArg1);
-        }
-#endif        
+		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+		    cocos2d::JniMethodInfo t;
+		    if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
+		                                                ,GG_SHOW_UII
+		                                                ,"(Ljava/lang/String;)V"))
+		    {
+		        jstring StringArg1 = t.env->NewStringUTF(unit_id);
+		        t.env->CallStaticVoidMethod(t.classID,t.methodID, StringArg1);
+		    }
+		#endif        
     }
 
+	std::string GreedyGameAgent::getNativeUnitPathById(const char *unit_id){
+		std::string path("");
+		        
+		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+		    cocos2d::JniMethodInfo t;
+		    if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
+		                                                ,GG_GET_NATIVE_PATH
+		                                                ,"(Ljava/lang/String;)Ljava/lang/String;"))
+		    {
+		        jstring StringArg1 = t.env->NewStringUTF(unit_id);
+		        jstring str = (jstring) t.env->CallStaticObjectMethod(t.classID,t.methodID,StringArg1);
+		        path = JniHelper::jstring2string(str);
+		    }
+			#endif      
+		return path;  
+	}
 
-std::string GreedyGameAgent::getNativeUnitPathById(const char *unit_id){
-    std::string path("");
-            
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-        cocos2d::JniMethodInfo t;
-        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"getNativeUnitPath"
-                                                    ,"(Ljava/lang/String;)Ljava/lang/String;"))
-        {
-            jstring StringArg1 = t.env->NewStringUTF(unit_id);
-            jstring str = (jstring) t.env->CallStaticObjectMethod(t.classID,t.methodID,StringArg1);
-            path = JniHelper::jstring2string(str);
-        }
-#endif      
-return path;  
-    }
-
-
-
-    std::string GreedyGameAgent::getFloatUnitPathById(const char *unit_id){
-    std::string path("");
-            
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-        cocos2d::JniMethodInfo t;
-        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-                                                    ,"getFloatUnitPath"
-                                                    ,"(Ljava/lang/String;)Ljava/lang/String;"))
-        {
-            jstring StringArg1 = t.env->NewStringUTF(unit_id);
-            jstring str = (jstring) t.env->CallStaticObjectMethod(t.classID,t.methodID,StringArg1);
-            path = JniHelper::jstring2string(str);
-        }
-#endif      
-return path;  
+	std::string GreedyGameAgent::getFloatUnitPathById(const char *unit_id){
+		std::string path("");
+		        
+		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+		    cocos2d::JniMethodInfo t;
+		    if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
+		                                                ,GG_GET_FLOAT_PATH
+		                                                ,"(Ljava/lang/String;)Ljava/lang/String;"))
+		    {
+		        jstring StringArg1 = t.env->NewStringUTF(unit_id);
+		        jstring str = (jstring) t.env->CallStaticObjectMethod(t.classID,t.methodID,StringArg1);
+		        path = JniHelper::jstring2string(str);
+		    }
+		#endif      
+		return path;  
     }
 
 }
