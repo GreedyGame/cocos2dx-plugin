@@ -25,7 +25,7 @@ USING_NS_CC;
 	#define GG_INIT "init"
     #define GG_GET_CAMPAIGN_PATH "getCampaignPath"
     #define GG_SHOW_FLOAT "showFloat"
-    #define GG_REMOVE_ALL_FLOAT_UNIT "removeAllFloat"
+    #define GG_REMOVE_ALL_FLOAT "removeAllFloat"
     #define GG_REMOVE_FLOAT_UNIT "removeFloat"
     #define GG_FORCED_EXIT "forcedExit"
     #define GG_SHOW_UII "showUII"
@@ -96,7 +96,7 @@ namespace greedygame {
 		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		    cocos2d::JniMethodInfo t;
 		    if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-		                                                ,GG_REMOVE_ALL_FLOAT_UNIT
+		                                                ,GG_REMOVE_ALL_FLOAT
 		                                                ,"()V"))
 		    {
 		        t.env->CallStaticVoidMethod(t.classID,t.methodID);
