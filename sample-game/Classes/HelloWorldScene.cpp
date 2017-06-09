@@ -81,6 +81,8 @@ bool HelloWorld::init()
     player->setAnchorPoint(Vec2(0.5,0.5));
     
     GreedyGameAgent::fetchFloatUnit("float-1877");
+
+    GreedyGameAgent::showEngagementWindow("float-1877");
     
     
     player->setPosition( Vec2(origin.x + player->getContentSize().width/2 + 5,

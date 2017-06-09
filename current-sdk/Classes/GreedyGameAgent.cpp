@@ -53,12 +53,18 @@ namespace greedygame {
 	            listener->onFound();
 	        }
 
+	        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onError(JNIEnv* env, jobject thiz, jstring msg)
+	        {
+	            const char *nativeString = env->GetStringUTFChars(msg, 0);
+	            listener->onError(nativeString);
+				env->ReleaseStringUTFChars(msg, nativeString);
+	        }
+
 	        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onProgress(JNIEnv* env, jobject thiz, jint ret)
 	        {
 	            listener->onProgress(ret);
 	        }
-
-
+	        
 		#endif
     }
 

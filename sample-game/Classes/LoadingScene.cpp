@@ -64,6 +64,16 @@ class GreedyAgentListener : public IAgentListener {
          CCLOG("onProgress callback inside cocos cpp wrapper");
         }
 
+    void onError(const char *message){
+        /**
+         * TODO: callback which notifies of the error
+         **/
+    	std::string s(message);
+    	CCLOG("the string received is NIKHIL : %s",s.c_str());
+    	 
+         //CCLOG("onError callback inside cocos cpp wrapper" + message);
+        }
+
     };
 
 
