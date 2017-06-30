@@ -31,6 +31,7 @@ USING_NS_CC;
     #define GG_SHOW_UII "showUII"
     #define GG_GET_NATIVE_PATH "getNativeUnitPath"
     #define GG_GET_FLOAT_PATH "getFloatUnitPath"
+	#define GG_REFRESH "startEventRefresh"
 
 namespace greedygame {
 
@@ -182,6 +183,19 @@ namespace greedygame {
 		    }
 		#endif      
 		return path;  
+    }
+
+    void GreedyGameAgent::startEventRefresh(){
+		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+		    cocos2d::JniMethodInfo t;
+		    if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
+		                                                ,GG_REFRESH
+		                                                ,"()V"))
+		    {
+		        
+		        t.env->CallStaticVoidMethod(t.classID,t.methodID);
+		    }
+		#endif
     }
 
 }

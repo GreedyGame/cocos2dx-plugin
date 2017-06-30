@@ -22,6 +22,8 @@ public:
 	// a selector callback
 	virtual void menuCloseCallback(cocos2d::Ref* pSender);
 
+	virtual void menuRefreshCallback(cocos2d::Ref* pSender);
+
 	virtual bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
 
 	// implement the "static create()" method manually

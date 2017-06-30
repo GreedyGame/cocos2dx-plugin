@@ -66,6 +66,26 @@ bool HelloWorld::init()
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu, 1);
 
+
+    //Refresh button
+    auto refreshItem = MenuItemImage::create(
+                        "CloseNormal.png",
+                        "CloseSelected.png",
+                        CC_CALLBACK_1(HelloWorld::menuRefreshCallback, this));
+    
+    // Place the menu item bottom-right conner.
+    refreshItem->setPosition(Vec2(origin.x + visibleSize.width - (closeItem->getContentSize().width*2) ,
+                        origin.y + closeItem->getContentSize().height/2));
+    
+
+    // create menu, it's an autorelease object
+    auto menu2 = Menu::create(refreshItem, NULL);
+    menu2->setPosition(Vec2::ZERO);
+    this->addChild(menu2, 1);
+
+
+
+
     i = 1;
 
     /////////////////////////////
@@ -113,6 +133,12 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     exit(0);
 #endif
+}
+
+
+void HelloWorld::menuRefreshCallback(Ref* pSender)
+{
+    GreedyGameAgent::startEventRefresh();
 }
 
 // cpp with cocos2d-x
