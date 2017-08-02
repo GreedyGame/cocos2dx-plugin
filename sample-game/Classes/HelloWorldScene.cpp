@@ -3,9 +3,12 @@
 #include "SimpleAudioEngine.h"
 #include "../../current-sdk/Classes/GreedyGameAgent.h"
 #include <string>
+#include "LoadingScene.h"
+
 
 using namespace cocos2d;
 using namespace greedygame;
+//using namespace loadingscene;
 
 int i = 1;
 Scene* HelloWorld::createScene()
@@ -88,6 +91,54 @@ bool HelloWorld::init()
 
     i = 1;
 
+
+    class LoaderAgentListener : public MyListener {
+    public:
+
+    void onAvailable() {
+    /**
+     * TODO: New campaign is available and ready to use for the next scene.
+     **/
+        CCLOG("onAvailable callback Inside LoaderAgentListener");
+       
+    }
+
+    void onUnavailable(){
+    /**
+     * TODO: New campaign has been loaded, move to next scene
+     **/
+     CCLOG("onUnvailable callback Inside LoaderAgentListener");
+    }
+
+    void onFound(){
+    /**
+     * TODO: progress will show value from o to 100,
+     * which can be used to render loading bar.
+     **/
+        CCLOG("onFound callback Inside LoaderAgentListener");
+     
+    }
+
+    void onProgress(int progress){
+        /**
+         * TODO: progress will show value from o to 100,
+         * which can be used to render loading bar.
+         **/
+        CCLOG("onProgress callback Inside LoaderAgentListener");
+         
+        }
+
+    void onError(const char *message){
+        /**
+         * TODO: callback which notifies of the error
+         **/
+        
+         CCLOG("onError callback Inside LoaderAgentListener");
+         //CCLOG("onError callback inside cocos cpp wrapper" + message);
+        }
+
+    };
+
     /////////////////////////////
     // 2. add your codes below...
     auto player = Sprite::create();
@@ -103,6 +154,8 @@ bool HelloWorld::init()
     GreedyGameAgent::fetchFloatUnit("float-1877");
 
     GreedyGameAgent::showEngagementWindow("float-1877");
+
+    LoadingScene::addListener(new LoaderAgentListener());
     
     
     player->setPosition( Vec2(origin.x + player->getContentSize().width/2 + 5,
