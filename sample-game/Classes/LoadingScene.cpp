@@ -41,7 +41,6 @@ class GreedyAgentListener : public IAgentListener {
      **/
         moveToNextScene();
         CCLOG("onAvailable callback inside cocos cpp wrapper");
-        listener->onAvailable();
        // GreedyGameAgent::fetchFloatUnit("float-1935");
     }
 
@@ -51,7 +50,6 @@ class GreedyAgentListener : public IAgentListener {
      **/
      CCLOG("onUnavailable callback inside cocos cpp wrapper");
        moveToNextScene();
-       listener->onUnavailable();
     }
 
     void onFound(){
@@ -60,7 +58,6 @@ class GreedyAgentListener : public IAgentListener {
      * which can be used to render loading bar.
      **/
      CCLOG("onFound callback inside cocos cpp wrapper");
-     listener->onFound();
     }
 
     void onProgress(int progress){
@@ -69,7 +66,6 @@ class GreedyAgentListener : public IAgentListener {
          * which can be used to render loading bar.
          **/
          CCLOG("onProgress callback inside cocos cpp wrapper");
-         listener->onProgress(progress);
         }
 
     void onError(const char *message){
@@ -78,9 +74,6 @@ class GreedyAgentListener : public IAgentListener {
          **/
     	std::string s(message);
     	CCLOG("the string received is NIKHIL : %s",s.c_str());
-
-        listener->onError(message);
-    	 
          //CCLOG("onError callback inside cocos cpp wrapper" + message);
         }
 
@@ -160,13 +153,6 @@ bool LoadingScene::init()
     
     return true;
 }
-
-
-void LoadingScene::addListener(MyListener* _listener) {
-        #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-              listener = _listener;
-        #endif
-    }
 
 
 

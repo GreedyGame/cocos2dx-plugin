@@ -37,33 +37,50 @@ namespace greedygame {
 
     IAgentListener* listener;
 
+    IAgentListener* refreshListener;
+
     extern "C" {
 		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 
 	        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onAvailable(JNIEnv* env, jobject thiz) {
 	            listener->onAvailable();
+	            if(refreshListener!=NULL) {
+	            	refreshListener->onAvailable();
+	            }
 	        }
 	        
 	        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onUnavailable(JNIEnv* env, jobject thiz)
 	        {
 	            listener->onUnavailable();
+	            if(refreshListener!=NULL) {
+	            	refreshListener->onUnavailable();
+	            }
 	        }
 
 	        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onFound(JNIEnv* env, jobject thiz)
 	        {
 	            listener->onFound();
+	            if(refreshListener!=NULL) {
+	            	refreshListener->onFound();
+	            }
 	        }
 
 	        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onError(JNIEnv* env, jobject thiz, jstring msg)
 	        {
 	            const char *nativeString = env->GetStringUTFChars(msg, 0);
 	            listener->onError(nativeString);
+	            if(refreshListener!=NULL) {
+	            	refreshListener->onError(nativeString);
+	            }
 				env->ReleaseStringUTFChars(msg, nativeString);
 	        }
 
 	        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onProgress(JNIEnv* env, jobject thiz, jint ret)
 	        {
 	            listener->onProgress(ret);
+	            if(refreshListener!=NULL) {
+	            	refreshListener->onProgress(ret);
+	            }
 	        }
 	        
 		#endif
@@ -86,7 +103,7 @@ namespace greedygame {
 
     void GreedyGameAgent::setRefreshListener(IAgentListener* _listener) {
     	#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-    	listener = _listener;
+    	refreshListener = _listener;
     	#endif
     }
 

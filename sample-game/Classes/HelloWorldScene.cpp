@@ -11,6 +11,61 @@ using namespace greedygame;
 //using namespace loadingscene;
 
 int i = 1;
+Sprite* player ;
+
+class HelloWorldGGListener : public IAgentListener {
+    public:
+
+    void onAvailable() {
+    /**
+     * TODO: New campaign is available and ready to use for the next scene.
+     **/
+        CCLOG("Hello world scene onAvailable");
+       // GreedyGameAgent::fetchFloatUnit("float-1935");
+        
+
+        //Update the native units inside this callback to reflect the updation of the refreshed campaign.
+
+
+        GreedyGameAgent::removeAllFloatUnits();
+        GreedyGameAgent::fetchFloatUnit("float-1877");
+        GreedyGameAgent::fetchFloatUnit("float-1878");
+    }
+
+    void onUnavailable(){
+    /**
+     * TODO: Update and remove the native and float units since after refresh there was no campaign available.
+     **/
+     CCLOG("Hello world scene onUnavailable");
+    }
+
+    void onFound(){
+    /**
+     * TODO: progress will show value from o to 100,
+     * which can be used to render loading bar.
+     **/
+     CCLOG("Hello world scene onFound");
+    }
+
+    void onProgress(int progress){
+        /**
+         * TODO: progress will show value from o to 100,
+         * which can be used to render loading bar.
+         **/
+         CCLOG("Hello world scene onProgress");
+        }
+
+    void onError(const char *message){
+        /**
+     * TODO: Update and remove the native and float units since after refresh there was no campaign available.
+     **/
+        CCLOG("Hello world scene onError");
+         //CCLOG("onError callback inside cocos cpp wrapper" + message);
+        }
+
+    };
+
+
 Scene* HelloWorld::createScene()
 {
     // 'scene' is an autorelease object
@@ -92,56 +147,10 @@ bool HelloWorld::init()
     i = 1;
 
 
-    class LoaderAgentListener : public MyListener {
-    public:
-
-    void onAvailable() {
-    /**
-     * TODO: New campaign is available and ready to use for the next scene.
-     **/
-        CCLOG("onAvailable callback Inside LoaderAgentListener");
-       
-    }
-
-    void onUnavailable(){
-    /**
-     * TODO: New campaign has been loaded, move to next scene
-     **/
-     CCLOG("onUnvailable callback Inside LoaderAgentListener");
-    }
-
-    void onFound(){
-    /**
-     * TODO: progress will show value from o to 100,
-     * which can be used to render loading bar.
-     **/
-        CCLOG("onFound callback Inside LoaderAgentListener");
-     
-    }
-
-    void onProgress(int progress){
-        /**
-         * TODO: progress will show value from o to 100,
-         * which can be used to render loading bar.
-         **/
-        CCLOG("onProgress callback Inside LoaderAgentListener");
-         
-        }
-
-    void onError(const char *message){
-        /**
-         * TODO: callback which notifies of the error
-         **/
-        
-         CCLOG("onError callback Inside LoaderAgentListener");
-         //CCLOG("onError callback inside cocos cpp wrapper" + message);
-        }
-
-    };
-
+    
     /////////////////////////////
     // 2. add your codes below...
-    auto player = Sprite::create();
+    player = Sprite::create();
     std::string unitPath = GreedyGameAgent::getNativeUnitPathById("unit-2335");
     CCLOG("unitPath = %s", unitPath.c_str());
     if(!unitPath.empty()){
@@ -153,10 +162,7 @@ bool HelloWorld::init()
     
     GreedyGameAgent::fetchFloatUnit("float-1877");
 
-    GreedyGameAgent::showEngagementWindow("float-1877");
-
-    LoadingScene::addListener(new LoaderAgentListener());
-    
+    GreedyGameAgent::showEngagementWindow("float-1877");    
     
     player->setPosition( Vec2(origin.x + player->getContentSize().width/2 + 5,
                              origin.y + visibleSize.height/2));
@@ -191,6 +197,7 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 
 void HelloWorld::menuRefreshCallback(Ref* pSender)
 {
+    GreedyGameAgent::setRefreshListener(new HelloWorldGGListener());
     GreedyGameAgent::startEventRefresh();
 }
 
@@ -388,6 +395,7 @@ void HelloWorld::updateGame(float dt)
     }
     projectilesToDelete.clear();
 }
+
 
 
 
