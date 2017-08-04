@@ -84,6 +84,12 @@ namespace greedygame {
 		#endif
     }
 
+    void GreedyGameAgent::setRefreshListener(IAgentListener* _listener) {
+    	#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+    	listener = _listener;
+    	#endif
+    }
+
 
     void GreedyGameAgent::fetchFloatUnit(const char *unit_id){
 		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID

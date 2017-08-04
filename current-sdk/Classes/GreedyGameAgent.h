@@ -51,6 +51,8 @@ namespace greedygame {
             static void removeFloatUnit(const char *unit_id);
 
             static void startEventRefresh();
+
+            static void setRefreshListener(IAgentListener* agentListener);
  
     };
 }
