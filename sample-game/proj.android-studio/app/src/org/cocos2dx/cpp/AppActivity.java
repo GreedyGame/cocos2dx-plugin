@@ -23,18 +23,28 @@ THE SOFTWARE.
 ****************************************************************************/
 package org.cocos2dx.cpp;
 
+import android.app.Activity;
 import android.os.Bundle;
-
-import com.greedygame.android.platforms.cocos2dx.GreedyGame;
 
 import org.cocos2dx.lib.Cocos2dxActivity;
 import org.cocos2dx.lib.Cocos2dxGLSurfaceView;
+
+import com.greedygame.android.agent.JavaProxy;
 
 public class AppActivity extends Cocos2dxActivity {
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        GreedyGame.setup(this, Cocos2dxGLSurfaceView.getInstance());
+        //GreedyGame.setup(this, Cocos2dxGLSurfaceView.getInstance());
+        //JavaProxy.setClassAndMethod("org/cocos2dx/cpp/AppActivity","myActivity");
+      
+        setActivity(this);
 
     }
+
+    public static Activity myActivity() {
+        return (Activity) getContext();
+    }
+
+    public static native void setActivity(Activity activity);
 }

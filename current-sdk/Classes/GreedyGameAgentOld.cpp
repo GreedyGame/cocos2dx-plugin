@@ -34,13 +34,11 @@ USING_NS_CC;
 	#define GG_REFRESH "startEventRefresh"
 
 	#define  CocosActivity_CLASS_NAME "org/cocos2dx/cpp/AppActivity"	
-	#define COCOS_GETCONTEXT "myActivity"
+	#define COCOS_GETCONTEXT "getContext"
 
 namespace greedygame {
 
     IAgentListener* listener;
-    // char* customActivityClass = "org/cocos2dx/cpp/AppActivity";
-    // char* customActivityMethod = "myActivity";
 
     extern "C" {
 		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
@@ -70,165 +68,23 @@ namespace greedygame {
 	        {
 	            listener->onProgress(ret);
 	        }
-
-	        // JNIEXPORT void JNICALL Java_com_greedygame_android_agent_JavaProxy_setClassAndMethod(JNIEnv* env, jobject thiz,jstring classname,jstring methodname) {
-	        //    //  CCLOG("DEBUGGG JNI setClassAndMethod");
-	        //   	// const char *classString = env->GetStringUTFChars(classname, 0);
-	        //   	// const char *methodString = env->GetStringUTFChars(methodname, 0);
-
-	        //    //  customActivityClass = classString;
-	        //    //  customActivityMethod = methodString;
-
-
-	        // }
-
-	        JNIEXPORT void JNICALL Java_org_cocos2dx_cpp_AppActivity_setActivity(JNIEnv* env, jobject thiz, jobject activity)
-	        {
-	        	CCLOG("DEBUGGG inside setup activity COCOS2dx");
-	            GreedyGameAgent::initWithActivity(activity);
-	        }
-
 	        
 		#endif
     }
 
-    void GreedyGameAgent::initialize() {
-		// #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-	 //        cocos2d::JniMethodInfo t;
-	 //        CCLOG("DEBUGGG CPP INITIALIZE");
-
-	 //        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-	 //                                                    ,COCOS_GETCONTEXT
-	 //                                                    ,"()Landroid/app/Activity;"))
-	 //        {
-	 //           activity = (jobject) t.env->CallStaticObjectMethod(t.classID,t.methodID);
-	 //           if(activity == NULL) {
-	 //        	CCLOG("DEBUGGG ACTVIITY IS NULL");
-
-	 //        } else {
-	 //        	CCLOG("DEBUGGG ACTIVITY IS NOT NULL");
-
-	 //        }
-	 //        }
-
-	        
-
-		// #endif
-    }
-
-    void GreedyGameAgent::init() {
-		// #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-		//         cocos2d::JniMethodInfo t;
-		      
-		//         CCLOG("DEBUGGG CPP INIT");
-		//         // if (cocos2d::JniHelper::getMethodId(t, GreedyGame_CLASS_NAME
-		//         //                                             ,GG_INIT
-		//         //                                             ,"(Landroid/app/Activity;)V"))
-		//         // { 
-		//         	if(activity == NULL) {
-	 //        			CCLOG("DEBUGGG ACTVIITY IS NULL");
-
-	 //        		} else {
-	 //        			CCLOG("DEBUGGG ACTIVITY IS NOT NULL");
-
-	 //        		}
-
-	 //        JavaVM* vm = JniHelper::getJavaVM();
-		// 	JNIEnv* env;
-		// 	vm->GetEnv((void**)&env,JNI_VERSION_1_4);
-
-	 //    //     		jclass cls = t.env->GetObjectClass(GreedyGame_CLASS_NAME);
-		// 			// jmethodID method = t.env->GetMethodID(cls, "init", "(Landroid/app/Activity;)V");
-		// 			// t.env->CallVoidMethod(GreedyGame_CLASS_NAME, method);
-		// 			// CCLOG("DEBUGGG after method call");
-
-
-	 //        jclass cls = env->FindClass(GreedyGame_CLASS_NAME);
-	 //        if (NULL == cls) {
-  //       		CCLOG("DEBUGGG Agent find class is null");
-  //       		return;
-  //   		} else {
-  //        		CCLOG("DEBUGGG Agent find class is not null");
-  //   		}
-
-  //   jmethodID agentConstructor = env->GetMethodID(cls, "<init>", "()V");
-  //   if (NULL == agentConstructor) {
-  //       CCLOG("DEBUGGG Agent constructor is null");
-  //       return;
-  //   } else {
-  //        CCLOG("DEBUGGG Agent constructor is not null");
-  //   }
-
-  //   jobject agentObject = env->NewObject(cls, agentConstructor);
-
-  //   if (NULL == agentObject) {
-  //       CCLOG("DEBUGGG Agent object is null");
-  //       return;
-  //   } else {
-  //       CCLOG("DEBUGGG Agent object is not null");
-  //   }
-
-  //   jmethodID run = env->GetMethodID(cls, "init", "(Landroid/app/Activity;)V");
-  //   if (NULL == run) {
-  //       return;
-  //   }
-
-  //   env->CallVoidMethod(agentObject, run,activity);
-
-
-
-
-
-		//             //t.env->CallVoidMethod(t.classID, t.methodID, activity);   
-		//         //}
-		// #endif
-    }
-
-
-    void GreedyGameAgent::initWithActivity(jobject activity2) {
-
-    		CCLOG("DEBUGGG inside overloaded init");
-			JavaVM* vm = JniHelper::getJavaVM();
-			JNIEnv* env;
-			vm->GetEnv((void**)&env,JNI_VERSION_1_4);
-
-	    //     		jclass cls = t.env->GetObjectClass(GreedyGame_CLASS_NAME);
-					// jmethodID method = t.env->GetMethodID(cls, "init", "(Landroid/app/Activity;)V");
-					// t.env->CallVoidMethod(GreedyGame_CLASS_NAME, method);
-					// CCLOG("DEBUGGG after method call");
-
-
-	        jclass cls = env->FindClass(GreedyGame_CLASS_NAME);
-	        if (NULL == cls) {
-        		CCLOG("DEBUGGG Agent find class is null");
-        		return;
-    		} else {
-         		CCLOG("DEBUGGG Agent find class is not null");
-    		}
-
-    jmethodID agentConstructor = env->GetMethodID(cls, "<init>", "()V");
-    if (NULL == agentConstructor) {
-        CCLOG("DEBUGGG Agent constructor is null");
-        return;
-    } else {
-         CCLOG("DEBUGGG Agent constructor is not null");
-    }
-
-    jobject agentObject = env->NewObject(cls, agentConstructor);
-
-    if (NULL == agentObject) {
-        CCLOG("DEBUGGG Agent object is null");
-        return;
-    } else {
-        CCLOG("DEBUGGG Agent object is not null");
-    }
-
-    jmethodID run = env->GetMethodID(cls, "init", "(Landroid/app/Activity;)V");
-    if (NULL == run) {
-        return;
-    }
-
-    env->CallVoidMethod(agentObject, run,activity2);
+    void GreedyGameAgent::init(IAgentListener* _listener) {
+		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+		        cocos2d::JniMethodInfo t;
+		        if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
+		                                                    ,GG_INIT
+		                                                    ,"()V"))
+		        {
+		            
+		            t.env->CallStaticVoidMethod(t.classID,t.methodID);
+		            listener = _listener;
+		            
+		        }
+		#endif
     }
 
 

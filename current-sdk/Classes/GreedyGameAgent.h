@@ -12,6 +12,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <jni.h>
+
 
 using namespace std;
 
@@ -24,13 +26,18 @@ namespace greedygame {
             virtual void onProgress(int progress){};
             virtual void onError(const char *msg){};
             virtual void onFound(){};
+            virtual void setActivity(jobject activity){};
     };
 
     class GreedyGameAgent {
 
         public:
 
-            static void init(IAgentListener* agentListener);
+            static void initialize();
+
+            static void init();
+
+            static void initWithActivity(jobject activity);
 
             static void setDebugLog(bool b);
 

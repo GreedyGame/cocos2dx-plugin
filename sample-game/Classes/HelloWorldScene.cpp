@@ -91,18 +91,18 @@ bool HelloWorld::init()
     /////////////////////////////
     // 2. add your codes below...
     auto player = Sprite::create();
-    std::string unitPath = GreedyGameAgent::getNativeUnitPathById("unit-2335");
-    CCLOG("unitPath = %s", unitPath.c_str());
-    if(!unitPath.empty()){
-        player = Sprite::create(unitPath);
-    }else{
+    //std::string unitPath = GreedyGameAgent::getNativeUnitPathById("unit-2335");
+    //CCLOG("unitPath = %s", unitPath.c_str());
+    // if(!unitPath.empty()){
+    //     player = Sprite::create(unitPath);
+    // }else{
         player = Sprite::create("Player.png");
-    }
+    // }
     player->setAnchorPoint(Vec2(0.5,0.5));
     
-    GreedyGameAgent::fetchFloatUnit("float-1877");
+    //::fetchFloatUnit("float-1877");
 
-    GreedyGameAgent::showEngagementWindow("float-1877");
+    //GreedyGameAgent::showEngagementWindow("float-1877");
     
     
     player->setPosition( Vec2(origin.x + player->getContentSize().width/2 + 5,
@@ -127,7 +127,7 @@ bool HelloWorld::init()
 
 void HelloWorld::menuCloseCallback(Ref* pSender)
 {
-    GreedyGameAgent::forcedExit();
+    //GreedyGameAgent::forcedExit();
     Director::getInstance()->end();
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
@@ -138,7 +138,7 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 
 void HelloWorld::menuRefreshCallback(Ref* pSender)
 {
-    GreedyGameAgent::startEventRefresh();
+    //GreedyGameAgent::startEventRefresh();
 }
 
 // cpp with cocos2d-x
@@ -197,7 +197,7 @@ void HelloWorld::spriteMoveFinished(cocos2d::Node* sender)
 
 void HelloWorld::gameOver(std::string msg){
 
-    GreedyGameAgent::removeFloatUnit("float-1877");
+    //GreedyGameAgent::removeFloatUnit("float-1877");
 
     GameOverScene* layer = GameOverScene::create();
     layer->getLabel()->setString(msg);
