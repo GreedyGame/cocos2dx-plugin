@@ -138,7 +138,7 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 
 void HelloWorld::menuRefreshCallback(Ref* pSender)
 {
-    GreedyGameAgent::startEventRefresh();
+    
 }
 
 // cpp with cocos2d-x
