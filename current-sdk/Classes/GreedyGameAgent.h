@@ -26,22 +26,21 @@ namespace greedygame {
             virtual void onProgress(int progress){};
             virtual void onError(const char *msg){};
             virtual void onFound(){};
-            virtual void setActivity(jobject activity){};
     };
 
     class GreedyGameAgent {
 
         public:
 
-            static void initialize();
+            static jobject agentObject;
 
-            static void init();
+            static jobject activity;
 
-            static void initWithActivity(jobject activity);
+            static jclass cls;
 
-            static void setDebugLog(bool b);
+            static void initialize(IAgentListener* listener);
 
-            static string getCampaignPath();
+            static void init(jobject activity);
 
             static string getNativeUnitPathById(const char *unit_id);
 
@@ -49,15 +48,13 @@ namespace greedygame {
 
             static void fetchFloatUnit(const char *unit_id);
 
+            static string getPath(const char *unitid);
+
             static void removeAllFloatUnits();
             
             static void showEngagementWindow(const char *unit_id);
 
-            static void forcedExit();
-
             static void removeFloatUnit(const char *unit_id);
-
-            static void startEventRefresh();
  
     };
 }

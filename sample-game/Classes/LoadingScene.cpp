@@ -117,8 +117,8 @@ bool LoadingScene::init()
     
 
     //GreedyGameAgent::init(new GreedyAgentListener());
-    GreedyGameAgent::initialize();
-    GreedyGameAgent::init();
+    GreedyGameAgent::initialize(new GreedyAgentListener());
+    //GreedyGameAgent::init();
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();

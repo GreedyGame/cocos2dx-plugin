@@ -1,2 +1,4 @@
 configurations.create("default")
 artifacts.add("default", file('greedygame-debug.aar'))
+artifacts.add("default", file('commons.jar'))
+

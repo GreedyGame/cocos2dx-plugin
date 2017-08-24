@@ -91,18 +91,41 @@ bool HelloWorld::init()
     /////////////////////////////
     // 2. add your codes below...
     auto player = Sprite::create();
-    //std::string unitPath = GreedyGameAgent::getNativeUnitPathById("unit-2335");
-    //CCLOG("unitPath = %s", unitPath.c_str());
-    // if(!unitPath.empty()){
-    //     player = Sprite::create(unitPath);
-    // }else{
+    std::string unitPath = GreedyGameAgent::getNativeUnitPathById("unit-2451");
+    CCLOG("DEBUGGG NATIVE unitPath = %s", unitPath.c_str());
+    if(!unitPath.empty()){
+        player = Sprite::create(unitPath);
+    }else{
         player = Sprite::create("Player.png");
-    // }
+    }
     player->setAnchorPoint(Vec2(0.5,0.5));
     
-    //::fetchFloatUnit("float-1877");
 
-    //GreedyGameAgent::showEngagementWindow("float-1877");
+    //Director::getInstance()->getScheduler()->performFunctionInCocosThread([]{
+    GreedyGameAgent::fetchFloatUnit("float-1877");
+//});
+    
+
+    GreedyGameAgent::showEngagementWindow("float-1877");
+
+    GreedyGameAgent::removeFloatUnit("float-1877");
+
+    GreedyGameAgent::fetchFloatUnit("float-2002");
+    GreedyGameAgent::removeFloatUnit("float-2002");
+    GreedyGameAgent::fetchFloatUnit("float-2014");
+    GreedyGameAgent::removeFloatUnit("float-2014");
+    GreedyGameAgent::fetchFloatUnit("float-2002");
+    GreedyGameAgent::removeFloatUnit("float-2002");
+    GreedyGameAgent::fetchFloatUnit("float-2002");
+    GreedyGameAgent::removeFloatUnit("float-2002");
+    GreedyGameAgent::fetchFloatUnit("float-2002");
+    GreedyGameAgent::removeFloatUnit("float-2002");
+    GreedyGameAgent::fetchFloatUnit("float-2014");
+    GreedyGameAgent::removeFloatUnit("float-2014");
+     GreedyGameAgent::fetchFloatUnit("float-2014");
+    GreedyGameAgent::removeFloatUnit("float-2014");
+     GreedyGameAgent::fetchFloatUnit("float-2014");
+    GreedyGameAgent::removeFloatUnit("float-2014");
     
     
     player->setPosition( Vec2(origin.x + player->getContentSize().width/2 + 5,
