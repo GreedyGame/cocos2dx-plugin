@@ -80,7 +80,7 @@ namespace greedygame {
 		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 	        cocos2d::JniMethodInfo t;
 	        listener = _listener;
-	        CCLOG("DEBUGGG CPP INITIALIZE");
+	        CCLOG("GG[COCOS] CPP INITIALIZE");
 
 	        if (cocos2d::JniHelper::getStaticMethodInfo(t, CocosActivity_CLASS_NAME
 	                                                    ,COCOS_GETCONTEXT
@@ -88,7 +88,7 @@ namespace greedygame {
 	        	{
 	           	jobject activity = (jobject) t.env->CallStaticObjectMethod(t.classID,t.methodID);
 	           	if(activity != NULL) {
-	        		CCLOG("DEBUGGG ACTVIITY IS NULL");
+	        		CCLOG("GG[COCOS] ACTVIITY IS NULL");
 	        		init(activity);
 	        	} 
 	        }
@@ -99,7 +99,7 @@ namespace greedygame {
     void GreedyGameAgent::init(jobject activity2) {
 
     	if(!initDone) {
-    		CCLOG("DEBUGGG inside overloaded init");
+    		CCLOG("GG[COCOS] inside overloaded init");
 			JavaVM* vm = JniHelper::getJavaVM();
 			JNIEnv* env;
 			vm->GetEnv((void**)&env,JNI_VERSION_1_4);
@@ -115,7 +115,7 @@ namespace greedygame {
     			 	initDone = true;
     			 	setGameEngine("cocos2dx");
     			} else {
-    				CCLOG("DEBUGGG activity, run or object is null");
+    				CCLOG("GG[COCOS] activity, run or object is null");
     			}
 
     	} 
@@ -223,7 +223,7 @@ namespace greedygame {
 	}
 	}
 
-	std::string GreedyGameAgent::setGameEngine(const char *unit_id) {
+	void GreedyGameAgent::setGameEngine(const char *name) {
 		       
 		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		if(initDone) { 
@@ -231,12 +231,12 @@ namespace greedygame {
 			JNIEnv* env;
 			vm->GetEnv((void**)&env,JNI_VERSION_1_4);
 			jclass cls = env->FindClass(GreedyGame_CLASS_NAME);
-    		jmethodID getNative = env->GetMethodID(cls, GG_SET_GAME_ENGINE,"(Ljava/lang/String;)V");
-			env->CallObjectMethod(agentObject,getNative ,stringId);
+    		jmethodID setEngine = env->GetMethodID(cls, GG_SET_GAME_ENGINE,"(Ljava/lang/String;)V");
+    		jstring convertedName = env->NewStringUTF(name);
+			env->CallVoidMethod(agentObject,setEngine ,convertedName);
 		}
 			#endif       
 	}
 
 	}
 
-}
