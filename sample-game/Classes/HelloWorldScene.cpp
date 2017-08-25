@@ -8,6 +8,7 @@ using namespace cocos2d;
 using namespace greedygame;
 
 int i = 1;
+// auto player = Sprite::create();
 Scene* HelloWorld::createScene()
 {
     // 'scene' is an autorelease object
@@ -90,15 +91,18 @@ bool HelloWorld::init()
 
     /////////////////////////////
     // 2. add your codes below...
-    auto player = Sprite::create();
-    std::string unitPath = GreedyGameAgent::getNativeUnitPathById("unit-2451");
-    CCLOG("DEBUGGG NATIVE unitPath = %s", unitPath.c_str());
-    if(!unitPath.empty()){
-        player = Sprite::create(unitPath);
-    }else{
-        player = Sprite::create("Player.png");
-    }
-    player->setAnchorPoint(Vec2(0.5,0.5));
+    
+
+//NATIVE UNIT 
+    // auto player = Sprite::create();
+    // std::string unitPath = GreedyGameAgent::getNativeUnitPathById("unit-2451");
+    // CCLOG("DEBUGGG NATIVE unitPath = %s", unitPath.c_str());
+    // if(!unitPath.empty()){
+    //     player = Sprite::create(unitPath);
+    // }else{
+    //     player = Sprite::create("Player.png");
+    // }
+    // player->setAnchorPoint(Vec2(0.5,0.5));
     
 
     //Director::getInstance()->getScheduler()->performFunctionInCocosThread([]{
@@ -128,9 +132,7 @@ bool HelloWorld::init()
     GreedyGameAgent::removeFloatUnit("float-2014");
     
     
-    player->setPosition( Vec2(origin.x + player->getContentSize().width/2 + 5,
-                             origin.y + visibleSize.height/2));
-    this->addChild(player);
+    
 
     auto _touchListener = EventListenerTouchOneByOne::create();
     _touchListener->onTouchBegan = CC_CALLBACK_2(HelloWorld::onTouchBegan, this);
@@ -162,6 +164,21 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 void HelloWorld::menuRefreshCallback(Ref* pSender)
 {
     //GreedyGameAgent::startEventRefresh();
+    // this->removeChild(player, true);
+    auto player = Sprite::create();
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    std::string unitPath = GreedyGameAgent::getNativeUnitPathById("unit-2451");
+    CCLOG("DEBUGGG NATIVE unitPath = %s", unitPath.c_str());
+    if(!unitPath.empty()){
+        player = Sprite::create(unitPath);
+    }else{
+        player = Sprite::create("Player.png");
+    }
+    player->setAnchorPoint(Vec2(0.5,0.5));
+    player->setPosition( Vec2(origin.x + player->getContentSize().width/2 + 5,
+                             origin.y + visibleSize.height/2));
+    this->addChild(player);
 }
 
 // cpp with cocos2d-x
