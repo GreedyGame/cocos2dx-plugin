@@ -149,19 +149,6 @@ namespace greedygame {
 		#endif
     }
 
-    void GreedyGameAgent::forcedExit(){
-		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-		    cocos2d::JniMethodInfo t;
-		    if (cocos2d::JniHelper::getStaticMethodInfo(t, GreedyGame_CLASS_NAME
-		                                                ,GG_FORCED_EXIT
-		                                                ,"()V"))
-		    {
-		        
-		        t.env->CallStaticVoidMethod(t.classID,t.methodID);
-		    }
-		#endif
-    }
-
      void GreedyGameAgent::showEngagementWindow(const char *unit_id){
 		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		    cocos2d::JniMethodInfo t;

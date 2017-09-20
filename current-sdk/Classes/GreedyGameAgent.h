@@ -46,8 +46,6 @@ namespace greedygame {
             
             static void showEngagementWindow(const char *unit_id);
 
-            static void forcedExit();
-
             static void removeFloatUnit(const char *unit_id);
 
             static void startEventRefresh();
