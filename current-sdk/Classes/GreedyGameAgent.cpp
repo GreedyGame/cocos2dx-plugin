@@ -42,10 +42,11 @@ namespace greedygame {
     extern "C" {
 		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 
-	        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onAvailable(JNIEnv* env, jobject thiz) {
-	            listener->onAvailable();
+	        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onAvailable(JNIEnv* env, jobject thiz,jstring id) {
+	        	const char *nativeId = env->GetStringUTFChars(id, 0);
+	            listener->onAvailable(nativeId);
 	            if(refreshListener!=NULL) {
-	            	refreshListener->onAvailable();
+	            	refreshListener->onAvailable(nativeId);
 	            }
 	        }
 	        
@@ -220,5 +221,6 @@ namespace greedygame {
 		    }
 		#endif
     }
+
 
 }

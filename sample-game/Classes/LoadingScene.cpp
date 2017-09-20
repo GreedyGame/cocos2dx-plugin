@@ -35,7 +35,7 @@ if(!isLoaded) {
 class GreedyAgentListener : public IAgentListener {
     public:
 
-    void onAvailable() {
+    void onAvailable(const char *message) {
     /**
      * TODO: New campaign is available and ready to use for the next scene.
      **/

@@ -19,7 +19,7 @@ namespace greedygame {
 
     class IAgentListener {
         public:
-            virtual void onAvailable(){};
+            virtual void onAvailable(const char *id){};
             virtual void onUnavailable(){};
             virtual void onProgress(int progress){};
             virtual void onError(const char *msg){};

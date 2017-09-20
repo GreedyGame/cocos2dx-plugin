@@ -3,6 +3,7 @@
 #include "SimpleAudioEngine.h"
 #include "../../current-sdk/Classes/GreedyGameAgent.h"
 #include <string>
+#include <exception>
 #include "LoadingScene.h"
 
 
@@ -19,7 +20,7 @@ class HelloWorldGGListener : public IAgentListener {
 
 
 
-    void onAvailable() {
+    void onAvailable(const char *campaignId) {
     /**
      * TODO: New campaign is available and ready to use for the next scene.
      **/
@@ -81,6 +82,9 @@ class HelloWorldGGListener : public IAgentListener {
     		CCLOG("unitPath = %s", unitPath.c_str());
     		if(!unitPath.empty()){
     		    player = Sprite::create(unitPath);
+    		    if(player == NULL) {
+						player = Sprite::create("Player.png");
+    			}
     		}else{
     		    player = Sprite::create("Player.png");
     		}
@@ -179,16 +183,24 @@ bool HelloWorld::init()
     /////////////////////////////
     // 2. add your codes below...
 
-    greedyNative = Node::create();
+    		greedyNative = Node::create();
     		player = Sprite::create();
     		std::string unitPath = GreedyGameAgent::getNativeUnitPathById("unit-2335");
     		CCLOG("unitPath = %s", unitPath.c_str());
-    		if(!unitPath.empty()){
-    		    player = Sprite::create(unitPath);
-    		}else{
-    		    player = Sprite::create("Player.png");
-    		}
+    	
+    			if(!unitPath.empty()){
+    			    player = Sprite::create(unitPath);
+    			    if(player == NULL){
+						player = Sprite::create("Player.png");
+    			    }
+    			}else{
+    			    
+    			}
+    	
+    	
     		player->setAnchorPoint(Vec2(0.5,0.5));
+    		player->setPosition( Vec2(origin.x + player->getContentSize().width/2 + 5,
+                             origin.y + visibleSize.height/2));
     		greedyNative->addChild(player);
     		this->addChild(greedyNative);
     
@@ -197,8 +209,7 @@ bool HelloWorld::init()
 
     GreedyGameAgent::showEngagementWindow("float-1877");    
     
-    player->setPosition( Vec2(origin.x + player->getContentSize().width/2 + 5,
-                             origin.y + visibleSize.height/2));
+    
     
 
     auto _touchListener = EventListenerTouchOneByOne::create();

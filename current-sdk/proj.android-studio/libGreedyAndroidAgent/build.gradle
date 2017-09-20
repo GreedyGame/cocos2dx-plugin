@@ -1,2 +1,2 @@
 configurations.create("default")
-artifacts.add("default", file('greedygame-debug.aar'))
+artifacts.add("default", file('android-sdk-2013.aar'))
