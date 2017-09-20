@@ -12,9 +12,12 @@ using namespace greedygame;
 
 int i = 1;
 Sprite* player ;
+Node* greedyNative;
 
 class HelloWorldGGListener : public IAgentListener {
     public:
+
+
 
     void onAvailable() {
     /**
@@ -30,6 +33,10 @@ class HelloWorldGGListener : public IAgentListener {
         GreedyGameAgent::removeAllFloatUnits();
         GreedyGameAgent::fetchFloatUnit("float-1877");
         GreedyGameAgent::fetchFloatUnit("float-1878");
+
+        //change native unit
+        greedyNative->removeChild(player,true);
+        refreshNativeUnits();
     }
 
     void onUnavailable(){
@@ -37,6 +44,8 @@ class HelloWorldGGListener : public IAgentListener {
      * TODO: Update and remove the native and float units since after refresh there was no campaign available.
      **/
      CCLOG("Hello world scene onUnavailable");
+     greedyNative->removeChild(player,true);
+     refreshNativeUnits();
     }
 
     void onFound(){
@@ -61,7 +70,26 @@ class HelloWorldGGListener : public IAgentListener {
      **/
         CCLOG("Hello world scene onError");
          //CCLOG("onError callback inside cocos cpp wrapper" + message);
-        }
+        }    
+
+
+        	void refreshNativeUnits() {
+        		auto visibleSize = Director::getInstance()->getVisibleSize();
+			Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    		player = Sprite::create();
+    		std::string unitPath = GreedyGameAgent::getNativeUnitPathById("unit-2335");
+    		CCLOG("unitPath = %s", unitPath.c_str());
+    		if(!unitPath.empty()){
+    		    player = Sprite::create(unitPath);
+    		}else{
+    		    player = Sprite::create("Player.png");
+    		}
+    		player->setAnchorPoint(Vec2(0.5,0.5));
+    		player->setPosition( Vec2(origin.x + player->getContentSize().width/2 + 5,
+                             origin.y + visibleSize.height/2));
+    		greedyNative->addChild(player);
+	}
+
 
     };
 
@@ -150,15 +178,20 @@ bool HelloWorld::init()
     
     /////////////////////////////
     // 2. add your codes below...
-    player = Sprite::create();
-    std::string unitPath = GreedyGameAgent::getNativeUnitPathById("unit-2335");
-    CCLOG("unitPath = %s", unitPath.c_str());
-    if(!unitPath.empty()){
-        player = Sprite::create(unitPath);
-    }else{
-        player = Sprite::create("Player.png");
-    }
-    player->setAnchorPoint(Vec2(0.5,0.5));
+
+    greedyNative = Node::create();
+    		player = Sprite::create();
+    		std::string unitPath = GreedyGameAgent::getNativeUnitPathById("unit-2335");
+    		CCLOG("unitPath = %s", unitPath.c_str());
+    		if(!unitPath.empty()){
+    		    player = Sprite::create(unitPath);
+    		}else{
+    		    player = Sprite::create("Player.png");
+    		}
+    		player->setAnchorPoint(Vec2(0.5,0.5));
+    		greedyNative->addChild(player);
+    		this->addChild(greedyNative);
+    
     
     GreedyGameAgent::fetchFloatUnit("float-1877");
 
@@ -166,7 +199,7 @@ bool HelloWorld::init()
     
     player->setPosition( Vec2(origin.x + player->getContentSize().width/2 + 5,
                              origin.y + visibleSize.height/2));
-    this->addChild(player);
+    
 
     auto _touchListener = EventListenerTouchOneByOne::create();
     _touchListener->onTouchBegan = CC_CALLBACK_2(HelloWorld::onTouchBegan, this);
@@ -183,6 +216,8 @@ bool HelloWorld::init()
         
     return true;
 }
+
+
 
 void HelloWorld::menuCloseCallback(Ref* pSender)
 {
