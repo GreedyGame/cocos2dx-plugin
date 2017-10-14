@@ -50,7 +50,9 @@ namespace greedygame {
 
             static void startEventRefresh();
 
-            static void setRefreshListener(IAgentListener* agentListener);
+            static void setListener(IAgentListener* agentListener);
+
+            static void removeListener();
  
     };
 }

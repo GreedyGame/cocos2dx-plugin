@@ -37,51 +37,44 @@ namespace greedygame {
 
     IAgentListener* listener;
 
-    IAgentListener* refreshListener;
-
     extern "C" {
 		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 
 	        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onAvailable(JNIEnv* env, jobject thiz,jstring id) {
-	        	const char *nativeId = env->GetStringUTFChars(id, 0);
-	            listener->onAvailable(nativeId);
-	            if(refreshListener!=NULL) {
-	            	refreshListener->onAvailable(nativeId);
+	        	if(listener!=NULL) { 
+	        		const char *nativeId = env->GetStringUTFChars(id, 0);
+	            	listener->onAvailable(nativeId);
 	            }
 	        }
 	        
 	        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onUnavailable(JNIEnv* env, jobject thiz)
 	        {
-	            listener->onUnavailable();
-	            if(refreshListener!=NULL) {
-	            	refreshListener->onUnavailable();
+	        	if(listener!=NULL) {
+	            	listener->onUnavailable();
 	            }
 	        }
 
 	        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onFound(JNIEnv* env, jobject thiz)
 	        {
-	            listener->onFound();
-	            if(refreshListener!=NULL) {
-	            	refreshListener->onFound();
+	        	if(listener!=NULL) {
+	            	listener->onFound();
 	            }
 	        }
 
 	        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onError(JNIEnv* env, jobject thiz, jstring msg)
 	        {
-	            const char *nativeString = env->GetStringUTFChars(msg, 0);
-	            listener->onError(nativeString);
-	            if(refreshListener!=NULL) {
-	            	refreshListener->onError(nativeString);
-	            }
-				env->ReleaseStringUTFChars(msg, nativeString);
+	        	if(listener!=NULL) {
+	            	const char *nativeString = env->GetStringUTFChars(msg, 0);
+	            	listener->onError(nativeString);
+					env->ReleaseStringUTFChars(msg, nativeString);
+				}
 	        }
 
 	        JNIEXPORT void JNICALL Java_com_greedygame_android_platforms_cocos2dx_GreedyGame_onProgress(JNIEnv* env, jobject thiz, jint ret)
 	        {
-	            listener->onProgress(ret);
-	            if(refreshListener!=NULL) {
-	            	refreshListener->onProgress(ret);
-	            }
+	        	if(listener!=NULL) {
+	            	listener->onProgress(ret);
+	        	}
 	        }
 	        
 		#endif
@@ -102,9 +95,15 @@ namespace greedygame {
 		#endif
     }
 
-    void GreedyGameAgent::setRefreshListener(IAgentListener* _listener) {
+    void GreedyGameAgent::setListener(IAgentListener* _listener) {
     	#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-    	refreshListener = _listener;
+    	listener = _listener;
+    	#endif
+    }
+
+    void GreedyGameAgent::removeListener() {
+    	#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+    	listener = NULL;
     	#endif
     }
 

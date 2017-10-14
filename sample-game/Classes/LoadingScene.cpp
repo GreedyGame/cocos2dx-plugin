@@ -104,6 +104,9 @@ Scene* LoadingScene::createScene()
     // add layer as a child to scene
     scene->addChild(layer);
 
+    //moving directly to next scene on touch
+    moveToNextScene();
+
     // return the scene
     return scene;
 }
@@ -121,7 +124,7 @@ bool LoadingScene::init()
     }
     
 
-    GreedyGameAgent::init(new GreedyAgentListener());
+    //GreedyGameAgent::init(new GreedyAgentListener());
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();

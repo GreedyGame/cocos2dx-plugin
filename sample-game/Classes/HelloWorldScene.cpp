@@ -15,6 +15,9 @@ int i = 1;
 Sprite* player ;
 Node* greedyNative;
 
+Sprite* floatSprite ;
+Node* greedyFloatNode;
+
 class HelloWorldGGListener : public IAgentListener {
     public:
 
@@ -24,20 +27,9 @@ class HelloWorldGGListener : public IAgentListener {
     /**
      * TODO: New campaign is available and ready to use for the next scene.
      **/
-        CCLOG("Hello world scene onAvailable");
-       // GreedyGameAgent::fetchFloatUnit("float-1935");
-        
-
-        //Update the native units inside this callback to reflect the updation of the refreshed campaign.
-
-
-        GreedyGameAgent::removeAllFloatUnits();
-        GreedyGameAgent::fetchFloatUnit("float-1877");
-        GreedyGameAgent::fetchFloatUnit("float-1878");
-
-        //change native unit
-        greedyNative->removeChild(player,true);
+        CCLOG("GG[HWScene] onAvailable : Hello world scene onAvailable");
         refreshNativeUnits();
+        refreshFloatUnits();
     }
 
     void onUnavailable(){
@@ -45,8 +37,8 @@ class HelloWorldGGListener : public IAgentListener {
      * TODO: Update and remove the native and float units since after refresh there was no campaign available.
      **/
      CCLOG("Hello world scene onUnavailable");
-     greedyNative->removeChild(player,true);
      refreshNativeUnits();
+     refreshFloatUnits();
     }
 
     void onFound(){
@@ -74,28 +66,52 @@ class HelloWorldGGListener : public IAgentListener {
         }    
 
 
-        	void refreshNativeUnits() {
-        		auto visibleSize = Director::getInstance()->getVisibleSize();
-			Vec2 origin = Director::getInstance()->getVisibleOrigin();
-    		player = Sprite::create();
-    		std::string unitPath = GreedyGameAgent::getNativeUnitPathById("unit-2335");
-    		CCLOG("unitPath = %s", unitPath.c_str());
-    		if(!unitPath.empty()){
-    		    player = Sprite::create(unitPath);
-    		    if(player == NULL) {
-						player = Sprite::create("Player.png");
-    			}
-    		}else{
-    		    player = Sprite::create("Player.png");
+    void refreshNativeUnits() {
+        CCLOG("GG[HWScene] refresh native called from onAvailable callback");
+        greedyNative->removeChild(player,true);
+        auto visibleSize = Director::getInstance()->getVisibleSize();
+		Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    	player = Sprite::create();
+    	std::string unitPath = GreedyGameAgent::getNativeUnitPathById("unit-2335");
+    	CCLOG("unitPath = %s", unitPath.c_str());
+    	if(!unitPath.empty()){
+    	    player = Sprite::create(unitPath);
+    	    if(player == NULL) {
+					player = Sprite::create("Player.png");
     		}
-    		player->setAnchorPoint(Vec2(0.5,0.5));
-    		player->setPosition( Vec2(origin.x + player->getContentSize().width/2 + 5,
-                             origin.y + visibleSize.height/2));
-    		greedyNative->addChild(player);
+    	}else{
+    	    player = Sprite::create("Player.png");
+    	}
+    	player->setAnchorPoint(Vec2(0.5,0.5));
+    	player->setPosition( Vec2(origin.x + player->getContentSize().width/2 + 5,
+                         origin.y + visibleSize.height/2));
+    	greedyNative->addChild(player);
 	}
 
+    void refreshFloatUnits() {
+        CCLOG("GG[HWScene] refresh float called from onAvailable callback");
+        greedyFloatNode->removeChild(floatSprite,true);
+        auto visibleSize = Director::getInstance()->getVisibleSize();
+        Vec2 origin = Director::getInstance()->getVisibleOrigin();
+        floatSprite = Sprite::create();
+        std::string unitPath = GreedyGameAgent::getFloatUnitPathById("float-1877");
+        CCLOG("unitPath = %s", unitPath.c_str());
+        if(!unitPath.empty()){
+            floatSprite = Sprite::create(unitPath);
+            if(floatSprite == NULL) {
+                    floatSprite = Sprite::create("Player.png");
+            }
+        }else{
+            floatSprite = Sprite::create("Player.png");
+        }
+        floatSprite->setAnchorPoint(Vec2(0.5,0.5));
+        floatSprite->setPosition( Vec2(visibleSize.width - floatSprite->getContentSize().width/2 + 5,
+                         origin.y + visibleSize.height/2));
+        greedyFloatNode->addChild(floatSprite);
+    }
 
-    };
+
+};
 
 
 Scene* HelloWorld::createScene()
@@ -118,13 +134,6 @@ Scene* HelloWorld::createScene()
 // on "init" you need to initialize your instance
 bool HelloWorld::init()
 {
-    // this->label = Label::createWithTTF("", "fonts/Marker Felt.ttf", 24);
-    // this->label->setPosition(Vec2(origin.x + visibleSize.width/2,
-    //                         origin.y + visibleSize.height/2 - label->getContentSize().height));
-
-    // // add the label as a child to this layer
-    // this->addChild(this->label, 1);
-    //////////////////////////////
     // 1. super init first
     if ( !LayerColor::initWithColor(Color4B(172, 115, 57,255)) )
     {
@@ -156,34 +165,101 @@ bool HelloWorld::init()
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu, 1);
 
-
-    //Refresh button
-    auto refreshItem = MenuItemImage::create(
-                        "CloseNormal.png",
-                        "CloseSelected.png",
-                        CC_CALLBACK_1(HelloWorld::menuRefreshCallback, this));
-    
-    // Place the menu item bottom-right conner.
-    refreshItem->setPosition(Vec2(origin.x + visibleSize.width - (closeItem->getContentSize().width*2) ,
-                        origin.y + closeItem->getContentSize().height/2));
     
 
-    // create menu, it's an autorelease object
-    auto menu2 = Menu::create(refreshItem, NULL);
-    menu2->setPosition(Vec2::ZERO);
-    this->addChild(menu2, 1);
+    // INIT 
+    auto initButton = MenuItemImage::create("ggbuttons/init.png","ggbuttons/init.png",CC_CALLBACK_1(HelloWorld::initCallback, this));
+    // initButton->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
+    //                     origin.y + closeItem->getContentSize().height/2));
+    initButton->setPosition(Vec2(100 ,visibleSize.height - 40));
+    auto initMenu = Menu::create(initButton, NULL);
+    initMenu->setPosition(Vec2::ZERO);
+    this->addChild(initMenu, 3);
 
 
+    //ShowFloat
+    auto showFloatButton = MenuItemImage::create("ggbuttons/showFloat.png","ggbuttons/showFloat.png",CC_CALLBACK_1(HelloWorld::showFloatCallback, this));
+    // initButton->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
+    //                     origin.y + closeItem->getContentSize().height/2));
+    showFloatButton->setPosition(Vec2(210 ,visibleSize.height - 40));
+    auto showFloatMenu = Menu::create(showFloatButton, NULL);
+    showFloatMenu->setPosition(Vec2::ZERO);
+    this->addChild(showFloatMenu, 4);
 
 
-    i = 1;
+    //removeFloat
+    auto removeFloatButton = MenuItemImage::create("ggbuttons/removeFloat.png","ggbuttons/removeFloat.png",CC_CALLBACK_1(HelloWorld::removeFloatCallback, this));
+    // initButton->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
+    //                     origin.y + closeItem->getContentSize().height/2));
+    removeFloatButton->setPosition(Vec2(320 ,visibleSize.height - 40));
+    auto removeFloatMenu = Menu::create(removeFloatButton, NULL);
+    removeFloatMenu->setPosition(Vec2::ZERO);
+    this->addChild(removeFloatMenu, 5);
 
 
-    
+    //removeAllFloats
+    auto removeAllFloatsButton = MenuItemImage::create("ggbuttons/removeAllFloats.png","ggbuttons/removeAllFloats.png",CC_CALLBACK_1(HelloWorld::removeAllCallback, this));
+    // initButton->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
+    //                     origin.y + closeItem->getContentSize().height/2));
+    removeAllFloatsButton->setPosition(Vec2(100 ,visibleSize.height - 100));
+    auto removeAllFloatsMenu = Menu::create(removeAllFloatsButton, NULL);
+    removeAllFloatsMenu->setPosition(Vec2::ZERO);
+    this->addChild(removeAllFloatsMenu, 6);
+
+
+    //getFloatPath
+    auto getFloatPathButton = MenuItemImage::create("ggbuttons/getFloatPath.png","ggbuttons/getFloatPath.png",CC_CALLBACK_1(HelloWorld::getFloatPathCallback, this));
+    // initButton->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
+    //                     origin.y + closeItem->getContentSize().height/2));
+    getFloatPathButton->setPosition(Vec2(210 ,visibleSize.height - 100));
+    auto getFloatPathMenu = Menu::create(getFloatPathButton, NULL);
+    getFloatPathMenu->setPosition(Vec2::ZERO);
+    this->addChild(getFloatPathMenu, 6);
+
+    //getNativePath
+    auto getNativePathButton = MenuItemImage::create("ggbuttons/getNativePath.png","ggbuttons/getNativePath.png",CC_CALLBACK_1(HelloWorld::getNativePathCallback, this));
+    // initButton->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
+    //                     origin.y + closeItem->getContentSize().height/2));
+    getNativePathButton->setPosition(Vec2(320 ,visibleSize.height - 100));
+    auto getNativePathMenu = Menu::create(getNativePathButton, NULL);
+    getNativePathMenu->setPosition(Vec2::ZERO);
+    this->addChild(getNativePathMenu, 7);
+
+
+    //showUII
+    auto showUIIButton = MenuItemImage::create("ggbuttons/showUII.png","ggbuttons/showUII.png",CC_CALLBACK_1(HelloWorld::showUIICallback, this));
+    // initButton->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
+    //                     origin.y + closeItem->getContentSize().height/2));
+    showUIIButton->setPosition(Vec2(100 ,visibleSize.height - 160));
+    auto showUIIMenu = Menu::create(showUIIButton, NULL);
+    showUIIMenu->setPosition(Vec2::ZERO);
+    this->addChild(showUIIMenu, 8);
+
+
+    //setListener
+    auto setListenerButton = MenuItemImage::create("ggbuttons/setListener.png","ggbuttons/setListener.png",CC_CALLBACK_1(HelloWorld::setListenerCallback, this));
+    // initButton->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
+    //                     origin.y + closeItem->getContentSize().height/2));
+    setListenerButton->setPosition(Vec2(210 ,visibleSize.height - 160));
+    auto setListenerMenu = Menu::create(setListenerButton, NULL);
+    setListenerMenu->setPosition(Vec2::ZERO);
+    this->addChild(setListenerMenu, 9);
+
+
+    //startRefresh
+    auto refreshButton = MenuItemImage::create("ggbuttons/refresh.png","ggbuttons/refresh.png",CC_CALLBACK_1(HelloWorld::refreshCallback, this));
+    // initButton->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
+    //                     origin.y + closeItem->getContentSize().height/2));
+    refreshButton->setPosition(Vec2(320 ,visibleSize.height - 160));
+    auto refreshMenu = Menu::create(refreshButton, NULL);
+    refreshMenu->setPosition(Vec2::ZERO);
+    this->addChild(refreshMenu, 10);
+
+    i = 1;    
     /////////////////////////////
     // 2. add your codes below...
-
-    		greedyNative = Node::create();
+        CCLOG( "GG[HWScene] Adding Native unit as native float for id : 2335 inside game by default" );
+        	greedyNative = Node::create();
     		player = Sprite::create();
     		std::string unitPath = GreedyGameAgent::getNativeUnitPathById("unit-2335");
     		CCLOG("unitPath = %s", unitPath.c_str());
@@ -194,7 +270,7 @@ bool HelloWorld::init()
 						player = Sprite::create("Player.png");
     			    }
     			}else{
-    			    
+    			    player = Sprite::create("Player.png");
     			}
     	
     	
@@ -203,11 +279,37 @@ bool HelloWorld::init()
                              origin.y + visibleSize.height/2));
     		greedyNative->addChild(player);
     		this->addChild(greedyNative);
-    
-    
-    GreedyGameAgent::fetchFloatUnit("float-1877");
 
-    GreedyGameAgent::showEngagementWindow("float-1877");    
+
+
+
+
+        CCLOG( "GG[HWScene] Adding FloatUnit as native float for id : 1877 inside game by default" );
+            greedyFloatNode = Node::create();
+            floatSprite = Sprite::create();
+            std::string unitPath2 = GreedyGameAgent::getFloatUnitPathById("float-1877");
+            CCLOG("unitPath = %s", unitPath2.c_str());
+        
+                if(!unitPath2.empty()){
+                    floatSprite = Sprite::create(unitPath2);
+                    if(floatSprite == NULL){
+                        floatSprite = Sprite::create("Player.png");
+                    }
+                }else{
+                    floatSprite = Sprite::create("Player.png");
+                }
+        
+        
+            floatSprite->setAnchorPoint(Vec2(0.5,0.5));
+            floatSprite->setPosition( Vec2(visibleSize.width - floatSprite->getContentSize().width/2 + 5,
+                             origin.y + visibleSize.height/2));
+            greedyFloatNode->addChild(floatSprite);
+            this->addChild(greedyFloatNode);
+    
+    
+    // GreedyGameAgent::fetchFloatUnit("float-1877");
+
+    // GreedyGameAgent::showEngagementWindow("float-1877");    
     
     
     
@@ -230,9 +332,109 @@ bool HelloWorld::init()
 
 
 
+//INIT callback
+void HelloWorld::initCallback(Ref* pSender)
+{
+    CCLOG( "GG[HWScene] initCallback called");
+    GreedyGameAgent::init(new HelloWorldGGListener());
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    exit(0);
+#endif
+}
+
+
+//setListener callback
+void HelloWorld::setListenerCallback(Ref* pSender)
+{
+    CCLOG( "GG[HWScene] setListener called");
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    exit(0);
+#endif
+}
+
+//ShowfLoat callback
+void HelloWorld::showFloatCallback(Ref* pSender)
+{
+    CCLOG( "GG[HWScene] showFloat will be called with id : 1877");
+    GreedyGameAgent::fetchFloatUnit("float-1877");
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    exit(0);
+#endif
+}
+
+
+//RemovefLoat callback
+void HelloWorld::removeFloatCallback(Ref* pSender)
+{
+    CCLOG( "GG[HWScene] removeFloat will be called with id : 1877");
+    GreedyGameAgent::removeFloatUnit("float-1877");
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    exit(0);
+#endif
+}
+
+
+//getfLoatPath callback
+void HelloWorld::getFloatPathCallback(Ref* pSender)
+{
+    CCLOG( "GG[HWScene] getFloatUnitPathById will be called with id 1877");
+    GreedyGameAgent::getFloatUnitPathById("float-1877");
+    refreshFloatUnits();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    exit(0);
+#endif
+}
+
+
+//getNativePath
+void HelloWorld::getNativePathCallback(Ref* pSender)
+{
+    CCLOG( "GG[HWScene] calling getNativePath with unit id unit-2335");
+    GreedyGameAgent::getNativeUnitPathById("unit-2335");
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    exit(0);
+#endif
+}
+
+
+//remove All Callback callback
+void HelloWorld::removeAllCallback(Ref* pSender)
+{
+    CCLOG( "GG[HWScene] calling 2 floats (1877 & 1878) and then calling removeAllFloatUnits");
+    GreedyGameAgent::fetchFloatUnit("float-1877");
+    GreedyGameAgent::fetchFloatUnit("float-1878");
+    GreedyGameAgent::removeAllFloatUnits();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    exit(0);
+#endif
+}
+
+
+//getNativePath
+void HelloWorld::refreshCallback(Ref* pSender)
+{
+    CCLOG( "GG[HWScene] startEventRefresh will be called");
+    GreedyGameAgent::setListener(new HelloWorldGGListener());
+    GreedyGameAgent::startEventRefresh();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    exit(0);
+#endif
+}
+
+
+//show UII
+void HelloWorld::showUIICallback(Ref* pSender)
+{
+    CCLOG( "GG[HWScene] showEngagementWindow will be called with float1878");
+    GreedyGameAgent::showEngagementWindow("float-1878");
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    exit(0);
+#endif
+}
+
 void HelloWorld::menuCloseCallback(Ref* pSender)
 {
-    GreedyGameAgent::forcedExit();
+    //GreedyGameAgent::forcedExit();
     Director::getInstance()->end();
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
@@ -243,7 +445,9 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 
 void HelloWorld::menuRefreshCallback(Ref* pSender)
 {
-    GreedyGameAgent::setRefreshListener(new HelloWorldGGListener());
+
+    std::string unitPath = GreedyGameAgent::getFloatUnitPathById("float-1877");
+    CCLOG("GG[HWScene] inside menuRefreshCallback unitPath = %s", unitPath.c_str());
     GreedyGameAgent::startEventRefresh();
 }
 
@@ -251,7 +455,6 @@ void HelloWorld::menuRefreshCallback(Ref* pSender)
 void HelloWorld::addTarget()
 {
     Sprite *target = Sprite::create("Monster.png", Rect(0,0,145,100) );
-    
     // Determine where to spawn the target along the Y axis
     auto winSize = Director::getInstance()->getVisibleSize();
     float minY = target->getContentSize().height/2;
@@ -303,8 +506,9 @@ void HelloWorld::spriteMoveFinished(cocos2d::Node* sender)
 
 void HelloWorld::gameOver(std::string msg){
 
+    CCLOG( "GG[HWScene] game over");
     GreedyGameAgent::removeFloatUnit("float-1877");
-
+    GreedyGameAgent::removeListener();
     GameOverScene* layer = GameOverScene::create();
     layer->getLabel()->setString(msg);
     auto scene = Scene::create();
@@ -321,7 +525,7 @@ void HelloWorld::gameLogic(float dt)
     CCLOG( "in %d", i);
     i++;
     if(i > 50){
-        CCLOG( "GAME OVER");
+        CCLOG( "GG[HWScene] GAME OVER");
         this->gameOver("You Lose");
     }
 }
@@ -332,7 +536,7 @@ bool HelloWorld::onTouchBegan(Touch* touch, Event* event)
     // Choose one of the touches to work with
     Point location = touch->getLocation();
 
-    CCLOG("++++++++after  x:%f, y:%f", location.x, location.y);
+    CCLOG("GG[HWScene] ++++++++after  x:%f, y:%f", location.x, location.y);
 
     // Set up initial location of projectile
     auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -421,7 +625,7 @@ void HelloWorld::updateGame(float dt)
             _projectilesDestroyed++;
             if (_projectilesDestroyed >= 25)
             {
-                CCLOG( "Win..");
+                CCLOG( "GG[HWScene] Win..");
                 this->gameOver("You Win");
             }
         }
@@ -443,5 +647,47 @@ void HelloWorld::updateGame(float dt)
 }
 
 
+void HelloWorld::refreshFloatUnits() {
+        CCLOG("GG[HWScene] refresh float called from onAvailable for native float");
+        //greedyFloatNode->removeChild(floatSprite,true);
+        auto visibleSize = Director::getInstance()->getVisibleSize();
+        Vec2 origin = Director::getInstance()->getVisibleOrigin();
+        floatSprite = Sprite::create();
+        std::string unitPath = GreedyGameAgent::getFloatUnitPathById("float-1877");
+        CCLOG("GG[HWScene] unitPath = %s", unitPath.c_str());
+        if(!unitPath.empty()){
+            floatSprite = Sprite::create(unitPath);
+            if(floatSprite == NULL) {
+                    floatSprite = Sprite::create("Player.png");
+            }
+        }else{
+            floatSprite = Sprite::create("Player.png");
+        }
+        floatSprite->setAnchorPoint(Vec2(0.5,0.5));
+        floatSprite->setPosition( Vec2(visibleSize.width - floatSprite->getContentSize().width/2 + 5,
+                         origin.y + visibleSize.height/2));
+        greedyFloatNode->addChild(floatSprite);
+}
 
 
+void HelloWorld::refreshNativeUnits() {
+        CCLOG("GG[HWScene] refresh native called from onAvailable");
+        //greedyNative->removeChild(player,true);
+        auto visibleSize = Director::getInstance()->getVisibleSize();
+        Vec2 origin = Director::getInstance()->getVisibleOrigin();
+        player = Sprite::create();
+        std::string unitPath = GreedyGameAgent::getNativeUnitPathById("unit-2335");
+        CCLOG("GG[HWScene] unitPath = %s", unitPath.c_str());
+        if(!unitPath.empty()){
+            player = Sprite::create(unitPath);
+            if(player == NULL) {
+                    player = Sprite::create("Player.png");
+            }
+        }else{
+            player = Sprite::create("Player.png");
+        }
+        player->setAnchorPoint(Vec2(0.5,0.5));
+        player->setPosition( Vec2(origin.x + player->getContentSize().width/2 + 5,
+                         origin.y + visibleSize.height/2));
+        greedyNative->addChild(player);
+}

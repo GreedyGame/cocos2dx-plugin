@@ -19,6 +19,20 @@ public:
 
 	static cocos2d::Scene* createScene();
 
+	//callback for init button
+	virtual void initCallback(cocos2d::Ref* pSender);
+	virtual void setListenerCallback(cocos2d::Ref* pSender);
+	virtual void showFloatCallback(cocos2d::Ref* pSender);
+	virtual void removeFloatCallback(cocos2d::Ref* pSender);
+	virtual void getFloatPathCallback(cocos2d::Ref* pSender);
+	virtual void getNativePathCallback(cocos2d::Ref* pSender);
+	virtual void removeAllCallback(cocos2d::Ref* pSender);
+	virtual void refreshCallback(cocos2d::Ref* pSender);
+	virtual void showUIICallback(cocos2d::Ref* pSender);
+
+
+
+
 	// a selector callback
 	virtual void menuCloseCallback(cocos2d::Ref* pSender);
 
@@ -37,6 +51,10 @@ public:
 
 	void gameOver(std::string msg);
 
+	void refreshFloatUnits();
+
+	void refreshNativeUnits();
+
    
 protected:
 	cocos2d::Vector<cocos2d::Sprite *> _targets;
@@ -44,7 +62,6 @@ protected:
 	int _projectilesDestroyed;
 
 	void addTarget();
-
 
 };
 

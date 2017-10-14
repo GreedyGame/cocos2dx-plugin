@@ -37,6 +37,8 @@ public:
     CREATE_FUNC(GameOverScene);
 
     CC_SYNTHESIZE_READONLY(cocos2d::Label*, label, Label);
+
+
 };
 
 #endif // _GAME_OVER_SCENE_H_
