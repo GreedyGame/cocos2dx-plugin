@@ -170,7 +170,7 @@ bool HelloWorld::init()
     // INIT 
     auto initButton = MenuItemImage::create("ggbuttons/init.png","ggbuttons/init.png",CC_CALLBACK_1(HelloWorld::initCallback, this));
     // initButton->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
-    //                     origin.y + closeItem->getContentSize().height/2));
+    // origin.y + closeItem->getContentSize().height/2));
     initButton->setPosition(Vec2(100 ,visibleSize.height - 40));
     auto initMenu = Menu::create(initButton, NULL);
     initMenu->setPosition(Vec2::ZERO);
@@ -180,7 +180,7 @@ bool HelloWorld::init()
     //ShowFloat
     auto showFloatButton = MenuItemImage::create("ggbuttons/showFloat.png","ggbuttons/showFloat.png",CC_CALLBACK_1(HelloWorld::showFloatCallback, this));
     // initButton->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
-    //                     origin.y + closeItem->getContentSize().height/2));
+    // origin.y + closeItem->getContentSize().height/2));
     showFloatButton->setPosition(Vec2(210 ,visibleSize.height - 40));
     auto showFloatMenu = Menu::create(showFloatButton, NULL);
     showFloatMenu->setPosition(Vec2::ZERO);
@@ -305,16 +305,8 @@ bool HelloWorld::init()
                              origin.y + visibleSize.height/2));
             greedyFloatNode->addChild(floatSprite);
             this->addChild(greedyFloatNode);
-    
-    
-    // GreedyGameAgent::fetchFloatUnit("float-1877");
-
-    // GreedyGameAgent::showEngagementWindow("float-1877");    
-    
-    
-    
-
-    auto _touchListener = EventListenerTouchOneByOne::create();
+   
+   auto _touchListener = EventListenerTouchOneByOne::create();
     _touchListener->onTouchBegan = CC_CALLBACK_2(HelloWorld::onTouchBegan, this);
 
     getEventDispatcher()->addEventListenerWithSceneGraphPriority(_touchListener, this);
