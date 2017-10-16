@@ -533,27 +533,21 @@ bool HelloWorld::onTouchBegan(Touch* touch, Event* event)
     // Set up initial location of projectile
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
     auto projectile = Sprite::create("Projectile.png");
     projectile->setPosition( Vec2(origin.x+20, origin.y+visibleSize.height/2) );
     projectile->setTag(2);
-
     // Determinie offset of location to projectile
     float offX = location.x - projectile->getPosition().x;
     float offY = location.y - projectile->getPosition().y;
-
     // Bail out if we are shooting down or backwards
     if (offX <= 0) return false;
-
     // Ok to add now - we've double checked position
     this->addChild(projectile);
-
     // Determine where we wish to shoot the projectile to
     float realX = origin.x+visibleSize.width + (projectile->getContentSize().width/2);
     float ratio = offY / offX;
     float realY = (realX * ratio) + projectile->getPosition().y;
     Point realDest = Vec2(realX, realY);
-
     // Determine the length of how far we're shooting
     float offRealX = realX - projectile->getPosition().x;
     float offRealY = realY - projectile->getPosition().y;

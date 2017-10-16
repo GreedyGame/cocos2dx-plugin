@@ -44,6 +44,7 @@ namespace greedygame {
 	        	if(listener!=NULL) { 
 	        		const char *nativeId = env->GetStringUTFChars(id, 0);
 	            	listener->onAvailable(nativeId);
+	            	env->ReleaseStringUTFChars(id, nativeId);
 	            }
 	        }
 	        
