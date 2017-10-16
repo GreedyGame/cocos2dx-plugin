@@ -425,8 +425,8 @@ void HelloWorld::refreshCallback(Ref* pSender)
 //show UII
 void HelloWorld::showUIICallback(Ref* pSender)
 {
-    CCLOG( "GG[HWScene] showEngagementWindow will be called with float1878");
-    GreedyGameAgent::showEngagementWindow("float-1878");
+    CCLOG( "GG[HWScene] showEngagementWindow will be called with float1877");
+    GreedyGameAgent::showEngagementWindow("float-1877");
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     exit(0);
 #endif
