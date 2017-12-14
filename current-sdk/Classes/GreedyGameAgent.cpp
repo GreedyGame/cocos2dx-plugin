@@ -31,7 +31,7 @@ USING_NS_CC;
     #define GG_SHOW_UII "showUII"
     #define GG_GET_NATIVE_PATH "getPath"
     #define GG_GET_FLOAT_PATH "getPath"
-	#define GG_SET_GAME_ENGINE "setGameEngine"
+	
 
 	#define CocosActivity_CLASS_NAME "org/cocos2dx/cpp/AppActivity"	
 	#define COCOS_GETCONTEXT "myActivity"
@@ -41,6 +41,7 @@ namespace greedygame {
     IAgentListener* listener;
     jobject GreedyGameAgent::agentObject;
     bool initDone = false;
+    bool GreedyGameAgent::enableCrashReport = true;
     // char* customActivityClass = "org/cocos2dx/cpp/AppActivity";
     // char* customActivityMethod = "myActivity";
 
@@ -109,11 +110,16 @@ namespace greedygame {
     			jmethodID agentConstructor = env->GetMethodID(cls, "<init>", "()V");
     			jobject agent = env->NewObject(cls, agentConstructor);
     			agentObject = env->NewGlobalRef(agent);
-				jmethodID run = env->GetMethodID(cls, "init", "(Landroid/app/Activity;)V");
+				jmethodID run = env->GetMethodID(cls, "init", "(Landroid/app/Activity;ZLjava/lang/String;Ljava/lang/String;)V");
     			if(activity2 != NULL && run!= NULL && agentObject!=NULL) {
-    			 	env->CallVoidMethod(agentObject, run,activity2);
+    				char* engine = "cocos2dx";
+    				jstring stringEngine = env->NewStringUTF(engine);
+    				// std::stringstream ss;
+    				// ss << COCOS2D_VERSION;
+
+    				jstring cocosVersion = env->NewStringUTF(cocos2dVersion());
+    			 	env->CallVoidMethod(agentObject, run,activity2,enableCrashReport,stringEngine,cocosVersion);
     			 	initDone = true;
-    			 	setGameEngine("cocos2dx");
     			} else {
     				CCLOG("DEBUGGG activity, run or object is null");
     			}
@@ -220,23 +226,11 @@ namespace greedygame {
 			path = JniHelper::jstring2string(str);
 			#endif      
 		return path;  
-	}
-	}
-
-	std::string GreedyGameAgent::setGameEngine(const char *unit_id) {
-		       
-		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-		if(initDone) { 
-			JavaVM* vm = JniHelper::getJavaVM();
-			JNIEnv* env;
-			vm->GetEnv((void**)&env,JNI_VERSION_1_4);
-			jclass cls = env->FindClass(GreedyGame_CLASS_NAME);
-    		jmethodID getNative = env->GetMethodID(cls, GG_SET_GAME_ENGINE,"(Ljava/lang/String;)V");
-			env->CallObjectMethod(agentObject,getNative ,stringId);
 		}
-			#endif       
 	}
 
+	void GreedyGameAgent::enableCrashReporting(bool enable) {
+		enableCrashReport = enable;
 	}
 
 }

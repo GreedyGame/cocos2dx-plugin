@@ -34,6 +34,8 @@ namespace greedygame {
 
             static jobject agentObject;
 
+            static bool enableCrashReport;
+
             static void initialize(IAgentListener* listener);
 
             static void init(jobject activity);
@@ -52,7 +54,7 @@ namespace greedygame {
 
             static void removeFloatUnit(const char *unit_id);
 
-            static void setGameEngine(const char *name);
+            static void enableCrashReporting(bool enable);
  
     };
 }

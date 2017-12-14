@@ -8,6 +8,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/../../current-sdk/proj.android-studio/libGreedyAndroidAgent" />
+            <option value="$PROJECT_DIR$/../../current-sdk/proj.android-studio/libGreedyAndroidAgentCommons" />
             <option value="$PROJECT_DIR$/../libs/cocos2d-x/cocos/platform/android/libcocos2dx" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />

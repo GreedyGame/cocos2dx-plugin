@@ -2,5 +2,7 @@ include ':libcocos2dx'
 project(':libcocos2dx').projectDir = new File(settingsDir, '../libs/cocos2d-x/cocos/platform/android/libcocos2dx')
 include ':libGreedyAndroidAgent'
 project(':libGreedyAndroidAgent').projectDir = new File(settingsDir, '../../current-sdk/proj.android-studio/libGreedyAndroidAgent')
+include ':libGreedyAndroidAgentCommons'
+project(':libGreedyAndroidAgentCommons').projectDir = new File(settingsDir, '../../current-sdk/proj.android-studio/libGreedyAndroidAgentCommons')
 include ':SampleGame'
 project(':SampleGame').projectDir = new File(settingsDir, 'app')

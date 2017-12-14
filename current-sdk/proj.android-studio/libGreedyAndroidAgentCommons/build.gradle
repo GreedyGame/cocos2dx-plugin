@@ -1,0 +1,5 @@
+configurations.create("default")
+//2artifacts.add("default", file('temp-android-sdk-2025-core.aar'))
+artifacts.add("default", file('temp-android-sdk-2025-commons.aar'))
+//artifacts.add("default", file('commons.jar'))
+
