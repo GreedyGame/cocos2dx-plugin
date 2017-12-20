@@ -130,7 +130,7 @@ class NewGGListener : public IAgentListener {
      * TODO: New campaign is available and ready to use for the next scene.
      **/
         CCLOG("GG[COCOS] HW- onAvailable : Hello world scene onAvailable");
-        refreshNativeUnits();
+        // refreshNativeUnits();
     }
 
     void onUnavailable(){

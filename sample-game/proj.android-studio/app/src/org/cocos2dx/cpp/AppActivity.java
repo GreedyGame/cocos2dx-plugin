@@ -39,7 +39,7 @@ public class AppActivity extends Cocos2dxActivity {
         //JavaProxy.setClassAndMethod("org/cocos2dx/cpp/AppActivity","myActivity");
     }
 
-    public static Activity myActivity() {
+    public static Activity ggActivityHelper() {
         return (Activity) getContext();
     }
 
