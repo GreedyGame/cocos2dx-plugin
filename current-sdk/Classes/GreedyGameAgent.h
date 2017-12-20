@@ -21,7 +21,7 @@ namespace greedygame {
 
     class IAgentListener {
         public:
-            virtual void onAvailable(){};
+            virtual void onAvailable(const char *id){};
             virtual void onUnavailable(){};
             virtual void onProgress(int progress){};
             virtual void onError(const char *msg){};
@@ -40,6 +40,8 @@ namespace greedygame {
 
             static void init(jobject activity);
 
+            static void startEventRefresh();
+
             static string getNativeUnitPathById(const char *unit_id);
 
             static string getFloatUnitPathById(const char *unit_id);
@@ -55,6 +57,10 @@ namespace greedygame {
             static void removeFloatUnit(const char *unit_id);
 
             static void enableCrashReporting(bool enable);
+
+            static void setListener(IAgentListener* agentListener);
+
+            static void removeListener();
  
     };
 }
