@@ -172,7 +172,9 @@ namespace greedygame {
 				vm->GetEnv((void**)&env,JNI_VERSION_1_4);
 				jclass cls = env->FindClass(GreedyGame_CLASS_NAME);
 				jmethodID startEventRefresh = env->GetMethodID(cls, GG_REFRESH, "()V");
-				env->CallVoidMethod(agentObject, startEventRefresh);
+				if(agentObject!=null) {
+					env->CallVoidMethod(agentObject, startEventRefresh);
+				}
 				CCLOG("GG[COCOS] startEventRefresh completed successfully");
 			}
 		#endif

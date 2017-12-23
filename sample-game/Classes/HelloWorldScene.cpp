@@ -38,8 +38,8 @@ class HelloWorldGGListener : public IAgentListener {
      * TODO: Update and remove the native and float units since after refresh there was no campaign available.
      **/
      CCLOG("Hello world scene onUnavailable");
-     refreshNativeUnits();
-     refreshFloatUnits();
+     // refreshNativeUnits();
+     // refreshFloatUnits();
     }
 
     void onFound(){
@@ -130,7 +130,7 @@ class NewGGListener : public IAgentListener {
      * TODO: New campaign is available and ready to use for the next scene.
      **/
         CCLOG("GG[COCOS] HW- onAvailable : Hello world scene onAvailable");
-        // refreshNativeUnits();
+       
     }
 
     void onUnavailable(){
@@ -233,7 +233,7 @@ bool HelloWorld::init()
     // add your codes below...
     //////////////////////////////////////////////////////////////////////////
 
-    GreedyGameAgent::initialize(new HelloWorldGGListener());
+    GreedyGameAgent::initialize(new NewGGListener());
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
