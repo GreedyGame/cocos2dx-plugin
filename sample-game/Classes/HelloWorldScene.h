@@ -19,6 +19,8 @@ public:
 
 	static cocos2d::Scene* createScene();
 
+	static HelloWorld* getInstance();
+
 	//callback for init button
 	virtual void initCallback(cocos2d::Ref* pSender);
 	virtual void setListenerCallback(cocos2d::Ref* pSender);

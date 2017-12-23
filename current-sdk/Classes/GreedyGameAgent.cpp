@@ -115,7 +115,7 @@ namespace greedygame {
 		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 	        cocos2d::JniMethodInfo t;
 	        listener = _listener;
-	        CCLOG("GG[Cocos] initialize called");
+	        CCLOG("GG[Cocos] CPP INITIALIZE");
 
 	        if (cocos2d::JniHelper::getStaticMethodInfo(t, CocosActivity_CLASS_NAME
 	                                                    ,COCOS_GETCONTEXT
@@ -123,9 +123,10 @@ namespace greedygame {
 	        	{
 	           	jobject activity = (jobject) t.env->CallStaticObjectMethod(t.classID,t.methodID);
 	           	if(activity != NULL) {
+	        		CCLOG("GG[COCOS] ACTVIITY IS NULL");
 	        		init(activity);
 	        	} else {
-	        		CCLOG("GG[cocos] Activity is null. Please make sure that you have added ggActivityHelper() method which returns activity in your Cocos2dxActivity");
+	        		CCLOG("GG[COCOS] Please declare ggActivityHelper inside your cocos2dxMainActivity to initialize the GG SDK.Please refer to the integraton guide for more details.");
 	        	}
 	        }
 		#endif
@@ -135,7 +136,7 @@ namespace greedygame {
     void GreedyGameAgent::init(jobject activity2) {
 
     	if(!initDone) {
-    		CCLOG("GG[Cocos] init called ");
+    		CCLOG("GG[COCOS] inside overloaded init");
 			JavaVM* vm = JniHelper::getJavaVM();
 			JNIEnv* env;
 			vm->GetEnv((void**)&env,JNI_VERSION_1_4);
@@ -147,19 +148,18 @@ namespace greedygame {
     			agentObject = env->NewGlobalRef(agent);
 				jmethodID run = env->GetMethodID(cls, "init", "(Landroid/app/Activity;ZLjava/lang/String;Ljava/lang/String;)V");
     			if(activity2 != NULL && run!= NULL && agentObject!=NULL) {
-    				char* engine = "cocos2dx";
+    				char* engine = "cocos";
     				jstring stringEngine = env->NewStringUTF(engine);
-    				// std::stringstream ss;
-    				// ss << COCOS2D_VERSION;
-
     				jstring cocosVersion = env->NewStringUTF(cocos2dVersion());
     			 	env->CallVoidMethod(agentObject, run,activity2,enableCrashReport,stringEngine,cocosVersion);
     			 	initDone = true;
     			} else {
-    				CCLOG("GG[Cocos] make sure that the activity is not null.");
+    				CCLOG("GG[COCOS] Please declare ggActivityHelper inside your cocos2dxMainActivity to initialize the GG SDK.Please refer to the integraton guide for more details.");
     			}
 
-    	} 
+    	} else {
+    		startEventRefresh();
+    	}
 
     }
 
@@ -172,10 +172,10 @@ namespace greedygame {
 				vm->GetEnv((void**)&env,JNI_VERSION_1_4);
 				jclass cls = env->FindClass(GreedyGame_CLASS_NAME);
 				jmethodID startEventRefresh = env->GetMethodID(cls, GG_REFRESH, "()V");
-				if(agentObject!=null) {
+				if(startEventRefresh != NULL && agentObject != NULL){
 					env->CallVoidMethod(agentObject, startEventRefresh);
+					CCLOG("GG[COCOS] startEventRefresh completed successfully");
 				}
-				CCLOG("GG[COCOS] startEventRefresh completed successfully");
 			}
 		#endif
     }
@@ -183,23 +183,24 @@ namespace greedygame {
 
     void GreedyGameAgent::fetchFloatUnit(const char *unit_id)  {
 		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-		CCLOG("GG[COCOS] fetchFloatUnit called.");
 		if(initDone) {
-	    	JavaVM* vm = JniHelper::getJavaVM();
-			JNIEnv* env;
-			vm->GetEnv((void**)&env,JNI_VERSION_1_4);
-			jclass cls = env->FindClass(GreedyGame_CLASS_NAME);
-			jmethodID showFloat = env->GetMethodID(cls, GG_SHOW_FLOAT
-		                                                    ,"(Landroid/app/Activity;Ljava/lang/String;)V");
-			cocos2d::JniMethodInfo t;
-		    	if (cocos2d::JniHelper::getStaticMethodInfo(t, CocosActivity_CLASS_NAME
-		                                                    ,COCOS_GETCONTEXT
-		                                                    ,"()Landroid/app/Activity;"))
-			        {
-			           	jobject activity = (jobject) t.env->CallStaticObjectMethod(t.classID,t.methodID);
-			           	jstring stringId = env->NewStringUTF(unit_id);
-						env->CallVoidMethod(agentObject, showFloat,activity,stringId);
-			       	}
+    	JavaVM* vm = JniHelper::getJavaVM();
+		JNIEnv* env;
+		vm->GetEnv((void**)&env,JNI_VERSION_1_4);
+		jclass cls = env->FindClass(GreedyGame_CLASS_NAME);
+		jmethodID showFloat = env->GetMethodID(cls, GG_SHOW_FLOAT
+	                                                    ,"(Landroid/app/Activity;Ljava/lang/String;)V");
+		cocos2d::JniMethodInfo t;
+	    if (cocos2d::JniHelper::getStaticMethodInfo(t, CocosActivity_CLASS_NAME
+	                                                    ,COCOS_GETCONTEXT
+	                                                    ,"()Landroid/app/Activity;"))
+	        {
+	           	jobject activity = (jobject) t.env->CallStaticObjectMethod(t.classID,t.methodID);
+	           	jstring stringId = env->NewStringUTF(unit_id);
+	           	if(showFloat != NULL && agentObject != NULL && activity!=NULL){
+					env->CallVoidMethod(agentObject, showFloat,activity,stringId);
+				}
+	       	}
 	    }
     	#endif
     }
@@ -207,14 +208,16 @@ namespace greedygame {
     void GreedyGameAgent::removeAllFloatUnits(){
 		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		if(initDone) {
-			CCLOG("GG[COCOS] removeAllFloatUnits called successfully");
+		CCLOG("GG[COCOS] removeAllFloatUnit called successfully");
 			JavaVM* vm = JniHelper::getJavaVM();
 			JNIEnv* env;
 			vm->GetEnv((void**)&env,JNI_VERSION_1_4);
 			jclass cls = env->FindClass(GreedyGame_CLASS_NAME);
     		jmethodID removeAllFloats = env->GetMethodID(cls, GG_REMOVE_ALL_FLOAT,"()V");
-			env->CallVoidMethod(agentObject, removeAllFloats);
-    		CCLOG("GG[COCOS] removeAllFloatUnit completed successfully");
+    		if(removeAllFloats != NULL && agentObject != NULL){
+				env->CallVoidMethod(agentObject, removeAllFloats);
+    			CCLOG("GG[COCOS] removeAllFloatUnit completed successfully");
+    		}
     	}
 		#endif
     }
@@ -222,16 +225,18 @@ namespace greedygame {
     void GreedyGameAgent::removeFloatUnit(const char *unit_id){
 		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		if(initDone) {
-			CCLOG("GG[COCOS] removeFloatUnit called successfully");
-			JavaVM* vm = JniHelper::getJavaVM();
-			JNIEnv* env;
-			vm->GetEnv((void**)&env,JNI_VERSION_1_4);
-			jclass cls = env->FindClass(GreedyGame_CLASS_NAME);
-	    	jmethodID removeFloat = env->GetMethodID(cls, GG_REMOVE_FLOAT_UNIT,"(Ljava/lang/String;)V");
-			jstring stringId = env->NewStringUTF(unit_id);
+		CCLOG("GG[COCOS] removeFloatUnit called successfully");
+		JavaVM* vm = JniHelper::getJavaVM();
+		JNIEnv* env;
+		vm->GetEnv((void**)&env,JNI_VERSION_1_4);
+		jclass cls = env->FindClass(GreedyGame_CLASS_NAME);
+    	jmethodID removeFloat = env->GetMethodID(cls, GG_REMOVE_FLOAT_UNIT,"(Ljava/lang/String;)V");
+		jstring stringId = env->NewStringUTF(unit_id);
+		if(removeFloat != NULL && agentObject != NULL){
 			env->CallVoidMethod(agentObject, removeFloat,stringId);
-	    	CCLOG("GG[COCOS] removeFloatUnit completed successfully");
-	    }
+    		CCLOG("GG[COCOS] removeFloatUnit completed successfully");
+    	}
+    }
 		#endif
     }
 
@@ -239,66 +244,74 @@ namespace greedygame {
      void GreedyGameAgent::showEngagementWindow(const char *unit_id){
 		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		if(initDone) {
-			CCLOG("GG[COCOS] showEngagementWindow called successfully");
-			JavaVM* vm = JniHelper::getJavaVM();
-			JNIEnv* env;
-			vm->GetEnv((void**)&env,JNI_VERSION_1_4);
-			jclass cls = env->FindClass(GreedyGame_CLASS_NAME);
-	    	jmethodID showUII = env->GetMethodID(cls, GG_SHOW_UII,"(Ljava/lang/String;)V");
-			jstring stringId = env->NewStringUTF(unit_id);
+		CCLOG("GG[COCOS] showEngagementWindow called successfully");
+		JavaVM* vm = JniHelper::getJavaVM();
+		JNIEnv* env;
+		vm->GetEnv((void**)&env,JNI_VERSION_1_4);
+		jclass cls = env->FindClass(GreedyGame_CLASS_NAME);
+    	jmethodID showUII = env->GetMethodID(cls, GG_SHOW_UII,"(Ljava/lang/String;)V");
+		jstring stringId = env->NewStringUTF(unit_id);
+		if(showUII != NULL && agentObject != NULL){
 			env->CallVoidMethod(agentObject, showUII,stringId);
-	    	CCLOG("GG[COCOS] showEngagementWindow completed successfully");
+    		CCLOG("GG[COCOS] showEngagementWindow completed successfully");
     	}
+    }
 		#endif        
     }
 
 	std::string GreedyGameAgent::getNativeUnitPathById(const char *unit_id){
 		if(initDone) {
-			CCLOG("GG[COCOS] getNativeUnitPathById");
-			return getPath(unit_id);
+		return getPath(unit_id);
+		} else {
+			std::string path("");
+			return path;
 		}
 	}
 
 	std::string GreedyGameAgent::getFloatUnitPathById(const char *unit_id){
 		if(initDone) {
-			CCLOG("GG[COCOS] getFloatUnitPathById");
-			return getPath(unit_id); 
+		return getPath(unit_id); 
+		} else {
+			std::string path("");
+			return path;
 		}
     }
 
 	std::string GreedyGameAgent::getPath(const char *unit_id) {
 		if(initDone) {
-			std::string path("");
-			CCLOG("GG[COCOS] getPath called");        
-			#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-				JavaVM* vm = JniHelper::getJavaVM();
-				JNIEnv* env;
-				vm->GetEnv((void**)&env,JNI_VERSION_1_4);
-				jclass cls = env->FindClass(GreedyGame_CLASS_NAME);
-	    		jmethodID getNative = env->GetMethodID(cls, GG_GET_NATIVE_PATH,"(Ljava/lang/String;)Ljava/lang/String;");
-			    jstring stringId = env->NewStringUTF(unit_id);
+		std::string path("");
+		        
+		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+			JavaVM* vm = JniHelper::getJavaVM();
+			JNIEnv* env;
+			vm->GetEnv((void**)&env,JNI_VERSION_1_4);
+			jclass cls = env->FindClass(GreedyGame_CLASS_NAME);
+    		jmethodID getNative = env->GetMethodID(cls, GG_GET_NATIVE_PATH,"(Ljava/lang/String;)Ljava/lang/String;");
+		    jstring stringId = env->NewStringUTF(unit_id);
+		    if(getNative != NULL && agentObject != NULL){
 				jstring str = (jstring) env->CallObjectMethod(agentObject,getNative ,stringId);
 				path = JniHelper::jstring2string(str);
+			}
 			#endif      
-			return path;  
+		return path;  
+		} else {
+			std::string path("");
+			return path;
 		}
 	}
 
 	void GreedyGameAgent::enableCrashReporting(bool enable) {
-		CCLOG("GG[COCOS] enable crash reporting");        
 		enableCrashReport = enable;
 	}
 
 	void GreedyGameAgent::setListener(IAgentListener* _listener) {
     	#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-    	CCLOG("GG[COCOS] setListener");        
     	listener = _listener;
     	#endif
     }
 
     void GreedyGameAgent::removeListener() {
     	#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-    	CCLOG("GG[COCOS] removeListener called"); 
     	listener = NULL;
     	#endif
     }

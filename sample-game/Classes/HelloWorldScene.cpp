@@ -18,6 +18,7 @@ Node* greedyNative;
 
 Sprite* floatSprite ;
 Node* greedyFloatNode;
+bool isTextureAvailable=false;
 
 class HelloWorldGGListener : public IAgentListener {
     public:
@@ -38,8 +39,8 @@ class HelloWorldGGListener : public IAgentListener {
      * TODO: Update and remove the native and float units since after refresh there was no campaign available.
      **/
      CCLOG("Hello world scene onUnavailable");
-     // refreshNativeUnits();
-     // refreshFloatUnits();
+     refreshNativeUnits();
+     refreshFloatUnits();
     }
 
     void onFound(){
@@ -106,15 +107,36 @@ class HelloWorldGGListener : public IAgentListener {
             if(floatSprite == NULL) {
                     CCLOG("GG[HW]-floatSprite is null");
                     floatSprite = Sprite::create("Player.png");
+                    isTextureAvailable=false;
+            }
+            else{
+                isTextureAvailable=true;
             }
         }else{
             CCLOG("GG[HW]-Native Unit Path is empty");
+            isTextureAvailable=false;
             floatSprite = Sprite::create("Player.png");
         }
         floatSprite->setAnchorPoint(Vec2(0.5,0.5));
         floatSprite->setPosition( Vec2(visibleSize.width - floatSprite->getContentSize().width/2 + 5,
                          origin.y + visibleSize.height/2));
-        greedyFloatNode->addChild(floatSprite);
+        //adding touch listener to sprite
+        auto touchListener = EventListenerTouchOneByOne::create();
+       touchListener->onTouchBegan = [](Touch* touch, Event* event) -> bool {
+
+          auto bounds = event->getCurrentTarget()->getBoundingBox();
+
+          if (bounds.containsPoint(touch->getLocation())){
+            if(isTextureAvailable){
+                GreedyGameAgent::showEngagementWindow("float-1877");
+            }
+                
+             }
+          return true;
+          };
+
+       Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener,floatSprite);
+       greedyFloatNode->addChild(floatSprite);
     }
 
 
@@ -130,7 +152,7 @@ class NewGGListener : public IAgentListener {
      * TODO: New campaign is available and ready to use for the next scene.
      **/
         CCLOG("GG[COCOS] HW- onAvailable : Hello world scene onAvailable");
-       
+        refreshNativeUnits();
     }
 
     void onUnavailable(){
@@ -228,12 +250,23 @@ bool HelloWorld::init()
     {
         return false;
     }
+
+    // android back press event
+    auto touchListener = EventListenerKeyboard::create();
+    touchListener->onKeyReleased = [](cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event)
+    {
+        if (keyCode == EventKeyboard::KeyCode::KEY_BACK)
+        {
+            Director::getInstance()->end();
+        }
+    };
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
     
     //////////////////////////////////////////////////////////////////////////
     // add your codes below...
     //////////////////////////////////////////////////////////////////////////
 
-    GreedyGameAgent::initialize(new NewGGListener());
+    //GreedyGameAgent::initialize(new HelloWorldGGListener());
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -375,21 +408,7 @@ bool HelloWorld::init()
 
         CCLOG( "GG[HWScene] Adding FloatUnit as native float for id : 1877 inside game by default" );
             greedyFloatNode = Node::create();
-            //floatSprite = Sprite::create();
             floatSprite = Sprite::create("Player.png");
-            /*std::string unitPath2 = GreedyGameAgent::getFloatUnitPathById("float-1877");
-            CCLOG("unitPath = %s", unitPath2.c_str());
-        
-                if(!unitPath2.empty()){
-                    floatSprite = Sprite::create(unitPath2);
-                    if(floatSprite == NULL){
-                        floatSprite = Sprite::create("Player.png");
-                    }
-                }else{
-                    floatSprite = Sprite::create("Player.png");
-                }*/
-        
-        
             floatSprite->setAnchorPoint(Vec2(0.5,0.5));
             floatSprite->setPosition( Vec2(visibleSize.width - floatSprite->getContentSize().width/2 + 5,
                              origin.y + visibleSize.height/2));
@@ -418,7 +437,7 @@ bool HelloWorld::init()
 void HelloWorld::initCallback(Ref* pSender)
 {
     CCLOG( "GG[HWScene] initCallback called");
-    //GreedyGameAgent::initialize(new HelloWorldGGListener());
+    GreedyGameAgent::initialize(new HelloWorldGGListener());
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     exit(0);
 #endif
@@ -473,7 +492,6 @@ void HelloWorld::getFloatPathCallback(Ref* pSender)
 void HelloWorld::getNativePathCallback(Ref* pSender)
 {
     CCLOG( "GG[HWScene] calling getNativePath with unit id unit-2335");
-    //GreedyGameAgent::getNativeUnitPathById("unit-2335");
     refreshNativeUnits();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     exit(0);
@@ -742,17 +760,57 @@ void HelloWorld::refreshFloatUnits() {
             CCLOG("GG[HWScene]-Float Unit Path is not empty");
             floatSprite = Sprite::create(unitPath);
             if(floatSprite == NULL) {
+                isTextureAvailable=false;
                     floatSprite = Sprite::create("Player.png");
             }
+            else{
+                isTextureAvailable=true;
+                        auto touchListener = EventListenerTouchOneByOne::create();
+               touchListener->onTouchBegan = [](Touch* touch, Event* event) -> bool {
+
+                  auto bounds = event->getCurrentTarget()->getBoundingBox();
+
+                  if (bounds.containsPoint(touch->getLocation())){
+                        if(isTextureAvailable){
+                            GreedyGameAgent::showEngagementWindow("float-1877");
+                        }
+                        
+                     }
+                  return true;
+                  };
+                  Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener,floatSprite);
+            }
         }else{
+            isTextureAvailable=false;
             CCLOG("GG[HWScene]-Float Unit Path is empty");
             floatSprite = Sprite::create("Player.png");
         }
         floatSprite->setAnchorPoint(Vec2(0.5,0.5));
         floatSprite->setPosition( Vec2(visibleSize.width - floatSprite->getContentSize().width/2 + 5,
                          origin.y + visibleSize.height/2));
-        greedyFloatNode->addChild(floatSprite);
+        // Add a "touch" event listener to our sprite
+       
+       greedyFloatNode->addChild(floatSprite);
+
+        /*floatSprite->setContentSize(Size(50,50));
+        auto _touchListener = EventListenerTouchOneByOne::create();
+        _touchListener->onTouchBegan = [](cocos2d::Touch* touch, cocos2d::Event* event) {
+            CCLOG("GG[LS]-Touch Began");
+            GreedyGameAgent::showEngagementWindow("float-1877");
+            return true;
+        };
+        this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(_touchListener, floatSprite);*/
 }
+
+/*HelloWorld* HelloWorld::_instance = NULL;
+HelloWorld::HelloWorld(){
+    CCLOG("GG[LS]-HelloWorldScene Constructor");
+    HelloWorld::_instance = this;
+}
+
+HelloWorld* HelloWorld::getInstance(){
+    return HelloWorld::_instance;
+}*/
 
 
 void HelloWorld::refreshNativeUnits() {

@@ -1,4 +1,4 @@
 configurations.create("default")
-artifacts.add("default", file('temp-android-sdk-2044-core.aar'))
+artifacts.add("default", file('r-android-sdk-2018.aar'))
 //artifacts.add("default", file('commons.jar'))
 
