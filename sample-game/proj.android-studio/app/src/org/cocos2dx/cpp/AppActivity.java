@@ -25,16 +25,19 @@ package org.cocos2dx.cpp;
 
 import android.os.Bundle;
 
-import com.greedygame.android.platforms.cocos2dx.GreedyGame;
-
 import org.cocos2dx.lib.Cocos2dxActivity;
 import org.cocos2dx.lib.Cocos2dxGLSurfaceView;
+
+import android.content.Context;
+import android.app.Activity;
 
 public class AppActivity extends Cocos2dxActivity {
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        GreedyGame.setup(this, Cocos2dxGLSurfaceView.getInstance());
+    }
 
+    public static Activity ggActivityHelper() {
+    	return (Activity) getContext();
     }
 }

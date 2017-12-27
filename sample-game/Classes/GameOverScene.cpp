@@ -1,8 +1,10 @@
 
 #include "GameOverScene.h"
 #include "HelloWorldScene.h"
+#include "../../current-sdk/Classes/GreedyGameAgent.h"
 
 using namespace cocos2d;
+using namespace greedygame;
 
 
 Scene* GameOverScene::createScene()
@@ -29,6 +31,8 @@ bool GameOverScene::init()
     {
         return false;
     }
+
+    //GreedyGameAgent::removeAllFloatUnits();
 	auto winSize = Director::getInstance()->getWinSize();
 	this->label = Label::createWithTTF("HERE...", "fonts/Marker Felt.ttf", 24);
 	this->label->setColor(Color3B(0,0,0));

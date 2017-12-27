@@ -12,6 +12,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <jni.h>
+
 
 using namespace std;
 
@@ -19,7 +21,7 @@ namespace greedygame {
 
     class IAgentListener {
         public:
-            virtual void onAvailable(){};
+            virtual void onAvailable(const char *id){};
             virtual void onUnavailable(){};
             virtual void onProgress(int progress){};
             virtual void onError(const char *msg){};
@@ -30,11 +32,15 @@ namespace greedygame {
 
         public:
 
-            static void init(IAgentListener* agentListener);
+            static jobject agentObject;
 
-            static void setDebugLog(bool b);
+            static bool enableCrashReport;
 
-            static string getCampaignPath();
+            static void initialize(IAgentListener* listener);
+
+            static void init(jobject activity);
+
+            static void startEventRefresh();
 
             static string getNativeUnitPathById(const char *unit_id);
 
@@ -42,13 +48,19 @@ namespace greedygame {
 
             static void fetchFloatUnit(const char *unit_id);
 
+            static string getPath(const char *unitid);
+
             static void removeAllFloatUnits();
             
             static void showEngagementWindow(const char *unit_id);
 
-            static void forcedExit();
-
             static void removeFloatUnit(const char *unit_id);
+
+            static void enableCrashReporting(bool enable);
+
+            static void setListener(IAgentListener* agentListener);
+
+            static void removeListener();
  
     };
 }

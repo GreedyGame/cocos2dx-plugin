@@ -13,15 +13,19 @@ bool isLoaded = false;
 void moveToNextScene() {
 
 if(!isLoaded) {
+    CCLOG("GG[LS]-move to next scene");
     isLoaded = true;
     LoadingScene::getInstance()->label->setString("Tap to start game!");
     auto _touchListener = EventListenerTouchOneByOne::create();
     _touchListener->onTouchBegan = [](cocos2d::Touch* touch, cocos2d::Event* event) {
+        CCLOG("GG[LS]-Touch Began");
         auto scene = HelloWorld::createScene();
         auto director = Director::getInstance();
         director->replaceScene(scene); 
+        CCLOG("GG[LS]-Hello World Scene created successfully");
         return true;
     };
+    CCLOG("GG[LS]-Touch completed");
     LoadingScene::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(_touchListener, LoadingScene::getInstance());
 
     }
@@ -31,12 +35,12 @@ if(!isLoaded) {
 class GreedyAgentListener : public IAgentListener {
     public:
 
-    void onAvailable() {
+    void onAvailable(const char *campaignId) {
     /**
      * TODO: New campaign is available and ready to use for the next scene.
      **/
         moveToNextScene();
-        CCLOG("onAvailable callback inside cocos cpp wrapper");
+        CCLOG("GG[LS]-onAvailable callback inside cocos cpp wrapper");
        // GreedyGameAgent::fetchFloatUnit("float-1935");
     }
 
@@ -44,7 +48,7 @@ class GreedyAgentListener : public IAgentListener {
     /**
      * TODO: New campaign has been loaded, move to next scene
      **/
-     CCLOG("onUnavailable callback inside cocos cpp wrapper");
+     CCLOG("GG[LS]-onUnavailable callback inside cocos cpp wrapper");
        moveToNextScene();
     }
 
@@ -53,7 +57,7 @@ class GreedyAgentListener : public IAgentListener {
      * TODO: progress will show value from o to 100,
      * which can be used to render loading bar.
      **/
-     CCLOG("onFound callback inside cocos cpp wrapper");
+     CCLOG("GG[LS]-onFound callback inside cocos cpp wrapper");
     }
 
     void onProgress(int progress){
@@ -61,7 +65,7 @@ class GreedyAgentListener : public IAgentListener {
          * TODO: progress will show value from o to 100,
          * which can be used to render loading bar.
          **/
-         CCLOG("onProgress callback inside cocos cpp wrapper");
+         CCLOG("GG[LS]-onProgress callback inside cocos cpp wrapper");
         }
 
     void onError(const char *message){
@@ -69,7 +73,7 @@ class GreedyAgentListener : public IAgentListener {
          * TODO: callback which notifies of the error
          **/
     	std::string s(message);
-    	CCLOG("the string received is NIKHIL : %s",s.c_str());
+    	CCLOG("GG[LS]-the string received is NIKHIL : %s",s.c_str());
     	 
          //CCLOG("onError callback inside cocos cpp wrapper" + message);
         }
@@ -80,7 +84,7 @@ class GreedyAgentListener : public IAgentListener {
 
 LoadingScene* LoadingScene::_instance = NULL;
 LoadingScene::LoadingScene(){
-    CCLOG("LoadingScene Constructor");
+    CCLOG("GG[LS]-LoadingScene Constructor");
     LoadingScene::_instance = this;
 }
 
@@ -114,9 +118,11 @@ bool LoadingScene::init()
     {
         return false;
     }
-    
 
-    GreedyGameAgent::init(new GreedyAgentListener());
+    /*CCLOG("GG[LS] init called");*/
+    //GreedyGameAgent::init(new GreedyAgentListener());
+    /*GreedyGameAgent::initialize(new GreedyAgentListener());*/
+    //GreedyGameAgent::init();
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -145,6 +151,7 @@ bool LoadingScene::init()
 
     // add the sprite as a child to this layer
     this->addChild(sprite, 0);
-    
+
+    moveToNextScene();
     return true;
 }
