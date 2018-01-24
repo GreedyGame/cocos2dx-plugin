@@ -39,9 +39,14 @@ class GreedyAgentListener : public IAgentListener {
     /**
      * TODO: New campaign is available and ready to use for the next scene.
      **/
-        moveToNextScene();
+        
         CCLOG("GG[LS]-onAvailable callback inside cocos cpp wrapper");
        // GreedyGameAgent::fetchFloatUnit("float-1935");
+    }
+
+    void onProceed() {
+    	CCLOG("GG[LS]-onProceed callback inside cocos cpp wrapper");
+    	moveToNextScene();
     }
 
     void onUnavailable(){
@@ -49,7 +54,6 @@ class GreedyAgentListener : public IAgentListener {
      * TODO: New campaign has been loaded, move to next scene
      **/
      CCLOG("GG[LS]-onUnavailable callback inside cocos cpp wrapper");
-       moveToNextScene();
     }
 
     void onFound(){
@@ -121,7 +125,7 @@ bool LoadingScene::init()
 
     /*CCLOG("GG[LS] init called");*/
     //GreedyGameAgent::init(new GreedyAgentListener());
-    /*GreedyGameAgent::initialize(new GreedyAgentListener());*/
+    GreedyGameAgent::initialize(new GreedyAgentListener());
     //GreedyGameAgent::init();
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -152,6 +156,6 @@ bool LoadingScene::init()
     // add the sprite as a child to this layer
     this->addChild(sprite, 0);
 
-    moveToNextScene();
+    //moveToNextScene();
     return true;
 }

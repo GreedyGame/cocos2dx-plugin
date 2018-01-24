@@ -25,6 +25,7 @@ namespace greedygame {
             virtual void onUnavailable(){};
             virtual void onProgress(int progress){};
             virtual void onError(const char *msg){};
+            virtual void onProceed(){};
             virtual void onFound(){};
     };
 

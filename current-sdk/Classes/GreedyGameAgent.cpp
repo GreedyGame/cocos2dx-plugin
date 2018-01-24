@@ -84,6 +84,17 @@ namespace greedygame {
 	        	}
 	        }
 
+	        JNIEXPORT void JNICALL Java_com_greedygame_android_JavaProxy_onProceed(JNIEnv* env, jobject thiz)
+	        {
+	        	if(listener != NULL){
+	        		cocos2d::Director::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+	        			
+	        			listener->onProceed();
+	            		
+					});
+	        	}
+	        }
+
 	        JNIEXPORT void JNICALL Java_com_greedygame_android_JavaProxy_onError(JNIEnv* env, jobject thiz, jstring msg)
 	        {
 	        	if(listener != NULL){

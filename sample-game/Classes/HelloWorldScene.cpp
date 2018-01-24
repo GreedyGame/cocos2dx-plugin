@@ -34,6 +34,10 @@ class HelloWorldGGListener : public IAgentListener {
         refreshFloatUnits();
     }
 
+    void onProceed() {
+
+    }
+
     void onUnavailable(){
     /**
      * TODO: Update and remove the native and float units since after refresh there was no campaign available.
@@ -153,6 +157,10 @@ class NewGGListener : public IAgentListener {
      **/
         CCLOG("GG[COCOS] HW- onAvailable : Hello world scene onAvailable");
         refreshNativeUnits();
+    }
+
+    void onProceed() {
+    	
     }
 
     void onUnavailable(){
