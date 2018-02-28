@@ -232,10 +232,14 @@ Scene* HelloWorld::createScene()
     // 'layer' is an autorelease object
     auto layer = HelloWorld::create();
 
+    // return the scene
+    scene -> init();
+
     // add layer as a child to scene
     scene->addChild(layer);
 
-    // return the scene
+    
+
     return scene;
 }
 
@@ -253,6 +257,7 @@ void *RefreshCall(void *args){
 // on "init" you need to initialize your instance
 bool HelloWorld::init()
 {
+    CCLOG( "GG[HWScene] NIXAC" );
     // 1. super init first
     if ( !LayerColor::initWithColor(Color4B(172, 115, 57,255)) )
     {

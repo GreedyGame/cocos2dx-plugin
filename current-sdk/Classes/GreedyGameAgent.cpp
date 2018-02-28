@@ -32,6 +32,7 @@ USING_NS_CC;
     #define GG_SHOW_UII "showUII"
     #define GG_GET_NATIVE_PATH "getPath"
     #define GG_GET_FLOAT_PATH "getPath"
+	#define GG_ENABLE_ADMOB "enableAdmob"
 	
 
 	#define CocosActivity_CLASS_NAME "org/cocos2dx/cpp/AppActivity"	
@@ -43,6 +44,7 @@ namespace greedygame {
     jobject GreedyGameAgent::agentObject;
     bool initDone = false;
     bool GreedyGameAgent::enableCrashReport = true;
+    bool GreedyGameAgent::enableAdmobBoolean = false;
     // char* customActivityClass = "org/cocos2dx/cpp/AppActivity";
     // char* customActivityMethod = "myActivity";
 
@@ -127,10 +129,16 @@ namespace greedygame {
 	        listener = _listener;
 	        CCLOG("GG[Cocos] CPP INITIALIZE");
 
+	        if(cocos2d::JniHelper::getStaticMethodInfo(t,GreedyGame_CLASS_NAME, GG_ENABLE_ADMOB,"(Z)V")){
+	        	CCLOG("GG[COCOS] Setting admob in GGAgent");
+	        	t.env->CallStaticVoidMethod(t.classID,t.methodID, enableAdmobBoolean);
+	        }
+
 	        if (cocos2d::JniHelper::getStaticMethodInfo(t, CocosActivity_CLASS_NAME
 	                                                    ,COCOS_GETCONTEXT
 	                                                    ,"()Landroid/app/Activity;"))
 	        	{
+	        		
 		           	jobject activity = (jobject) t.env->CallStaticObjectMethod(t.classID,t.methodID);
 		           	if(activity != NULL) {
 		        		CCLOG("GG[COCOS] ACTVIITY IS NOT NULL");
@@ -163,7 +171,6 @@ namespace greedygame {
     				jstring stringEngine = env->NewStringUTF(engine);
     				// std::stringstream ss;
     				// ss << COCOS2D_VERSION;
-
     				jstring cocosVersion = env->NewStringUTF(cocos2dVersion());
     			 	env->CallVoidMethod(agentObject, run,activity2,enableCrashReport,stringEngine,cocosVersion);
     			 	initDone = true;
@@ -316,6 +323,10 @@ namespace greedygame {
 
 	void GreedyGameAgent::enableCrashReporting(bool enable) {
 		enableCrashReport = enable;
+	}
+
+	void GreedyGameAgent::enableAdmob(bool enable) {
+		enableAdmobBoolean = enable;
 	}
 
 	void GreedyGameAgent::setListener(IAgentListener* _listener) {
