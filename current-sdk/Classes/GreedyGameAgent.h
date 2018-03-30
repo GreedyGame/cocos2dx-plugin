@@ -66,6 +66,8 @@ namespace greedygame {
             static void removeListener();
 
             static void enableAdmob(bool enable);
+
+            static void sendCrashReport(const char *error, bool enable);
  
     };
 }

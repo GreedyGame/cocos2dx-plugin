@@ -79,7 +79,8 @@ class HelloWorldGGListener : public IAgentListener {
         Vec2 origin = Director::getInstance()->getVisibleOrigin();
         player = Sprite::create();
         std::string unitPath = GreedyGameAgent::getNativeUnitPathById("unit-2335");
-        CCLOG("unitPath = %s", unitPath.c_str());
+        Director::getInstance()->getTextureCache()->removeTextureForKey(unitPath);
+        CCLOG("GG[HW] unitPath = %s", unitPath.c_str());
         if(!unitPath.empty()){
             CCLOG("GG[HW]-Native Unit Path is not empty");
             player = Sprite::create(unitPath);
@@ -107,16 +108,22 @@ class HelloWorldGGListener : public IAgentListener {
         CCLOG("unitPath = %s", unitPath.c_str());
         if(!unitPath.empty()){
             CCLOG("GG[HW]-Float Unit Path is not empty");
+            Director::getInstance()->getTextureCache()->removeTextureForKey(unitPath);
             floatSprite = Sprite::create(unitPath);
             if(floatSprite == NULL) {
                     CCLOG("GG[HW]-floatSprite is null");
+                    // Important : http://discuss.cocos2d-x.org/t/sprite-cache-how-to-eliminate-that/17507/7
+                    // in case you are using the same campaign id then the texture won't update itself. due to caching.
+                    //In that case use the following API
+                    Director::getInstance()->getTextureCache()->removeAllTextures();
+                    //This removes just one particular cache
                     floatSprite = Sprite::create("Player.png");
                     isTextureAvailable=false;
             }
             else{
                 isTextureAvailable=true;
             }
-        }else{
+        } else {
             CCLOG("GG[HW]-Native Unit Path is empty");
             isTextureAvailable=false;
             floatSprite = Sprite::create("Player.png");
@@ -344,7 +351,7 @@ bool HelloWorld::init()
 
 
     //getFloatPath
-    auto getFloatPathButton = MenuItemImage::create("ggbuttons/getFloatPath.png","ggbuttons/getFloatPath.png",CC_CALLBACK_1(HelloWorld::getFloatPathCallback, this));
+    auto getFloatPathButton = MenuItemImage::create("ggbuttons/floatPath.png","ggbuttons/floatPath.png",CC_CALLBACK_1(HelloWorld::getFloatPathCallback, this));
     // initButton->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
     //                     origin.y + closeItem->getContentSize().height/2));
     getFloatPathButton->setPosition(Vec2(210 ,visibleSize.height - 100));
@@ -353,7 +360,7 @@ bool HelloWorld::init()
     this->addChild(getFloatPathMenu, 6);
 
     //getNativePath
-    auto getNativePathButton = MenuItemImage::create("ggbuttons/getNativePath.png","ggbuttons/getNativePath.png",CC_CALLBACK_1(HelloWorld::getNativePathCallback, this));
+    auto getNativePathButton = MenuItemImage::create("ggbuttons/nativePath.png","ggbuttons/nativePath.png",CC_CALLBACK_1(HelloWorld::getNativePathCallback, this));
     // initButton->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
     //                     origin.y + closeItem->getContentSize().height/2));
     getNativePathButton->setPosition(Vec2(320 ,visibleSize.height - 100));
@@ -462,7 +469,7 @@ void HelloWorld::initCallback(Ref* pSender)
 void HelloWorld::setListenerCallback(Ref* pSender)
 {
     CCLOG( "GG[COCOS] HW-setListener called");
-    GreedyGameAgent::setListener(new NewGGListener());
+    GreedyGameAgent::setListener(new HelloWorldGGListener());
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     exit(0);
 #endif
@@ -769,6 +776,7 @@ void HelloWorld::refreshFloatUnits() {
         Vec2 origin = Director::getInstance()->getVisibleOrigin();
         floatSprite = Sprite::create();
         std::string unitPath = GreedyGameAgent::getFloatUnitPathById("float-1877");
+        Director::getInstance()->getTextureCache()->removeTextureForKey(unitPath);
         CCLOG("GG[HWScene] unitPath = %s", unitPath.c_str());
         if(!unitPath.empty()){
             CCLOG("GG[HWScene]-Float Unit Path is not empty");
@@ -834,6 +842,7 @@ void HelloWorld::refreshNativeUnits() {
         Vec2 origin = Director::getInstance()->getVisibleOrigin();
         player = Sprite::create();
         std::string unitPath = GreedyGameAgent::getNativeUnitPathById("unit-2335");
+        Director::getInstance()->getTextureCache()->removeTextureForKey(unitPath);
         CCLOG("GG[HWScene] unitPath = %s", unitPath.c_str());
         if(!unitPath.empty()){
             CCLOG("GG[HWScene]-Native Unit Path is not empty");

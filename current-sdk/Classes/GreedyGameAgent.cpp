@@ -33,6 +33,7 @@ USING_NS_CC;
     #define GG_GET_NATIVE_PATH "getPath"
     #define GG_GET_FLOAT_PATH "getPath"
 	#define GG_ENABLE_ADMOB "enableAdmob"
+	#define GG_SEND_CRASH "sendCrash"
 	
 
 	#define CocosActivity_CLASS_NAME "org/cocos2dx/cpp/AppActivity"	
@@ -318,6 +319,20 @@ namespace greedygame {
 		} else {
 			std::string path("");
 			return path;
+		}
+	}
+
+	void GreedyGameAgent::sendCrashReport(const char *error, bool isFatal) {
+		if(initDone) {
+			#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+				JavaVM* vm = JniHelper::getJavaVM();
+				JNIEnv* env;
+				vm->GetEnv((void**)&env,JNI_VERSION_1_4);
+				jclass cls = env->FindClass(GreedyGame_CLASS_NAME);
+	    		jmethodID getCrashMethodID = env->GetMethodID(cls, GG_SEND_CRASH,"(Ljava/lang/String;Z)V");
+	    		jstring stringError = env->NewStringUTF(error);
+			    env->CallVoidMethod(agentObject, getCrashMethodID, stringError, false);
+			#endif    
 		}
 	}
 
