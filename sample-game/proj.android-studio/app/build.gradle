@@ -52,6 +52,11 @@ dependencies {
     compile 'com.facebook.android:audience-network-sdk:4.25.0'
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.ads.interactivemedia.v3:interactivemedia:3.4.0'
+    compile('com.mopub:mopub-sdk-native-video:4.16.0@aar') {
+        transitive = true
+        exclude module: 'libAvid-mopub' // To exclude AVID
+        exclude module: 'moat-mobile-app-kit' // To exclude Moat
+    }
 
 }
 

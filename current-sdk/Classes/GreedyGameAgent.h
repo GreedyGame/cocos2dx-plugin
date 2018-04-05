@@ -39,6 +39,10 @@ namespace greedygame {
 
             static bool enableAdmobBoolean;
 
+            static bool enableMopubBoolean;
+
+            static bool enableFacebookBoolean;
+
             static void initialize(IAgentListener* listener);
 
             static void init(jobject activity);
@@ -66,6 +70,8 @@ namespace greedygame {
             static void removeListener();
 
             static void enableAdmob(bool enable);
+
+            static void enableMopub(bool enable);
 
             static void sendCrashReport(const char *error, bool enable);
  

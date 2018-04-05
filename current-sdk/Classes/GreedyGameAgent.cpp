@@ -33,6 +33,8 @@ USING_NS_CC;
     #define GG_GET_NATIVE_PATH "getPath"
     #define GG_GET_FLOAT_PATH "getPath"
 	#define GG_ENABLE_ADMOB "enableAdmob"
+#define GG_ENABLE_FACEBOOK "enableFacebook"
+#define GG_ENABLE_MOPUB "enableMoPub"
 	#define GG_SEND_CRASH "sendCrash"
 	
 
@@ -46,6 +48,10 @@ namespace greedygame {
     bool initDone = false;
     bool GreedyGameAgent::enableCrashReport = true;
     bool GreedyGameAgent::enableAdmobBoolean = false;
+
+    bool GreedyGameAgent::enableFacebookBoolean = false;
+
+    bool GreedyGameAgent::enableMopubBoolean = false;
     // char* customActivityClass = "org/cocos2dx/cpp/AppActivity";
     // char* customActivityMethod = "myActivity";
 
@@ -133,6 +139,16 @@ namespace greedygame {
 	        if(cocos2d::JniHelper::getStaticMethodInfo(t,GreedyGame_CLASS_NAME, GG_ENABLE_ADMOB,"(Z)V")){
 	        	CCLOG("GG[COCOS] Setting admob in GGAgent");
 	        	t.env->CallStaticVoidMethod(t.classID,t.methodID, enableAdmobBoolean);
+	        }
+
+	        if(cocos2d::JniHelper::getStaticMethodInfo(t,GreedyGame_CLASS_NAME, GG_ENABLE_FACEBOOK,"(Z)V")){
+	        	CCLOG("GG[COCOS] Setting facebook in GGAgent");
+	        	t.env->CallStaticVoidMethod(t.classID,t.methodID, enableFacebookBoolean);
+	        }
+
+	        if(cocos2d::JniHelper::getStaticMethodInfo(t,GreedyGame_CLASS_NAME, GG_ENABLE_MOPUB,"(Z)V")){
+	        	CCLOG("GG[COCOS] Setting mopub in GGAgent");
+	        	t.env->CallStaticVoidMethod(t.classID,t.methodID, enableMopubBoolean);
 	        }
 
 	        if (cocos2d::JniHelper::getStaticMethodInfo(t, CocosActivity_CLASS_NAME
@@ -342,6 +358,14 @@ namespace greedygame {
 
 	void GreedyGameAgent::enableAdmob(bool enable) {
 		enableAdmobBoolean = enable;
+	}
+
+	void GreedyGameAgent::enableFacebook(bool enable) {
+		enableFacebookBoolean = enable;
+	}
+
+	void GreedyGameAgent::enableMopub(bool enable) {
+		enableMopubBoolean = enable;
 	}
 
 	void GreedyGameAgent::setListener(IAgentListener* _listener) {

@@ -126,6 +126,8 @@ bool LoadingScene::init()
     /*CCLOG("GG[LS] init called");*/
     //GreedyGameAgent::init(new GreedyAgentListener());
     GreedyGameAgent::enableAdmob(true);
+    GreedyGameAgent::enableFacebook(true);
+    GreedyGameAgent::enableMopub(true);
     GreedyGameAgent::initialize(new GreedyAgentListener());
     //GreedyGameAgent::init();
 
