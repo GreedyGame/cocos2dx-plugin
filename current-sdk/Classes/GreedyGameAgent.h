@@ -73,6 +73,9 @@ namespace greedygame {
 
             static void enableMopub(bool enable);
 
+
+            static void enableFacebook(bool enable);
+
             static void sendCrashReport(const char *error, bool enable);
  
     };
