@@ -457,8 +457,15 @@ bool HelloWorld::init()
 void HelloWorld::initCallback(Ref* pSender)
 {
     CCLOG( "GG[HWScene] initCallback called");
-    GreedyGameAgent::enableCrashReporting(false);
-    GreedyGameAgent::initialize(new HelloWorldGGListener());
+    GGAdOptions* adOptions = new GGAdOptions();
+    adOptions->enableAdmobMediation(true);
+    adOptions->enableMopubMediation(true);
+    adOptions->enableFacebookMediation(true);
+    adOptions->withAgentListener(new HelloWorldGGListener());
+    string unitList[4] = {"float-1","float-2", "float-3", "float-4"};
+    adOptions->addUnitList(unitList);
+    adOptions->addUnitId("float-0");
+    GreedyGameAgent::initialize(adOptions);
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     exit(0);
 #endif

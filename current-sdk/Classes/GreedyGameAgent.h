@@ -29,23 +29,59 @@ namespace greedygame {
             virtual void onFound(){};
     };
 
+    class GGAdOptions {
+            
+                public:
+
+                    JavaVM* vm;
+
+                    JNIEnv* env;
+            
+                    jclass cls;
+
+                    static jobject builderObj;
+
+                    static bool enableCrashReportBoolean;
+
+                    static bool enableAdmobBoolean;
+
+                    static bool enableMopubBoolean;
+
+                    static bool enableFacebookBoolean;
+
+                    GGAdOptions();
+
+                    GGAdOptions* enableAdmobMediation(bool enable);
+
+                    GGAdOptions* enableFacebookMediation(bool enable);
+
+                    GGAdOptions* enableMopubMediation(bool enable);
+
+                    GGAdOptions* enableCrashReporting(bool enable);
+
+                    GGAdOptions* gameEngine();
+
+                    GGAdOptions* engineVersion();
+
+                    GGAdOptions* addUnitId(const char* unitId);
+
+                    GGAdOptions* addUnitList(const string* unitIdList);
+
+                    GGAdOptions* withAgentListener(IAgentListener* listener);
+
+                    jobject getBuilderObject();
+
+            };
+
     class GreedyGameAgent {
 
         public:
 
             static jobject agentObject;
 
-            static bool enableCrashReport;
+            static void initialize(GGAdOptions* ggAdOptions);
 
-            static bool enableAdmobBoolean;
-
-            static bool enableMopubBoolean;
-
-            static bool enableFacebookBoolean;
-
-            static void initialize(IAgentListener* listener);
-
-            static void init(jobject activity);
+            static void init();
 
             static void startEventRefresh();
 
@@ -63,18 +99,9 @@ namespace greedygame {
 
             static void removeFloatUnit(const char *unit_id);
 
-            static void enableCrashReporting(bool enable);
-
             static void setListener(IAgentListener* agentListener);
 
             static void removeListener();
-
-            static void enableAdmob(bool enable);
-
-            static void enableMopub(bool enable);
-
-
-            static void enableFacebook(bool enable);
 
             static void sendCrashReport(const char *error, bool enable);
  

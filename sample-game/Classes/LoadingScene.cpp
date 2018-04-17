@@ -125,12 +125,21 @@ bool LoadingScene::init()
 
     /*CCLOG("GG[LS] init called");*/
     //GreedyGameAgent::init(new GreedyAgentListener());
-    GreedyGameAgent::enableAdmob(true);
-    GreedyGameAgent::enableFacebook(true);
-    GreedyGameAgent::enableMopub(true);
-    GreedyGameAgent::initialize(new GreedyAgentListener());
+    // GreedyGameAgent::enableAdmob(true);
+    // GreedyGameAgent::enableFacebook(true);
+    // GreedyGameAgent::enableMopub(true);
+    GGAdOptions* adOptions = new GGAdOptions();
+    adOptions->enableAdmobMediation(true);
+    adOptions->enableMopubMediation(true);
+    adOptions->enableFacebookMediation(true);
+    adOptions->withAgentListener(new GreedyAgentListener());
+    string unitList[4] = {"unit-1","unit-2", "unit-3", "unit-4"};
+    adOptions->addUnitList(unitList);
+    adOptions->addUnitId("unit-0");
+    GreedyGameAgent::initialize(adOptions);
     //GreedyGameAgent::init();
 
+    
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
