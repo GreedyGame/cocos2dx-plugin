@@ -133,9 +133,10 @@ bool LoadingScene::init()
     adOptions->enableMopubMediation(true);
     adOptions->enableFacebookMediation(true);
     adOptions->withAgentListener(new GreedyAgentListener());
-    string unitList[4] = {"unit-1","unit-2", "unit-3", "unit-4"};
-    adOptions->addUnitList(unitList);
-    adOptions->addUnitId("unit-0");
+    // string unitList[2] = {"float-1877","unit-2335"};
+    // adOptions->addUnitList(unitList);
+    adOptions->addUnitId("float-1877");
+    adOptions->addUnitId("unit-2335");
     GreedyGameAgent::initialize(adOptions);
     //GreedyGameAgent::init();
 

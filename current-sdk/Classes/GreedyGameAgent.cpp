@@ -35,8 +35,6 @@ USING_NS_CC;
     #define GG_GET_FLOAT_PATH "getPath"
 	#define GG_ADD_UNIT_ID "addUnitId"
 	#define GG_SEND_CRASH "sendCrash"
-
-
 	#define GG_ENABLE_ADMOB "enableAdmob"
     #define GG_ENABLE_CRASH "enableCrash"
 	#define GG_ENABLE_FACEBOOK "enableFacebook"
@@ -141,7 +139,7 @@ namespace greedygame {
 		#endif
     }
 
-    GGAdOptions::GGAdOptions(){
+    GGAdOptions::GGAdOptions() {
 
 				cocos2d::JniMethodInfo t;
     			if (cocos2d::JniHelper::getStaticMethodInfo(t, CocosActivity_CLASS_NAME
@@ -172,52 +170,60 @@ namespace greedygame {
     					env->CallObjectMethod(builderObj, engineV, cocosVersion);
 
 		        	} else {
-	                    CCLOG("GG[COCOS] Please declare ggActivityHelper inside your AppActvity which extends cocos2dxActivity to initialize the GG SDK.Please refer to the integraton guide for more details.");
+	                    CCLOG("GG[COCOS] Please declare ggActivityHelper inside your AppActivity which extends cocos2dxActivity to initialize the GG SDK.Please refer to the integraton guide for more details.");
 	        		}
 	        	}
     		}
 
     		GGAdOptions* GGAdOptions::enableAdmobMediation(bool enable){
-    			enableAdmobBoolean = enable;
-    			JavaVM* vm = JniHelper::getJavaVM();
-				JNIEnv* env;
-				vm->GetEnv((void**)&env,JNI_VERSION_1_4);
-				jclass cls = env->FindClass(GreedyGame_BUILDER_CLASS_NAME);
-    			jmethodID admob = env->GetMethodID(cls, GG_ENABLE_ADMOB, "(Z)Lcom/greedygame/android/agent/GreedyGameAgent$Builder;");
-    			env->CallObjectMethod(builderObj, admob ,enableAdmobBoolean);
+    			if(builderObj != NULL) {
+    				enableAdmobBoolean = enable;
+    				JavaVM* vm = JniHelper::getJavaVM();
+					JNIEnv* env;
+					vm->GetEnv((void**)&env,JNI_VERSION_1_4);
+					jclass cls = env->FindClass(GreedyGame_BUILDER_CLASS_NAME);
+    				jmethodID admob = env->GetMethodID(cls, GG_ENABLE_ADMOB, "(Z)Lcom/greedygame/android/agent/GreedyGameAgent$Builder;");
+    				env->CallObjectMethod(builderObj, admob ,enableAdmobBoolean);
+    			}
     			return this;
     		}
 
     		GGAdOptions* GGAdOptions::enableFacebookMediation(bool enable) {
-    			enableFacebookBoolean = enable;
-    			JavaVM* vm = JniHelper::getJavaVM();
-				JNIEnv* env;
-				vm->GetEnv((void**)&env,JNI_VERSION_1_4);
-				jclass cls = env->FindClass(GreedyGame_BUILDER_CLASS_NAME);
-    			jmethodID facebook = env->GetMethodID(cls, GG_ENABLE_FACEBOOK, "(Z)Lcom/greedygame/android/agent/GreedyGameAgent$Builder;");
-    			env->CallObjectMethod(builderObj, facebook, enableFacebookBoolean);
+    			if(builderObj != NULL) {
+	    			enableFacebookBoolean = enable;
+	    			JavaVM* vm = JniHelper::getJavaVM();
+					JNIEnv* env;
+					vm->GetEnv((void**)&env,JNI_VERSION_1_4);
+					jclass cls = env->FindClass(GreedyGame_BUILDER_CLASS_NAME);
+	    			jmethodID facebook = env->GetMethodID(cls, GG_ENABLE_FACEBOOK, "(Z)Lcom/greedygame/android/agent/GreedyGameAgent$Builder;");
+	    			env->CallObjectMethod(builderObj, facebook, enableFacebookBoolean);
+    			}
     			return this;
     		}
 
     		GGAdOptions* GGAdOptions::enableMopubMediation(bool enable){
-    			enableMopubBoolean = enable;
-    			JavaVM* vm = JniHelper::getJavaVM();
-				JNIEnv* env;
-				vm->GetEnv((void**)&env,JNI_VERSION_1_4);
-				jclass cls = env->FindClass(GreedyGame_BUILDER_CLASS_NAME);
-    			jmethodID mopub = env->GetMethodID(cls, GG_ENABLE_MOPUB, "(Z)Lcom/greedygame/android/agent/GreedyGameAgent$Builder;");
-    			env->CallObjectMethod(builderObj, mopub, enableMopubBoolean);
+    			if(builderObj != NULL) {
+	    			enableMopubBoolean = enable;
+	    			JavaVM* vm = JniHelper::getJavaVM();
+					JNIEnv* env;
+					vm->GetEnv((void**)&env,JNI_VERSION_1_4);
+					jclass cls = env->FindClass(GreedyGame_BUILDER_CLASS_NAME);
+	    			jmethodID mopub = env->GetMethodID(cls, GG_ENABLE_MOPUB, "(Z)Lcom/greedygame/android/agent/GreedyGameAgent$Builder;");
+	    			env->CallObjectMethod(builderObj, mopub, enableMopubBoolean);
+	    		}
     			return this;
     		}
 
     		GGAdOptions* GGAdOptions::enableCrashReporting(bool enable){
-    			enableCrashReportBoolean = enable;
-    			JavaVM* vm = JniHelper::getJavaVM();
-				JNIEnv* env;
-				vm->GetEnv((void**)&env,JNI_VERSION_1_4);
-				jclass cls = env->FindClass(GreedyGame_BUILDER_CLASS_NAME);
-    			jmethodID crash = env->GetMethodID(cls, GG_ENABLE_CRASH, "(Z)Lcom/greedygame/android/agent/GreedyGameAgent$Builder;");
-    			env->CallObjectMethod(builderObj, crash, enableCrashReportBoolean);
+    			if(builderObj != NULL) {
+	    			enableCrashReportBoolean = enable;
+	    			JavaVM* vm = JniHelper::getJavaVM();
+					JNIEnv* env;
+					vm->GetEnv((void**)&env,JNI_VERSION_1_4);
+					jclass cls = env->FindClass(GreedyGame_BUILDER_CLASS_NAME);
+	    			jmethodID crash = env->GetMethodID(cls, GG_ENABLE_CRASH, "(Z)Lcom/greedygame/android/agent/GreedyGameAgent$Builder;");
+	    			env->CallObjectMethod(builderObj, crash, enableCrashReportBoolean);
+    			}
     			return this;
     		}
 
@@ -227,26 +233,34 @@ namespace greedygame {
     		}
 
     		GGAdOptions* GGAdOptions::addUnitId(const char* unitId){
-    			JavaVM* vm = JniHelper::getJavaVM();
-				JNIEnv* env;
-				vm->GetEnv((void**)&env,JNI_VERSION_1_4);
-				jclass cls = env->FindClass(GreedyGame_BUILDER_CLASS_NAME);
-				jmethodID addUnitMethod = env->GetMethodID(cls, GG_ADD_UNIT_ID, "(Ljava/lang/String;)Lcom/greedygame/android/agent/GreedyGameAgent$Builder;");
-    			jstring stringId = env->NewStringUTF(unitId);
-    			env->CallObjectMethod(builderObj, addUnitMethod, stringId);
+    			if(builderObj != NULL) {
+	    			JavaVM* vm = JniHelper::getJavaVM();
+					JNIEnv* env;
+					vm->GetEnv((void**)&env,JNI_VERSION_1_4);
+					jclass cls = env->FindClass(GreedyGame_BUILDER_CLASS_NAME);
+					jmethodID addUnitMethod = env->GetMethodID(cls, GG_ADD_UNIT_ID, "(Ljava/lang/String;)Lcom/greedygame/android/agent/GreedyGameAgent$Builder;");
+	    			jstring stringId = env->NewStringUTF(unitId);
+	    			env->CallObjectMethod(builderObj, addUnitMethod, stringId);
+	    		}
     			return this;
     		}
 
     		GGAdOptions* GGAdOptions::addUnitList(const string* unitIdList){
-    			JavaVM* vm = JniHelper::getJavaVM();
-				JNIEnv* env;
-				vm->GetEnv((void**)&env,JNI_VERSION_1_4);
-				jclass cls = env->FindClass(GreedyGame_BUILDER_CLASS_NAME);
-				jmethodID addUnitMethod = env->GetMethodID(cls, GG_ADD_UNIT_ID, "(Ljava/lang/String;)Lcom/greedygame/android/agent/GreedyGameAgent$Builder;");
-    			for(int i=0; i<sizeof(unitIdList); i++) {
-    				jstring stringId = env->NewStringUTF(unitIdList[i].c_str());
-    				env->CallObjectMethod(builderObj, addUnitMethod, stringId);
-    			}
+    			if(builderObj != NULL) {
+	    			JavaVM* vm = JniHelper::getJavaVM();
+					JNIEnv* env;
+					vm->GetEnv((void**)&env,JNI_VERSION_1_4);
+					jclass cls = env->FindClass(GreedyGame_BUILDER_CLASS_NAME);
+					jmethodID addUnitMethod = env->GetMethodID(cls, GG_ADD_UNIT_ID, "(Ljava/lang/String;)Lcom/greedygame/android/agent/GreedyGameAgent$Builder;");
+	    			for(int i=0; i<sizeof(unitIdList); i++) {
+	    				CCLOG("GG[COCOS] Size %i",sizeof(unitIdList));
+	    				if(unitIdList[i].c_str() != NULL) {CCLOG("GG[COCOS] Size %i",sizeof(unitIdList));
+	    				CCLOG("GG[COCOS] Name %s",unitIdList[i].c_str());
+	    					jstring stringId = env->NewStringUTF(unitIdList[i].c_str());
+	    					env->CallObjectMethod(builderObj, addUnitMethod, stringId);
+	    				}
+	    			}
+	    		}
     			return this;
     		}
 
@@ -265,8 +279,13 @@ namespace greedygame {
 				cls = env->FindClass(GreedyGame_BUILDER_CLASS_NAME);
 		        jmethodID buildCall = env->GetMethodID(cls, "build", "()Lcom/greedygame/android/agent/GreedyGameAgent;");
 	    		jobject builderOptions = ggAdOptions->getBuilderObject();
-	    		jobject jGreedyGameAgent = env->CallObjectMethod(builderOptions, buildCall);
-	    		agentObject = env->NewGlobalRef(jGreedyGameAgent);
+	    		if(builderOptions != NULL) {
+		    		jobject jGreedyGameAgent = env->CallObjectMethod(builderOptions, buildCall);
+		    		agentObject = env->NewGlobalRef(jGreedyGameAgent);
+	    		} else {
+	    			CCLOG("GG[COCOS] Please declare ggActivityHelper inside your AppActivity which extends cocos2dxActivity to initialize the GG SDK.Please refer to the integraton guide for more details.");
+					return;
+				}
 	    	}
 			init();
 		#endif
