@@ -102,17 +102,6 @@ namespace greedygame {
 	        	}
 	        }
 
-	        JNIEXPORT void JNICALL Java_com_greedygame_android_JavaProxy_onProceed(JNIEnv* env, jobject thiz)
-	        {
-	        	if(listener != NULL){
-	        		cocos2d::Director::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
-	        			
-	        			listener->onProceed();
-	            		
-					});
-	        	}
-	        }
-
 	        JNIEXPORT void JNICALL Java_com_greedygame_android_JavaProxy_onError(JNIEnv* env, jobject thiz, jstring msg)
 	        {
 	        	if(listener != NULL){
@@ -125,17 +114,7 @@ namespace greedygame {
 					env->ReleaseStringUTFChars(msg, nativeString);
 	        	}
 	        }
-
-	        JNIEXPORT void JNICALL Java_com_greedygame_android_JavaProxy_onProgress(JNIEnv* env, jobject thiz, jint ret)
-	        {
-	        	if(listener != NULL){
-	        		cocos2d::Director::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
-	        			listener->onProgress(ret);
-	            		
-					});
-	        	}
-	        }
-	        
+    
 		#endif
     }
 
@@ -245,21 +224,27 @@ namespace greedygame {
     			return this;
     		}
 
-    		GGAdOptions* GGAdOptions::addUnitList(const string* unitIdList){
+    		GGAdOptions* GGAdOptions::addUnitList(const string* unitIdList, int unitListSize){
     			if(builderObj != NULL) {
 	    			JavaVM* vm = JniHelper::getJavaVM();
 					JNIEnv* env;
 					vm->GetEnv((void**)&env,JNI_VERSION_1_4);
 					jclass cls = env->FindClass(GreedyGame_BUILDER_CLASS_NAME);
 					jmethodID addUnitMethod = env->GetMethodID(cls, GG_ADD_UNIT_ID, "(Ljava/lang/String;)Lcom/greedygame/android/agent/GreedyGameAgent$Builder;");
-	    			for(int i=0; i<sizeof(unitIdList); i++) {
-	    				CCLOG("GG[COCOS] Size %i",sizeof(unitIdList));
-	    				if(unitIdList[i].c_str() != NULL) {CCLOG("GG[COCOS] Size %i",sizeof(unitIdList));
-	    				CCLOG("GG[COCOS] Name %s",unitIdList[i].c_str());
-	    					jstring stringId = env->NewStringUTF(unitIdList[i].c_str());
-	    					env->CallObjectMethod(builderObj, addUnitMethod, stringId);
+					if(unitListSize >= 0)
+					{
+						for(int i=0; i<unitListSize; i++) {
+		    				CCLOG("GG[COCOS] Size %i",unitListSize);
+		    				if(unitIdList[i].c_str() != NULL) {CCLOG("GG[COCOS] Size %i",unitListSize);
+		    				CCLOG("GG[COCOS] Name %s",unitIdList[i].c_str());
+		    					jstring stringId = env->NewStringUTF(unitIdList[i].c_str());
+		    					env->CallObjectMethod(builderObj, addUnitMethod, stringId);
+	    					}
 	    				}
-	    			}
+					}
+					else{
+						CCLOG("GG[COCOS] Unit List Size cannot accept negative values");
+					}
 	    		}
     			return this;
     		}

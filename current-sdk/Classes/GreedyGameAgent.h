@@ -23,9 +23,7 @@ namespace greedygame {
         public:
             virtual void onAvailable(const char *id){};
             virtual void onUnavailable(){};
-            virtual void onProgress(int progress){};
             virtual void onError(const char *msg){};
-            virtual void onProceed(){};
             virtual void onFound(){};
     };
 
@@ -65,7 +63,7 @@ namespace greedygame {
 
                     GGAdOptions* addUnitId(const char* unitId);
 
-                    GGAdOptions* addUnitList(const string* unitIdList);
+                    GGAdOptions* addUnitList(const string* unitIdList, int unitListSize);
 
                     GGAdOptions* withAgentListener(IAgentListener* listener);
 

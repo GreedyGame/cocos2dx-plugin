@@ -462,8 +462,8 @@ void HelloWorld::initCallback(Ref* pSender)
     adOptions->enableMopubMediation(true);
     adOptions->enableFacebookMediation(true);
     adOptions->withAgentListener(new HelloWorldGGListener());
-    string unitList[4] = {"float-1","float-2", "float-3", "float-4"};
-    adOptions->addUnitList(unitList);
+    string unitList[3] = {"float-1","float-2", "float-3"};
+    adOptions->addUnitList(unitList,3);
     adOptions->addUnitId("float-0");
     GreedyGameAgent::initialize(adOptions);
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)

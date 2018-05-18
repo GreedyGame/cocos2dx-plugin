@@ -39,20 +39,16 @@ class GreedyAgentListener : public IAgentListener {
     /**
      * TODO: New campaign is available and ready to use for the next scene.
      **/
-        
+        moveToNextScene();
         CCLOG("GG[LS]-onAvailable callback inside cocos cpp wrapper");
        // GreedyGameAgent::fetchFloatUnit("float-1935");
-    }
-
-    void onProceed() {
-    	CCLOG("GG[LS]-onProceed callback inside cocos cpp wrapper");
-    	moveToNextScene();
     }
 
     void onUnavailable(){
     /**
      * TODO: New campaign has been loaded, move to next scene
      **/
+        moveToNextScene();
      CCLOG("GG[LS]-onUnavailable callback inside cocos cpp wrapper");
     }
 
@@ -63,14 +59,6 @@ class GreedyAgentListener : public IAgentListener {
      **/
      CCLOG("GG[LS]-onFound callback inside cocos cpp wrapper");
     }
-
-    void onProgress(int progress){
-        /**
-         * TODO: progress will show value from o to 100,
-         * which can be used to render loading bar.
-         **/
-         CCLOG("GG[LS]-onProgress callback inside cocos cpp wrapper");
-        }
 
     void onError(const char *message){
         /**
@@ -133,10 +121,10 @@ bool LoadingScene::init()
     adOptions->enableMopubMediation(true);
     adOptions->enableFacebookMediation(true);
     adOptions->withAgentListener(new GreedyAgentListener());
-    // string unitList[2] = {"float-1877","unit-2335"};
-    // adOptions->addUnitList(unitList);
-    adOptions->addUnitId("float-1877");
-    adOptions->addUnitId("unit-2335");
+    string unitList[2] = {"float-1877","unit-2335"};
+    adOptions->addUnitList(unitList,2);
+    //adOptions->addUnitId("float-1877");
+    //adOptions->addUnitId("unit-2335");
     GreedyGameAgent::initialize(adOptions);
     //GreedyGameAgent::init();
 
