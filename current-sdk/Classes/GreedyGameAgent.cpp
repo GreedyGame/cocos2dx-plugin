@@ -25,6 +25,8 @@ USING_NS_CC;
 
 	#define GreedyGame_CLASS_NAME "com/greedygame/android/agent/GreedyGameAgent"
 	#define GreedyGame_BUILDER_CLASS_NAME "com/greedygame/android/agent/GreedyGameAgent$Builder"
+	#define GreedyGame_PRIVACY_OPTIONS_CLASS_NAME "com/greedygame/android/agent/PrivacyOptions"
+	#define ENFORCE_GG_NPA "setGgNpa"
 	#define GG_INIT "init"
 	#define GG_REFRESH "startEventRefresh"
     #define GG_SHOW_FLOAT "showFloat"
@@ -57,6 +59,7 @@ namespace greedygame {
 	bool GGAdOptions::enableAdmobBoolean = false;
 	bool GGAdOptions::enableMopubBoolean = false;
 	bool GGAdOptions::enableFacebookBoolean = false;
+	bool GGAdOptions::enableNpaBoolean = false;
 
     extern "C" {
 		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
@@ -65,9 +68,7 @@ namespace greedygame {
 	        	if(listener != NULL){
 	        		const char *nativeId = env->GetStringUTFChars(id, 0);
 	        		cocos2d::Director::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
-	        			
 	        			listener->onAvailable(nativeId);
-	            		
 					});
 					env->ReleaseStringUTFChars(id, nativeId);
 	            	
@@ -128,6 +129,7 @@ namespace greedygame {
 	        		JavaVM* vm;
     				JNIEnv* env;
     				jclass cls;
+    				
 		           	jobject activity = (jobject) t.env->CallStaticObjectMethod(t.classID,t.methodID);
 		           	if(activity != NULL) {
 		        		vm = JniHelper::getJavaVM();
@@ -136,7 +138,7 @@ namespace greedygame {
 						jmethodID constructor = env->GetMethodID(cls, "<init>", "(Landroid/app/Activity;)V");
     					jobject Obj = env->NewObject(cls, constructor, activity);
     					builderObj = env->NewGlobalRef(Obj);
-    					
+
     					//Updating game engine name
     					jmethodID gameEngine = env->GetMethodID(cls, GG_ENGINE_NAME, "(Ljava/lang/String;)Lcom/greedygame/android/agent/GreedyGameAgent$Builder;");
     					char* engine = "cocos";
@@ -249,10 +251,22 @@ namespace greedygame {
     			return this;
     		}
 
+    		GGAdOptions* GGAdOptions::enableNpa(bool enforce) {
+    			enableNpaBoolean = enforce;
+    			return this;
+    		}
+
     		jobject GGAdOptions::getBuilderObject() {
     			CCLOG("GG[COCOS] ggadoptions get builder object");
     			return builderObj;
     		}
+
+    		bool GGAdOptions::getGgNpa() {
+    			return enforceGgNpaBoolean;
+    		}
+
+
+    		
 
     void GreedyGameAgent::initialize(GGAdOptions* ggAdOptions) {
 		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
@@ -260,6 +274,8 @@ namespace greedygame {
 				JavaVM* vm = JniHelper::getJavaVM();
 				JNIEnv* env;
 				jclass cls;
+				jclass privacyOptionsCls;
+
 				vm->GetEnv((void**)&env,JNI_VERSION_1_4);
 				cls = env->FindClass(GreedyGame_BUILDER_CLASS_NAME);
 		        jmethodID buildCall = env->GetMethodID(cls, "build", "()Lcom/greedygame/android/agent/GreedyGameAgent;");
@@ -267,11 +283,26 @@ namespace greedygame {
 	    		if(builderOptions != NULL) {
 		    		jobject jGreedyGameAgent = env->CallObjectMethod(builderOptions, buildCall);
 		    		agentObject = env->NewGlobalRef(jGreedyGameAgent);
+
+		    		privacyOptionsCls = env->FindClass(GreedyGame_PRIVACY_OPTIONS_CLASS_NAME);
+	    		jmethodID constructor = env->GetMethodID(privacyOptionsCls, "<init>", "()V");
+	    		jobject privacyOptionsObject = env->NewObject(privacyOptionsCls, constructor);
+	    		jmethodID enforceGgNpa = env->GetMethodID(privacyOptionsCls, ENFORCE_GG_NPA, "(Z)V");
+	    		if(enforceGgNpa!= NULL && privacyOptionsObject!=NULL) {
+	    			env->CallVoidMethod(privacyOptionsObject, enforceGgNpa, ggAdOptions->getGgNpa());
+				}
+
+				jclass cls = env->FindClass(GreedyGame_CLASS_NAME);
+				jmethodID run = env->GetMethodID(cls, "withPrivacyOptions", "(Lcom/greedygame/android/agent/PrivacyOptions;)V");
+				env->CallVoidMethod(agentObject, run, privacyOptionsObject);
+
+
 	    		} else {
 	    			CCLOG("GG[COCOS] Please declare ggActivityHelper inside your AppActivity which extends cocos2dxActivity to initialize the GG SDK.Please refer to the integraton guide for more details.");
 					return;
 				}
 	    	}
+
 			init();
 		#endif
     }

@@ -123,6 +123,7 @@ bool LoadingScene::init()
     adOptions->withAgentListener(new GreedyAgentListener());
     string unitList[2] = {"float-1877","unit-2335"};
     adOptions->addUnitList(unitList,2);
+    adOptions->enforceGgNpa(true);
     //adOptions->addUnitId("float-1877");
     //adOptions->addUnitId("unit-2335");
     GreedyGameAgent::initialize(adOptions);

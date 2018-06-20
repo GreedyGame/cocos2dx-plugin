@@ -47,6 +47,8 @@ namespace greedygame {
 
                     static bool enableFacebookBoolean;
 
+                    static bool enforceGgNpaBoolean;
+
                     GGAdOptions();
 
                     GGAdOptions* enableAdmobMediation(bool enable);
@@ -67,7 +69,11 @@ namespace greedygame {
 
                     GGAdOptions* withAgentListener(IAgentListener* listener);
 
+                    GGAdOptions* enableNpa(bool enforce);
+
                     jobject getBuilderObject();
+
+                    bool getGgNpa();
 
             };
 
@@ -76,6 +82,8 @@ namespace greedygame {
         public:
 
             static jobject agentObject;
+
+            jclass privacyOptionsClass;
 
             static void initialize(GGAdOptions* ggAdOptions);
 
@@ -104,6 +112,8 @@ namespace greedygame {
             static void sendCrashReport(const char *error, bool enable);
  
     };
+
+
 }
 
 
