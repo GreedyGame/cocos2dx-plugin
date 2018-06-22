@@ -111,11 +111,6 @@ bool LoadingScene::init()
         return false;
     }
 
-    /*CCLOG("GG[LS] init called");*/
-    //GreedyGameAgent::init(new GreedyAgentListener());
-    // GreedyGameAgent::enableAdmob(true);
-    // GreedyGameAgent::enableFacebook(true);
-    // GreedyGameAgent::enableMopub(true);
     GGAdOptions* adOptions = new GGAdOptions();
     adOptions->enableAdmobMediation(true);
     adOptions->enableMopubMediation(true);
@@ -123,11 +118,8 @@ bool LoadingScene::init()
     adOptions->withAgentListener(new GreedyAgentListener());
     string unitList[2] = {"float-1877","unit-2335"};
     adOptions->addUnitList(unitList,2);
-    adOptions->enforceGgNpa(true);
-    //adOptions->addUnitId("float-1877");
-    //adOptions->addUnitId("unit-2335");
+    adOptions->enableNpa(true);
     GreedyGameAgent::initialize(adOptions);
-    //GreedyGameAgent::init();
 
     
     auto visibleSize = Director::getInstance()->getVisibleSize();

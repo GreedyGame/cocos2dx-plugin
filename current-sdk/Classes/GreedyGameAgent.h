@@ -47,7 +47,7 @@ namespace greedygame {
 
                     static bool enableFacebookBoolean;
 
-                    static bool enforceGgNpaBoolean;
+                    static bool enableNpaBoolean;
 
                     GGAdOptions();
 

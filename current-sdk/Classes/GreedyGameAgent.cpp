@@ -262,7 +262,7 @@ namespace greedygame {
     		}
 
     		bool GGAdOptions::getGgNpa() {
-    			return enforceGgNpaBoolean;
+    			return enableNpaBoolean;
     		}
 
 
