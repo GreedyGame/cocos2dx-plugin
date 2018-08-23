@@ -1,2 +1,2 @@
 configurations.create("default")
-artifacts.add("default", file('r-android-sdk-2124.aar'))
+artifacts.add("default", file('r-android-sdk-2125.aar'))
