@@ -48,6 +48,8 @@ namespace greedygame {
 
                     static bool enableNpaBoolean;
 
+                    static bool enableCOPPABoolean;
+
                     GGAdOptions();
 
                     GGAdOptions* enableAdmobMediation(bool enable);

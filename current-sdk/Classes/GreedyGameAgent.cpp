@@ -62,6 +62,7 @@ namespace greedygame {
 	bool GGAdOptions::enableMopubBoolean = false;
 	bool GGAdOptions::enableFacebookBoolean = false;
 	bool GGAdOptions::enableNpaBoolean = false;
+	bool GGAdOptions::enableCOPPABoolean = false;
 
     extern "C" {
 		#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
@@ -195,13 +196,13 @@ namespace greedygame {
 
     		GGAdOptions* GGAdOptions::enableCOPPA(bool enable){
     			if(builderObj != NULL) {
-	    			enableCrashReportBoolean = enable;
+	    			enableCOPPABoolean = enable;
 	    			JavaVM* vm = JniHelper::getJavaVM();
 					JNIEnv* env;
 					vm->GetEnv((void**)&env,JNI_VERSION_1_4);
 					jclass cls = env->FindClass(GreedyGame_BUILDER_CLASS_NAME);
 	    			jmethodID coppa = env->GetMethodID(cls, GG_ENABLE_COPPA, "(Z)Lcom/greedygame/android/agent/GreedyGameAgent$Builder;");
-	    			env->CallObjectMethod(builderObj, coppa, enableCrashReportBoolean);
+	    			env->CallObjectMethod(builderObj, coppa, enableCOPPABoolean);
     			}
     			return this;
     		}
@@ -230,9 +231,9 @@ namespace greedygame {
 					JNIEnv* env;
 					vm->GetEnv((void**)&env,JNI_VERSION_1_4);
 					jclass cls = env->FindClass(GreedyGame_BUILDER_CLASS_NAME);
-					jmethodID addUnitMethod = env->GetMethodID(cls, GG_SET_GAME_ID, "(Ljava/lang/String;)Lcom/greedygame/android/agent/GreedyGameAgent$Builder;");
+					jmethodID setGameIdMethod = env->GetMethodID(cls, GG_SET_GAME_ID, "(Ljava/lang/String;)Lcom/greedygame/android/agent/GreedyGameAgent$Builder;");
 	    			jstring stringId = env->NewStringUTF(unitId);
-	    			env->CallObjectMethod(builderObj, addUnitMethod, stringId);
+	    			env->CallObjectMethod(builderObj, setGameIdMethod, stringId);
 	    		}
     			return this;
     		}
@@ -291,9 +292,17 @@ namespace greedygame {
 				cls = env->FindClass(GreedyGame_BUILDER_CLASS_NAME);
 		        jmethodID buildCall = env->GetMethodID(cls, "build", "()Lcom/greedygame/android/agent/GreedyGameAgent;");
 	    		jobject builderOptions = ggAdOptions->getBuilderObject();
+	    		CCLOG("GG[COCOS] Please declare");
 	    		if(builderOptions != NULL) {
 		    		jobject jGreedyGameAgent = env->CallObjectMethod(builderOptions, buildCall);
+		    		CCLOG("GG[COCOS] Please declar object here");
+		    		if(jGreedyGameAgent != NULL) {
+		    			CCLOG("GG[COCOS] Please declare 55");
+		    		} else {
+		    			CCLOG("GG[COCOS] Please declare 66");
+		    		}
 		    		agentObject = env->NewGlobalRef(jGreedyGameAgent);
+		    		CCLOG("GG[COCOS] Please declare 44");
 
 		    		privacyOptionsCls = env->FindClass(GreedyGame_PRIVACY_OPTIONS_CLASS_NAME);
 	    		jmethodID constructor = env->GetMethodID(privacyOptionsCls, "<init>", "()V");

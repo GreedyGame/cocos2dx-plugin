@@ -108,7 +108,7 @@ bool LoadingScene::init()
     adOptions->enableMopubMediation(true);
     adOptions->enableFacebookMediation(true);
     adOptions->setGameId("99234285");
-    //adOptions->enableCOPPA(true);
+    adOptions->enableCOPPA(true);
     adOptions->withAgentListener(new GreedyAgentListener());
     string unitList[2] = {"float-1877","unit-2335"};
     adOptions->addUnitList(unitList,2);
