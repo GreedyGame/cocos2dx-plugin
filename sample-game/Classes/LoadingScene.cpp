@@ -52,14 +52,6 @@ class GreedyAgentListener : public IAgentListener {
      CCLOG("GG[LS]-onUnavailable callback inside cocos cpp wrapper");
     }
 
-    void onFound(){
-    /**
-     * TODO: progress will show value from o to 100,
-     * which can be used to render loading bar.
-     **/
-     CCLOG("GG[LS]-onFound callback inside cocos cpp wrapper");
-    }
-
     void onError(const char *message){
         /**
          * TODO: callback which notifies of the error
@@ -115,6 +107,8 @@ bool LoadingScene::init()
     adOptions->enableAdmobMediation(true);
     adOptions->enableMopubMediation(true);
     adOptions->enableFacebookMediation(true);
+    adOptions->setGameId("99234285");
+    //adOptions->enableCOPPA(true);
     adOptions->withAgentListener(new GreedyAgentListener());
     string unitList[2] = {"float-1877","unit-2335"};
     adOptions->addUnitList(unitList,2);

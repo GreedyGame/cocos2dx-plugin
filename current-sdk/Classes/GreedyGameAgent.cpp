@@ -44,6 +44,8 @@ USING_NS_CC;
 	#define GG_ENGINE_NAME "gameEngine"
 	#define GG_ENGINE_VERSION "engineVersion"
 	#define GG_BUILDER_LISTENER "withAgentListener"
+	#define GG_ENABLE_COPPA "enableCOPPAFilter"
+	#define GG_SET_GAME_ID "setGameId"
 
 	#define CocosActivity_CLASS_NAME "org/cocos2dx/cpp/AppActivity"	
 	#define COCOS_GETCONTEXT "ggActivityHelper"
@@ -81,23 +83,6 @@ namespace greedygame {
 	        		cocos2d::Director::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
 	        			
 	        			listener->onUnavailable();
-	            		
-					});
-	        	}
-	        }
-
-	        JNIEXPORT void JNICALL Java_com_greedygame_android_JavaProxy_onFound(JNIEnv* env, jobject thiz)
-	        {
-	        	if(listener != NULL){
-	        		CCLOG("GG[COCOS] onFound inside cocos listener");
-	        		cocos2d::Director::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
-	        			if(listener != NULL) {
-	        				CCLOG("GG[COCOS] cocos listener not null");
-	        			} else {
-
-	        				CCLOG("GG[COCOS] cocos listener is null");
-	        			}
-	        			listener->onFound();
 	            		
 					});
 	        	}
@@ -208,6 +193,19 @@ namespace greedygame {
     			return this;
     		}
 
+    		GGAdOptions* GGAdOptions::enableCOPPA(bool enable){
+    			if(builderObj != NULL) {
+	    			enableCrashReportBoolean = enable;
+	    			JavaVM* vm = JniHelper::getJavaVM();
+					JNIEnv* env;
+					vm->GetEnv((void**)&env,JNI_VERSION_1_4);
+					jclass cls = env->FindClass(GreedyGame_BUILDER_CLASS_NAME);
+	    			jmethodID coppa = env->GetMethodID(cls, GG_ENABLE_COPPA, "(Z)Lcom/greedygame/android/agent/GreedyGameAgent$Builder;");
+	    			env->CallObjectMethod(builderObj, coppa, enableCrashReportBoolean);
+    			}
+    			return this;
+    		}
+
     		GGAdOptions* GGAdOptions::withAgentListener(IAgentListener* agentListener){
     			listener = agentListener;
     			return this;
@@ -220,6 +218,19 @@ namespace greedygame {
 					vm->GetEnv((void**)&env,JNI_VERSION_1_4);
 					jclass cls = env->FindClass(GreedyGame_BUILDER_CLASS_NAME);
 					jmethodID addUnitMethod = env->GetMethodID(cls, GG_ADD_UNIT_ID, "(Ljava/lang/String;)Lcom/greedygame/android/agent/GreedyGameAgent$Builder;");
+	    			jstring stringId = env->NewStringUTF(unitId);
+	    			env->CallObjectMethod(builderObj, addUnitMethod, stringId);
+	    		}
+    			return this;
+    		}
+
+    		GGAdOptions* GGAdOptions::setGameId(const char* unitId){
+    			if(builderObj != NULL) {
+	    			JavaVM* vm = JniHelper::getJavaVM();
+					JNIEnv* env;
+					vm->GetEnv((void**)&env,JNI_VERSION_1_4);
+					jclass cls = env->FindClass(GreedyGame_BUILDER_CLASS_NAME);
+					jmethodID addUnitMethod = env->GetMethodID(cls, GG_SET_GAME_ID, "(Ljava/lang/String;)Lcom/greedygame/android/agent/GreedyGameAgent$Builder;");
 	    			jstring stringId = env->NewStringUTF(unitId);
 	    			env->CallObjectMethod(builderObj, addUnitMethod, stringId);
 	    		}

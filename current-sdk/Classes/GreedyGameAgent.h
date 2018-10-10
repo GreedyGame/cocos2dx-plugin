@@ -24,7 +24,6 @@ namespace greedygame {
             virtual void onAvailable(const char *id){};
             virtual void onUnavailable(){};
             virtual void onError(const char *msg){};
-            virtual void onFound(){};
     };
 
     class GGAdOptions {
@@ -62,6 +61,10 @@ namespace greedygame {
                     GGAdOptions* gameEngine();
 
                     GGAdOptions* engineVersion();
+
+                    GGAdOptions* setGameId(const char* gameId);
+
+                    GGAdOptions* enableCOPPA(bool enable);
 
                     GGAdOptions* addUnitId(const char* unitId);
 
