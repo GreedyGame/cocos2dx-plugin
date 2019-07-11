@@ -459,8 +459,6 @@ void HelloWorld::initCallback(Ref* pSender)
     CCLOG( "GG[HWScene] initCallback called");
     GGAdOptions* adOptions = new GGAdOptions();
     adOptions->enableAdmobMediation(true);
-    adOptions->enableMopubMediation(true);
-    adOptions->enableFacebookMediation(true);
     adOptions->withAgentListener(new HelloWorldGGListener());
     string unitList[3] = {"float-1","float-2", "float-3"};
     adOptions->addUnitList(unitList,3);

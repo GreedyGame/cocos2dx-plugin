@@ -105,8 +105,6 @@ bool LoadingScene::init()
 
     GGAdOptions* adOptions = new GGAdOptions();
     adOptions->enableAdmobMediation(true);
-    adOptions->enableMopubMediation(true);
-    adOptions->enableFacebookMediation(true);
     adOptions->setGameId("99234285");
     adOptions->enableCOPPA(true);
     adOptions->withAgentListener(new GreedyAgentListener());

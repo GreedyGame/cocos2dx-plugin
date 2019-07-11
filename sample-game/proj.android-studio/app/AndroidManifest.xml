@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
      xmlns:tools="http://schemas.android.com/tools"
-    package="com.greedygame.SimpleGame"
+    package="com.greedygame.cocosgame"
     android:installLocation="auto">
 
     <uses-feature android:glEsVersion="0x00020000" />
@@ -30,56 +30,31 @@
         </activity>
 
         <activity
-            android:name="com.greedygame.android.core.campaign.uii.web.GGWebActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|screenSize|screenLayout|layoutDirection|orientation"
-            android:hardwareAccelerated="true"
-            android:launchMode="singleTask"
-            android:theme="@style/Theme.GGTransparent">
-        </activity>
-        <activity
-            android:name="com.greedygame.android.core.campaign.uii.video.GGVideoActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|screenSize|screenLayout|layoutDirection|orientation"
-            android:hardwareAccelerated="true"
-            android:launchMode="singleTask"
-            android:theme="@style/Theme.GGTransparent">
-        </activity>
-        <activity
-            android:name="com.greedygame.android.core.mediation.admob.GGAdMobActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|screenSize|screenLayout|layoutDirection|orientation"
-            android:hardwareAccelerated="true"
-            android:launchMode="singleTask"
-            android:theme="@style/Theme.GGTransparent">
-        </activity>
+    android:name="com.greedygame.android.core.campaign.uii.web.GGWebActivity"
+    android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|layoutDirection"
+    android:hardwareAccelerated="true"
+    android:launchMode="singleTask"
+    android:screenOrientation="landscape"
+    android:theme="@style/Theme.GGTransparent">
+</activity>
 
-        <activity
-            android:name="com.greedygame.android.core.mediation.greedygame.GGS2SActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|screenSize|screenLayout|layoutDirection|orientation"
-            android:hardwareAccelerated="true"
-            android:launchMode="singleTask"
-            android:theme="@style/Theme.GGTransparent">
-        </activity>
+<activity
+    android:name="com.greedygame.android.core.mediation.greedygame.GGS2SActivity"
+    android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|layoutDirection"
+    android:hardwareAccelerated="true"
+    android:launchMode="singleTask"
+    android:screenOrientation="landscape"
+    android:theme="@style/Theme.GGTransparent">
+</activity>
 
-        <activity
-           android:name="com.greedygame.android.core.mediation.mopub.GGMoPubActivity"
-           android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|layoutDirection"
-           android:hardwareAccelerated="true"
-           android:launchMode="singleTask"
-           android:theme="@style/Theme.GGTransparent">
-       </activity>
-<activity android:name="com.mopub.common.MoPubBrowser"
-          android:configChanges="keyboardHidden|orientation|screenSize"/>
-    <activity
-            android:name="com.greedygame.android.core.mediation.facebook.GGFacebookActivity"
-            android:screenOrientation="sensorLandscape"
-            android:configChanges="keyboardHidden|screenSize|screenLayout|layoutDirection|orientation"
-            android:hardwareAccelerated="true"
-            android:launchMode="singleTask"
-            android:theme="@style/Theme.GGTransparent">
-        </activity>
+<activity
+    android:name="com.greedygame.android.core.mediation.admob.GGAdMobActivity"
+    android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|layoutDirection"
+    android:hardwareAccelerated="true"
+    android:launchMode="singleTask"
+    android:screenOrientation="landscape"
+    android:theme="@style/Theme.GGTransparent">
+ </activity>
     </application>
     
 
